@@ -1,0 +1,73 @@
+[gd_scene load_steps=14 format=3 uid="uid://bf5savv56mx5x"]
+
+[ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
+[ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
+[ext_resource type="Script" path="res://DebugScripts/UI/PlayerVelocityDebug.cs" id="2_hgurd"]
+[ext_resource type="Script" path="res://DebugScripts/UI/CameraForwardDebug.cs" id="3_i3018"]
+[ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="3_ovccy"]
+[ext_resource type="Script" path="res://DebugScripts/UI/CameraRotationDebug.cs" id="4_lljk7"]
+[ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v72as"]
+
+[sub_resource type="Sky" id="Sky_y5bj8"]
+sky_material = SubResource("ProceduralSkyMaterial_v72as")
+
+[sub_resource type="Environment" id="Environment_yr1yl"]
+background_mode = 2
+sky = SubResource("Sky_y5bj8")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_csh3n"]
+size = Vector3(65.815, 0.01, 65.69)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_b6io6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3afgb"]
+albedo_color = Color(0, 0.313726, 0, 1)
+metallic_specular = 0.0
+
+[node name="Node3D" type="Node3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0083313, 0, -0.0205119)
+script = ExtResource("1_bk11s")
+
+[node name="player" parent="." instance=ExtResource("1_tstet")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0856779, 0)
+script = ExtResource("3_ovccy")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_yr1yl")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.350502, 0.53463, -0.768973, 0, 0.82106, 0.570843, 0.936562, -0.200081, 0.287783, -2.48021, 4.61833, 1.69351)
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="velocity" type="Label" parent="Node2D"]
+offset_right = 222.0
+offset_bottom = 50.0
+script = ExtResource("2_hgurd")
+
+[node name="camera_forward" type="Label" parent="Node2D"]
+offset_top = 99.0
+offset_right = 222.0
+offset_bottom = 149.0
+script = ExtResource("3_i3018")
+
+[node name="camera_rotation" type="Label" parent="Node2D"]
+offset_top = 227.0
+offset_right = 40.0
+offset_bottom = 250.0
+script = ExtResource("4_lljk7")
+
+[node name="camera" parent="." instance=ExtResource("6_ksqkm")]
+
+[node name="plane" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="plane"]
+shape = SubResource("BoxShape3D_csh3n")
+
+[node name="plane" type="MeshInstance3D" parent="plane/CollisionShape3D"]
+transform = Transform3D(33.2273, 0, 0, 0, 33.2273, 0, 0, 0, 33.2273, 0, 0, 0)
+mesh = SubResource("PlaneMesh_b6io6")
+skeleton = NodePath("../../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_3afgb")

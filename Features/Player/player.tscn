@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://d2dvfml0wryba"]
+
+[ext_resource type="PackedScene" uid="uid://s68lm4nydeme" path="res://Models/char_knight_1.tscn" id="1_rbt8x"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_gwd2d"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
+radius = 0.251076
+height = 1.84514
+
+[node name="player" type="CharacterBody3D"]
+
+[node name="model" type="Node3D" parent="."]
+
+[node name="knight_1" parent="model" instance=ExtResource("1_rbt8x")]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+
+[node name="face" type="MeshInstance3D" parent="model"]
+transform = Transform3D(0.554932, 0, 0, 0, 0.0433989, 0, 0, 0, 0.554932, -0.0771739, 1.3331, -0.462672)
+mesh = SubResource("CylinderMesh_gwd2d")
+skeleton = NodePath("../../../..")
+
+[node name="core_hitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.978857, 0)
+shape = SubResource("CapsuleShape3D_c3us5")
