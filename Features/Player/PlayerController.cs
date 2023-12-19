@@ -19,17 +19,13 @@ public partial class PlayerController : CharacterBody3D
     
 	public Vector3 velocity = Vector3.Zero;
 
-	public Node3D Model;
+	public CharacterController Character;
 
 	public AnimationPlayer AnimationPlayer;
 	
 	public override void _Ready()
 	{
-		Model = GetNode<Node3D>("model");
-
-		var mesh = Model.GetNode<Node3D>("mesh");
-		
-		AnimationPlayer = mesh.GetNode<AnimationPlayer>("AnimationPlayer");
+		Character = GetNode<CharacterController>("character");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -60,17 +56,17 @@ public partial class PlayerController : CharacterBody3D
 				angle = new Vector2(velocity.Z, velocity.X).Angle();	
 			}
 
-			var newRot = Model.Rotation;
+			var newRot = Character.Rotation;
 		
 			newRot.Y = (float)Mathf.LerpAngle(newRot.Y, angle - Math.PI, delta * lookSpeed);
 		
-			Model.Rotation = newRot;
+			Character.Rotation = newRot;
 			
-			AnimationPlayer.Play("Fast Run");
+			Character.PlayAnimation("Fast Run");
 		}
 		else
 		{
-			AnimationPlayer.Play("Idle");
+			Character.PlayAnimation("Idle");
 		}
 		
 		velocity.Y -= 98f * (float)delta;
