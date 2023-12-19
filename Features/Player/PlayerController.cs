@@ -10,6 +10,8 @@ using Vector3 = Godot.Vector3;
 
 public partial class PlayerController : CharacterBody3D
 {
+	[Export] private Mesh PlayerModel;
+	
 	public int horizontalModifier = 0;
 	public int verticalModifier = 0;
     
@@ -26,6 +28,8 @@ public partial class PlayerController : CharacterBody3D
 	public override void _Ready()
 	{
 		Character = GetNode<CharacterController>("character");
+		
+		Character.SetModel(PlayerModel);
 	}
 
 	public override void _PhysicsProcess(double delta)
