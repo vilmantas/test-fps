@@ -1,9 +1,10 @@
 using Godot;
 using System;
+using testfps.Scripts;
 
 public partial class CameraController : Node3D
 {
-	public bool RotationEnabled = false;
+	private bool RotationEnabled;
 	
 	private Vector2 Offset = Vector2.Zero;
 
@@ -13,6 +14,8 @@ public partial class CameraController : Node3D
 	public override void _Ready()
 	{
 		Arm = GetNode<Node3D>("SpringArm3D");
+
+		PlayerInputManager.Instance.OnRotationEnabled += OnRotationChanged;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -24,8 +27,6 @@ public partial class CameraController : Node3D
 		
 		Position = player.Position + new Vector3(0, 1.5f, 0);
 		
-		CheckTrigger();
-		
 		RotateMouse(delta);
 		
 		Offset = Vector2.Zero;
@@ -36,19 +37,6 @@ public partial class CameraController : Node3D
 		if (@event is InputEventMouseMotion mouseMotion)
 		{
 			Offset = mouseMotion.Relative;
-		}
-	}
-	
-	private void CheckTrigger()
-	{
-		if (Input.IsActionJustPressed("player_camera_rotate"))
-		{
-			EnableRotation();
-		}
-
-		if (Input.IsActionJustReleased("player_camera_rotate"))
-		{
-			DisableRotation();
 		}
 	}
 	
@@ -71,6 +59,18 @@ public partial class CameraController : Node3D
 		}
         
 		RotateY(Mathf.DegToRad(x * 0.1f));
+	}
+
+	private void OnRotationChanged(bool enabled)
+	{
+		if (enabled)
+		{
+			EnableRotation();
+		}
+		else
+		{
+			DisableRotation();
+		}
 	}
 	
 	private void EnableRotation()

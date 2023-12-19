@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Godot;
 
@@ -15,14 +16,22 @@ public partial class PlayerInputManager : Node
     public (int Horizontal, int Vertical) MovementInput = new (0, 0);
     
     public bool MovementInputEngaged => MovementInput.Horizontal != 0 || MovementInput.Vertical != 0;
+
+    public bool RotationEnabled = false;
+    
+    public Action<bool> OnRotationEnabled;
     
     public override void _Ready()
     {
         Instance = this;
     }
 
-	
-    public void _input(InputEvent @event)
+    public override void _Process(double delta)
+    {
+        CheckRotation();
+    }
+
+    private void _input(InputEvent @event)
     {
         if (@event.IsActionPressed(move_forward))
         {
@@ -59,4 +68,35 @@ public partial class PlayerInputManager : Node
             MovementInput.Horizontal--;
         }
     }
+    
+    private void CheckRotation()
+    {
+        if (Input.IsActionJustPressed("player_camera_rotate"))
+        {
+            EnableRotation();
+        }
+
+        if (Input.IsActionJustReleased("player_camera_rotate"))
+        {
+            DisableRotation();
+        }
+    }
+    
+    private void EnableRotation()
+    {
+        RotationEnabled = true;
+        OnRotationChanged();
+    }
+
+    private void DisableRotation()
+    {
+        RotationEnabled = false;
+        OnRotationChanged();
+    }
+
+    private void OnRotationChanged()
+    {
+        OnRotationEnabled?.Invoke(RotationEnabled);
+    }
+    
 }

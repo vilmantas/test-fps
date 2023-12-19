@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Numerics;
 using testfps.Scripts;
 using Vector2 = Godot.Vector2;
@@ -19,10 +20,16 @@ public partial class PlayerController : CharacterBody3D
 	public Vector3 velocity = Vector3.Zero;
 
 	public Node3D Model;
+
+	public AnimationPlayer AnimationPlayer;
 	
 	public override void _Ready()
 	{
 		Model = GetNode<Node3D>("model");
+
+		var mesh = Model.GetNode<Node3D>("mesh");
+		
+		AnimationPlayer = mesh.GetNode<AnimationPlayer>("AnimationPlayer");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -39,14 +46,31 @@ public partial class PlayerController : CharacterBody3D
 		
 			velocity = cameraBasis.Z * verticalModifier;
 			velocity += cameraBasis.X * horizontalModifier;
-
-			var angle = new Vector2(velocity.Z, velocity.X).Angle();
+			
+			float angle;
+			
+			if (PlayerInputManager.Instance.RotationEnabled)
+			{
+				var vect = -cameraBasis.Z;
+				
+				angle = new Vector2(vect.Z, vect.X).Angle();
+			}
+			else
+			{
+				angle = new Vector2(velocity.Z, velocity.X).Angle();	
+			}
 
 			var newRot = Model.Rotation;
 		
 			newRot.Y = (float)Mathf.LerpAngle(newRot.Y, angle - Math.PI, delta * lookSpeed);
 		
 			Model.Rotation = newRot;
+			
+			AnimationPlayer.Play("Fast Run");
+		}
+		else
+		{
+			AnimationPlayer.Play("Idle");
 		}
 		
 		velocity.Y -= 98f * (float)delta;

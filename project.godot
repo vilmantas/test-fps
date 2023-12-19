@@ -28,6 +28,7 @@ project/assembly_name="test-fps"
 
 folder_colors={
 "res://Animations/": "green",
+"res://DebugScripts/": "blue",
 "res://Imports/": "red",
 "res://Models/": "green"
 }
