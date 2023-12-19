@@ -66,7 +66,7 @@ public partial class PlayerController : CharacterBody3D
 		
 			Character.Rotation = newRot;
 			
-			Character.PlayAnimation("Fast Run");
+			Character.PlayAnimation("Running");
 		}
 		else
 		{

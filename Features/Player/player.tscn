@@ -1,12 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2dvfml0wryba"]
+[gd_scene load_steps=5 format=3 uid="uid://d2dvfml0wryba"]
 
+[ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
+[ext_resource type="ArrayMesh" uid="uid://b111tbrgf4mfe" path="res://Imports/meshes/sporty_male.res" id="2_uibfj"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
 radius = 0.251076
 height = 1.84514
 
 [node name="player" type="CharacterBody3D"]
+script = ExtResource("1_3nu1d")
+PlayerModel = ExtResource("2_uibfj")
 
 [node name="character" parent="." instance=ExtResource("1_ixuhh")]
 

@@ -1,10 +1,9 @@
-[gd_scene load_steps=20 format=3 uid="uid://bf5savv56mx5x"]
+[gd_scene load_steps=19 format=3 uid="uid://bf5savv56mx5x"]
 
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
 [ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
 [ext_resource type="Script" path="res://DebugScripts/UI/PlayerVelocityDebug.cs" id="2_hgurd"]
 [ext_resource type="Script" path="res://DebugScripts/UI/CameraForwardDebug.cs" id="3_i3018"]
-[ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="3_ovccy"]
 [ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="4_6m8ne"]
 [ext_resource type="Script" path="res://DebugScripts/UI/CameraRotationDebug.cs" id="4_lljk7"]
 [ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
@@ -43,7 +42,6 @@ script = ExtResource("1_bk11s")
 
 [node name="player" parent="." instance=ExtResource("1_tstet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0856779, 0)
-script = ExtResource("3_ovccy")
 PlayerModel = ExtResource("4_6m8ne")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
