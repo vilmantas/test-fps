@@ -492,4 +492,4 @@ bones/47/rotation = Quaternion(0.492759, 0.0880538, -0.00166367, 0.865698)
 libraries = {
 "": SubResource("AnimationLibrary_7lh75")
 }
-playback_default_blend_time = 0.1
+playback_default_blend_time = 0.25
