@@ -5,8 +5,8 @@
 [ext_resource type="Script" path="res://DebugScripts/UI/PlayerVelocityDebug.cs" id="2_hgurd"]
 [ext_resource type="Script" path="res://DebugScripts/UI/CameraForwardDebug.cs" id="3_i3018"]
 [ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="4_6m8ne"]
-[ext_resource type="Script" path="res://DebugScripts/UI/CameraRotationDebug.cs" id="4_lljk7"]
 [ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
+[ext_resource type="Script" path="res://DebugScripts/UI/PlayerPositionDebug.cs" id="6_qbnei"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v72as"]
 
@@ -43,6 +43,9 @@ script = ExtResource("1_bk11s")
 [node name="player" parent="." instance=ExtResource("1_tstet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0856779, 0)
 PlayerModel = ExtResource("4_6m8ne")
+JumpHeight = 5.0
+JumpTimeToPeak = 0.7
+JumpTimeToDescend = 0.6
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_yr1yl")
@@ -52,22 +55,26 @@ transform = Transform3D(0.350502, 0.53463, -0.768973, 0, 0.82106, 0.570843, 0.93
 
 [node name="ui" type="Node2D" parent="."]
 
-[node name="velocity" type="Label" parent="ui"]
-offset_right = 222.0
-offset_bottom = 50.0
-script = ExtResource("2_hgurd")
+[node name="VBoxContainer" type="VBoxContainer" parent="ui"]
+offset_right = 40.0
+offset_bottom = 40.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="camera_forward" type="Label" parent="ui"]
-offset_top = 99.0
-offset_right = 222.0
-offset_bottom = 149.0
+[node name="camera_forward" type="Label" parent="ui/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
 script = ExtResource("3_i3018")
 
-[node name="camera_rotation" type="Label" parent="ui"]
-offset_top = 227.0
-offset_right = 40.0
-offset_bottom = 250.0
-script = ExtResource("4_lljk7")
+[node name="velocity" type="Label" parent="ui/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+script = ExtResource("2_hgurd")
+
+[node name="position" type="Label" parent="ui/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+script = ExtResource("6_qbnei")
 
 [node name="camera" parent="." instance=ExtResource("6_ksqkm")]
 
@@ -145,8 +152,10 @@ transform = Transform3D(-0.928336, 0.328693, 0.173649, -0.174101, -0.797149, 0.5
 mesh = SubResource("BoxMesh_31i71")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="ground/MeshInstance3D7"]
+transform = Transform3D(1, -8.9407e-08, 5.96046e-08, -7.45058e-08, 1, 2.98023e-08, -5.96046e-08, -2.98023e-08, 1, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ground/MeshInstance3D7/StaticBody3D"]
+transform = Transform3D(1, 0, -5.96046e-08, 0, 1, 5.96046e-08, 0, -1.49012e-07, 1, 0, 0, 0)
 shape = SubResource("BoxShape3D_q0hrp")
 
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="ground"]

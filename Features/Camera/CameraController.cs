@@ -8,7 +8,9 @@ public partial class CameraController : Node3D
 	
 	private Vector2 Offset = Vector2.Zero;
 
-	public Node3D Arm;
+	private PlayerController Player;
+	
+	private Node3D Arm;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -16,16 +18,16 @@ public partial class CameraController : Node3D
 		Arm = GetNode<Node3D>("SpringArm3D");
 
 		PlayerInputManager.Instance.OnRotationEnabled += OnRotationChanged;
-	}
 
+		Player = GameManager.PlayerController;
+	}
+	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		if (GameManager.PlayerController == null) return;
-
 		var player = GameManager.PlayerController;
 		
-		Position = player.Position + new Vector3(0, 1.5f, 0);
+		Position = player.Position + new Vector3(0, 2f, 0);
 		
 		RotateMouse(delta);
 		

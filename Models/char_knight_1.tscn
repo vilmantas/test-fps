@@ -4,7 +4,7 @@
 [ext_resource type="Animation" uid="uid://cswf2etkamgl1" path="res://Animations/Idle.res" id="2_5slbl"]
 [ext_resource type="Texture2D" uid="uid://bnjkfclrvwbvi" path="res://Imports/char_male_jacket/male_jacket_PolygonCity_Texture_01_C.png" id="2_prjcb"]
 [ext_resource type="Texture2D" uid="uid://os53v0jnsgd5" path="res://Imports/char_sporty_male/sporty_male_PolygonBattleRoyale_Texture_01_A.jpg" id="3_5hgof"]
-[ext_resource type="Skin" uid="uid://d2d6a6dbc5eke" path="res://Assets/character_skin.tres" id="3_ayiqi"]
+[ext_resource type="Skin" path="res://Assets/character_skin.tres" id="3_ayiqi"]
 [ext_resource type="Animation" uid="uid://hpb5s7expgss" path="res://Animations/Fast Run.res" id="3_xtt20"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3cvuq"]

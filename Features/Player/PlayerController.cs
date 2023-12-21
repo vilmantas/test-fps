@@ -24,12 +24,34 @@ public partial class PlayerController : CharacterBody3D
 	public CharacterController Character;
 
 	public AnimationPlayer AnimationPlayer;
+
+	private bool JumpQueued = false;
+
+	private float JumpPower = 10f;
+	
+	private float CurrentJumpPower = 0f;
+
+	[Export] private float JumpHeight = 200f;
+	[Export] private float JumpTimeToPeak = 2f;
+	[Export] private float JumpTimeToDescend = 2f;
+	
+	private float JumpVelocity = 0f;
+	private float JumpGravity = 0f;
+	private float FallGravity = 0f;
 	
 	public override void _Ready()
 	{
+		JumpVelocity = 2 * JumpHeight / JumpTimeToPeak;
+		JumpGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToPeak, 2);
+		FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
+        
 		Character = GetNode<CharacterController>("character");
 		
 		Character.SetModel(PlayerModel);
+		
+		PlayerInputManager.Instance.OnJumpPressed += OnJumpPressed;
+		
+		
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -72,11 +94,32 @@ public partial class PlayerController : CharacterBody3D
 		{
 			Character.PlayAnimation("Idle");
 		}
+
+		velocity.Y = Velocity.Y;
 		
-		velocity.Y -= 98f * (float)delta;
+		velocity.Y += GetGravity() * (float)delta;
+
+		if (JumpQueued)
+		{
+			JumpQueued = false;
+			velocity.Y = JumpVelocity;
+		}
+        
+		velocity.X *= speed;
+		velocity.Z *= speed;
 		
-		Velocity = velocity * speed;
-		
+		Velocity = velocity;
+        
 		MoveAndSlide();
+	}
+
+	private float GetGravity()
+	{
+		return Velocity.Y > 0 ? JumpGravity : FallGravity;
+	}
+    
+	private void OnJumpPressed()
+	{
+		JumpQueued = true;
 	}
 }

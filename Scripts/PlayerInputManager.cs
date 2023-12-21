@@ -13,6 +13,8 @@ public partial class PlayerInputManager : Node
     public const string move_forward = "player_move_forward";
     public const string move_backward = "player_move_backward";
     
+    public const string jump = "player_jump";
+    
     public (int Horizontal, int Vertical) MovementInput = new (0, 0);
     
     public bool MovementInputEngaged => MovementInput.Horizontal != 0 || MovementInput.Vertical != 0;
@@ -20,6 +22,8 @@ public partial class PlayerInputManager : Node
     public bool RotationEnabled = false;
     
     public Action<bool> OnRotationEnabled;
+    
+    public Action OnJumpPressed;
     
     public override void _Ready()
     {
@@ -79,6 +83,11 @@ public partial class PlayerInputManager : Node
         if (Input.IsActionJustReleased("player_camera_rotate"))
         {
             DisableRotation();
+        }
+        
+        if (Input.IsActionJustPressed(jump))
+        {
+            OnJumpPressed?.Invoke();
         }
     }
     
