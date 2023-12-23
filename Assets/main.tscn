@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://bf5savv56mx5x"]
+[gd_scene load_steps=20 format=3 uid="uid://bf5savv56mx5x"]
 
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
 [ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
@@ -7,6 +7,7 @@
 [ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="4_6m8ne"]
 [ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
 [ext_resource type="Script" path="res://DebugScripts/UI/PlayerPositionDebug.cs" id="6_qbnei"]
+[ext_resource type="Script" path="res://DebugScripts/Node/PlayerGroundDistanceDebug.cs" id="7_3mrxm"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v72as"]
 
@@ -18,7 +19,7 @@ background_mode = 2
 sky = SubResource("Sky_y5bj8")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_csh3n"]
-size = Vector3(65.815, 0.01, 65.69)
+size = Vector3(65.815, 0.001, 65.69)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_b6io6"]
 
@@ -42,6 +43,7 @@ script = ExtResource("1_bk11s")
 
 [node name="player" parent="." instance=ExtResource("1_tstet")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0856779, 0)
+collision_layer = 3
 PlayerModel = ExtResource("4_6m8ne")
 JumpHeight = 5.0
 JumpTimeToPeak = 0.7
@@ -52,6 +54,7 @@ environment = SubResource("Environment_yr1yl")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.350502, 0.53463, -0.768973, 0, 0.82106, 0.570843, 0.936562, -0.200081, 0.287783, -2.48021, 4.61833, 1.69351)
+shadow_enabled = true
 
 [node name="ui" type="Node2D" parent="."]
 
@@ -76,13 +79,20 @@ custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 script = ExtResource("6_qbnei")
 
+[node name="distance" type="Label" parent="ui/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+script = ExtResource("7_3mrxm")
+
 [node name="camera" parent="." instance=ExtResource("6_ksqkm")]
 
 [node name="ground" type="Node3D" parent="."]
 
 [node name="plane" type="StaticBody3D" parent="ground"]
+collision_layer = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ground/plane"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0045, 0)
 shape = SubResource("BoxShape3D_csh3n")
 
 [node name="plane" type="MeshInstance3D" parent="ground/plane/CollisionShape3D"]

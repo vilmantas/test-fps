@@ -38,6 +38,10 @@ public partial class PlayerController : CharacterBody3D
 	private float JumpVelocity = 0f;
 	private float JumpGravity = 0f;
 	private float FallGravity = 0f;
+
+	public RayCast3D GroundDistanceRay;
+
+	public CollisionShape3D Hitbox;
 	
 	public override void _Ready()
 	{
@@ -46,12 +50,16 @@ public partial class PlayerController : CharacterBody3D
 		FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
         
 		Character = GetNode<CharacterController>("character");
+
+		GroundDistanceRay = GetNode<RayCast3D>("ground_distance_ray");
+
+		Hitbox = GetNode<CollisionShape3D>("core_hitbox");
 		
 		Character.SetModel(PlayerModel);
 		
 		PlayerInputManager.Instance.OnJumpPressed += OnJumpPressed;
-		
-		
+
+		PlayerInputManager.Instance.OnRotationEnabled += OnRotationEnabled;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -60,14 +68,16 @@ public partial class PlayerController : CharacterBody3D
 
 		velocity = Vector3.Zero;
 		
+		horizontalModifier = PlayerInputManager.Instance.MovementInput.Horizontal;
+		
+		verticalModifier = PlayerInputManager.Instance.MovementInput.Vertical;
+        
 		if (PlayerInputManager.Instance.MovementInputEngaged)
 		{
-			horizontalModifier = PlayerInputManager.Instance.MovementInput.Horizontal;
-		
-			verticalModifier = PlayerInputManager.Instance.MovementInput.Vertical;
-		
 			velocity = cameraBasis.Z * verticalModifier;
 			velocity += cameraBasis.X * horizontalModifier;
+
+			velocity = velocity.Normalized();
 			
 			float angle;
 			
@@ -87,12 +97,6 @@ public partial class PlayerController : CharacterBody3D
 			newRot.Y = (float)Mathf.LerpAngle(newRot.Y, angle - Math.PI, delta * lookSpeed);
 		
 			Character.Rotation = newRot;
-			
-			Character.PlayAnimation("Running");
-		}
-		else
-		{
-			Character.PlayAnimation("Idle");
 		}
 
 		velocity.Y = Velocity.Y;
@@ -102,6 +106,7 @@ public partial class PlayerController : CharacterBody3D
 		if (JumpQueued)
 		{
 			JumpQueued = false;
+			Character.TriggerJump();
 			velocity.Y = JumpVelocity;
 		}
         
@@ -110,10 +115,12 @@ public partial class PlayerController : CharacterBody3D
 		
 		Velocity = velocity;
         
+		SetAnimationData();
+		
 		MoveAndSlide();
 	}
 
-	private float GetGravity()
+	public float GetGravity()
 	{
 		return Velocity.Y > 0 ? JumpGravity : FallGravity;
 	}
@@ -121,5 +128,38 @@ public partial class PlayerController : CharacterBody3D
 	private void OnJumpPressed()
 	{
 		JumpQueued = true;
+	}
+
+	private void SetAnimationData()
+	{
+		Character.SetMovementInput(new Vector2(horizontalModifier, verticalModifier));
+
+		var groundDistance = 5f;
+
+		if (GroundDistanceRay.IsColliding())
+		{
+			groundDistance = GlobalPosition.DistanceTo(GroundDistanceRay.GetCollisionPoint());
+		}
+		
+		Character.SetFloorDistance(groundDistance, GetGravity());
+        
+		SelectAnimation();
+	}
+
+	private void SelectAnimation()
+	{
+		if (!PlayerInputManager.Instance.MovementInputEngaged)
+		{
+			Character.SetPlayerAnimation("Idle");
+		}
+		else
+		{
+			Character.SetPlayerAnimation("Running");
+		}
+	}
+
+	private void OnRotationEnabled(bool flag)
+	{
+		Character.SetAimingState(flag);
 	}
 }

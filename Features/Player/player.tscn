@@ -6,7 +6,7 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
 radius = 0.251076
-height = 1.84514
+height = 1.65717
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_3nu1d")
@@ -15,5 +15,9 @@ PlayerModel = ExtResource("2_uibfj")
 [node name="character" parent="." instance=ExtResource("1_ixuhh")]
 
 [node name="core_hitbox" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.897977, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.834642, 0)
 shape = SubResource("CapsuleShape3D_c3us5")
+
+[node name="ground_distance_ray" type="RayCast3D" parent="."]
+target_position = Vector3(0, -5, 0)
+collision_mask = 3

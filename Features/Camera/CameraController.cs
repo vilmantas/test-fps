@@ -26,8 +26,8 @@ public partial class CameraController : Node3D
 	public override void _Process(double delta)
 	{
 		var player = GameManager.PlayerController;
-		
-		Position = player.Position + new Vector3(0, 2f, 0);
+
+		Position = player.Hitbox.GlobalPosition + player.Hitbox.Position;
 		
 		RotateMouse(delta);
 		
