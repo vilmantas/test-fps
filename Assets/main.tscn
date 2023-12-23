@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://bf5savv56mx5x"]
+[gd_scene load_steps=21 format=3 uid="uid://bf5savv56mx5x"]
 
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
 [ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
 [ext_resource type="Script" path="res://DebugScripts/UI/PlayerPositionDebug.cs" id="6_qbnei"]
 [ext_resource type="Script" path="res://DebugScripts/Node/PlayerGroundDistanceDebug.cs" id="7_3mrxm"]
+[ext_resource type="Texture2D" uid="uid://dc3tv7slwyjs4" path="res://Imports/prototype_textures/Light/texture_07.png" id="9_d7n77"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v72as"]
 
@@ -22,10 +23,13 @@ sky = SubResource("Sky_y5bj8")
 size = Vector3(65.815, 0.001, 65.69)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_b6io6"]
+size = Vector2(10, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3afgb"]
-albedo_color = Color(0, 0.313726, 0, 1)
+albedo_texture = ExtResource("9_d7n77")
 metallic_specular = 0.0
+uv1_triplanar = true
+texture_filter = 0
 
 [sub_resource type="BoxMesh" id="BoxMesh_31i71"]
 
@@ -42,7 +46,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0083313, 0, -0.0205119)
 script = ExtResource("1_bk11s")
 
 [node name="player" parent="." instance=ExtResource("1_tstet")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0856779, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.053287, 0)
 collision_layer = 3
 PlayerModel = ExtResource("4_6m8ne")
 JumpHeight = 5.0
