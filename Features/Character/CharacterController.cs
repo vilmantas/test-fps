@@ -7,12 +7,20 @@ public partial class CharacterController : Node3D
 	private MeshInstance3D m_CharacterMesh;
 
 	private AnimationTree m_AnimationTree;
+
+	public Skeleton3D m_Skeleton3D;
+
+	public Node3D SlotLeftArm;
 	
 	public override void _Ready()
 	{
 		m_AnimationTree = GetNode<AnimationTree>("AnimationTree");
 		
+		m_Skeleton3D = GetNode<Skeleton3D>("Armature/Skeleton3D");
+		
 		m_CharacterMesh = GetNode<MeshInstance3D>("Armature/Skeleton3D/mesh");
+
+		SlotLeftArm = m_Skeleton3D.FindChild("slot_left_arm") as Node3D;
 	}
 
 	public void SetPlayerAnimation(string animation)

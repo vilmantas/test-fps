@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://bf5savv56mx5x"]
+[gd_scene load_steps=26 format=3 uid="uid://bf5savv56mx5x"]
 
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
 [ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
@@ -8,7 +8,12 @@
 [ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
 [ext_resource type="Script" path="res://DebugScripts/UI/PlayerPositionDebug.cs" id="6_qbnei"]
 [ext_resource type="Script" path="res://DebugScripts/Node/PlayerGroundDistanceDebug.cs" id="7_3mrxm"]
+[ext_resource type="Script" path="res://DebugScripts/UI/BonesDebug.cs" id="8_4fafd"]
 [ext_resource type="Texture2D" uid="uid://dc3tv7slwyjs4" path="res://Imports/prototype_textures/Light/texture_07.png" id="9_d7n77"]
+[ext_resource type="PackedScene" uid="uid://bv62qrbvo4nw" path="res://Assets/test_item.tscn" id="11_pqqip"]
+[ext_resource type="PackedScene" uid="uid://bwdo45kmauhhp" path="res://Assets/cube.tscn" id="12_vxpea"]
+[ext_resource type="Texture2D" uid="uid://dqaojpvos6vsf" path="res://Imports/prototype_textures/Green/texture_13.png" id="13_ar1fk"]
+[ext_resource type="Script" path="res://DebugScripts/Node/PlayerAttackDebug.cs" id="13_ffadi"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v72as"]
 
@@ -18,6 +23,10 @@ sky_material = SubResource("ProceduralSkyMaterial_v72as")
 [sub_resource type="Environment" id="Environment_yr1yl"]
 background_mode = 2
 sky = SubResource("Sky_y5bj8")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e5aju"]
+albedo_texture = ExtResource("13_ar1fk")
+uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_csh3n"]
 size = Vector3(65.815, 0.001, 65.69)
@@ -33,15 +42,13 @@ texture_filter = 0
 
 [sub_resource type="BoxMesh" id="BoxMesh_31i71"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_ipif0"]
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_f124f"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_q0hrp"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4021c"]
 
-[node name="Node3D" type="Node3D"]
+[node name="main" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0083313, 0, -0.0205119)
 script = ExtResource("1_bk11s")
 
@@ -61,6 +68,7 @@ transform = Transform3D(0.350502, 0.53463, -0.768973, 0, 0.82106, 0.570843, 0.93
 shadow_enabled = true
 
 [node name="ui" type="Node2D" parent="."]
+position = Vector2(1, 0)
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ui"]
 offset_right = 40.0
@@ -88,7 +96,19 @@ custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 script = ExtResource("7_3mrxm")
 
+[node name="bones" type="Label" parent="ui/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+script = ExtResource("8_4fafd")
+ItemPrefab = ExtResource("11_pqqip")
+
 [node name="camera" parent="." instance=ExtResource("6_ksqkm")]
+
+[node name="Cube" parent="." instance=ExtResource("12_vxpea")]
+transform = Transform3D(0.702843, 0.598414, 0.793109, -0.396888, 1.05972, -0.44786, -0.910824, 0, 0.807161, -3.87939, 1.06374, -0.829152)
+skeleton = NodePath("../ground")
+surface_material_override/0 = SubResource("StandardMaterial3D_e5aju")
+script = ExtResource("13_ffadi")
 
 [node name="ground" type="Node3D" parent="."]
 
@@ -104,16 +124,6 @@ transform = Transform3D(33.2273, 0, 0, 0, 33.2273, 0, 0, 0, 33.2273, 0, 0, 0)
 mesh = SubResource("PlaneMesh_b6io6")
 skeleton = NodePath("../../../..")
 surface_material_override/0 = SubResource("StandardMaterial3D_3afgb")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ground"]
-transform = Transform3D(0.577517, 0.491709, 0.651687, -0.326118, 0.870759, -0.368001, -0.748412, 0, 0.663234, -7.72547, 0, -8.74016)
-mesh = SubResource("BoxMesh_31i71")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="ground/MeshInstance3D"]
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ground/MeshInstance3D/StaticBody3D"]
-transform = Transform3D(1, -6.33492e-09, 6.14383e-07, 1.79216e-08, 1, -9.13819e-10, -1.18446e-08, 1.51306e-07, 1, 0, 0, 0)
-shape = SubResource("BoxShape3D_ipif0")
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="ground"]
 transform = Transform3D(0.404593, -0.223262, -0.886825, -0.326119, 0.870759, -0.368001, 0.854372, 0.438101, 0.279493, 4.01648, -4.76837e-07, -6.9273)

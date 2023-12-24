@@ -1,0 +1,33 @@
+[gd_scene load_steps=3 format=3 uid="uid://bv62qrbvo4nw"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_uhmio"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_vb03g"]
+
+[node name="test" type="MeshInstance3D"]
+transform = Transform3D(0.16, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 2.08165e-12, 2.08165e-12, 2.08165e-12)
+mesh = SubResource("CapsuleMesh_uhmio")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10246, 0)
+mesh = SubResource("CapsuleMesh_vb03g")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.21643, 0)
+mesh = SubResource("CapsuleMesh_vb03g")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.78525, 0)
+mesh = SubResource("CapsuleMesh_vb03g")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.33482, 0)
+mesh = SubResource("CapsuleMesh_vb03g")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60368, 0)
+mesh = SubResource("CapsuleMesh_vb03g")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60368, 0)
+mesh = SubResource("CapsuleMesh_vb03g")

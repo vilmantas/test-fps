@@ -42,6 +42,10 @@ public partial class PlayerController : CharacterBody3D
 	public RayCast3D GroundDistanceRay;
 
 	public CollisionShape3D Hitbox;
+
+	[Export] public PackedScene AttackHitbox;
+
+	public Node3D AttackHitboxSpawn;
 	
 	public override void _Ready()
 	{
@@ -60,6 +64,8 @@ public partial class PlayerController : CharacterBody3D
 		PlayerInputManager.Instance.OnJumpPressed += OnJumpPressed;
 
 		PlayerInputManager.Instance.OnRotationEnabled += OnRotationEnabled;
+
+		AttackHitboxSpawn = GetNode<Node3D>("spawn_attack_hitbox");
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -132,7 +138,7 @@ public partial class PlayerController : CharacterBody3D
 
 	private void SetAnimationData()
 	{
-		Character.SetMovementInput(new Vector2(horizontalModifier, verticalModifier));
+		Character.SetMovementInput(new Vector2(Velocity.X, Velocity.Z));
 
 		var groundDistance = 5f;
 
