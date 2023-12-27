@@ -98,11 +98,11 @@ public partial class PlayerController : CharacterBody3D
 				angle = new Vector2(velocity.Z, velocity.X).Angle();	
 			}
 
-			var newRot = Character.Rotation;
+			var newRot = Rotation;
 		
 			newRot.Y = (float)Mathf.LerpAngle(newRot.Y, angle - Math.PI, delta * lookSpeed);
 		
-			Character.Rotation = newRot;
+			Rotation = newRot;
 		}
 
 		velocity.Y = Velocity.Y;
