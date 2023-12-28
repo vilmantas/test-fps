@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 
 [autoload]
 
+MultiplayerManager="*res://Scripts/MultiplayerManager.cs"
 GameManager="*res://Scripts/GameManager.cs"
 PlayerInputManager="*res://Scripts/PlayerInputManager.cs"
 
