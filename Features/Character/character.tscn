@@ -535,6 +535,7 @@ input_1/reset = true
 animation = &"Fast Run"
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_lldih"]
+graph_offset = Vector2(-36.7248, 282.576)
 nodes/AimingBlend/node = SubResource("AnimationNodeTransition_f0xop")
 nodes/AimingBlend/position = Vector2(1000, 400)
 nodes/AimingRun/node = SubResource("AnimationNodeBlendSpace2D_nc4rx")
@@ -909,7 +910,7 @@ mesh = ExtResource("2_vm8xk")
 skin = ExtResource("3_o7gns")
 
 [node name="bone_left_thumb" type="BoneAttachment3D" parent="Armature/Skeleton3D"]
-transform = Transform3D(0.18892, -0.378032, -0.906312, -0.857705, 0.385893, -0.339748, 0.478174, 0.841534, -0.251337, 25.7177, 5.05887, -77.8321)
+transform = Transform3D(0.188918, -0.378032, -0.906312, -0.857706, 0.385893, -0.339746, 0.478175, 0.841533, -0.251338, 25.7176, 5.05886, -77.8322)
 bone_name = "LeftHandThumb1"
 bone_idx = 11
 

@@ -1,7 +1,7 @@
 using Godot;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
+using Godot.Collections;
 
 public partial class GameManager : Node
 {

@@ -50,18 +50,22 @@ public partial class MultiplayerManager : Node
 
     private void OnPeerConnected(long id)
     {
-        Debug.Print($"Connected to peer {id}");
-        Debug.Print($"{Multiplayer.IsServer()}:{Multiplayer.GetUniqueId()}");
+        if (!Multiplayer.IsServer()) return;
         
-        GameManager.Instance.OnPlayerConnected(id, $"Player {id}");
+        var name = $"Player {GameManager.ConnectedPlayers.Count + 1}";
+         
+        Rpc("AnnounceNewPlayer", id, name);
     }
 
     private void OnConnectedToServer()
     {
-        Debug.Print("Connected to server");
-        Debug.Print($"{Multiplayer.IsServer()}:{Multiplayer.GetUniqueId()}");
-        
-        GameManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), "Player 1");
-        GameManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), $"Player {Multiplayer.GetUniqueId()}");
+        Debug.Print($"Player {Multiplayer.GetUniqueId()} connected to server.");
+        ClientManager.Instance.OnJoin(Multiplayer.GetUniqueId());
+    }
+
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void AnnounceNewPlayer(long id, string name)
+    {
+        GameManager.Instance.OnPlayerConnected(id, name);
     }
 }

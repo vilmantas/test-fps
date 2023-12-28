@@ -17,9 +17,11 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-MultiplayerManager="*res://Scripts/MultiplayerManager.cs"
 GameManager="*res://Scripts/GameManager.cs"
 PlayerInputManager="*res://Scripts/PlayerInputManager.cs"
+MultiplayerManager="*res://Scripts/MultiplayerManager.cs"
+ClientManager="*res://Scripts/ClientManager.cs"
+GameServerManager="*res://Scripts/GameServerManager.cs"
 
 [dotnet]
 

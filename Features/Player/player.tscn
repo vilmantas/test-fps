@@ -1,9 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2dvfml0wryba"]
+[gd_scene load_steps=6 format=3 uid="uid://d2dvfml0wryba"]
 
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
 [ext_resource type="ArrayMesh" uid="uid://b111tbrgf4mfe" path="res://Imports/meshes/sporty_male.res" id="2_uibfj"]
-[ext_resource type="PackedScene" uid="uid://bjubddriwemtb" path="res://Assets/hitbox.tscn" id="3_yokdd"]
 [ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="4_sa7vv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
@@ -13,7 +12,6 @@ height = 1.65717
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_3nu1d")
 PlayerModel = ExtResource("2_uibfj")
-AttackHitbox = ExtResource("3_yokdd")
 
 [node name="character" parent="." instance=ExtResource("1_ixuhh")]
 

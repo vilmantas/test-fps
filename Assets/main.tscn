@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://bf5savv56mx5x"]
+[gd_scene load_steps=27 format=3 uid="uid://bf5savv56mx5x"]
 
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
 [ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
@@ -10,8 +10,9 @@
 [ext_resource type="Script" path="res://DebugScripts/Node/PlayerGroundDistanceDebug.cs" id="7_3mrxm"]
 [ext_resource type="Script" path="res://DebugScripts/UI/BonesDebug.cs" id="8_4fafd"]
 [ext_resource type="Texture2D" uid="uid://dc3tv7slwyjs4" path="res://Imports/prototype_textures/Light/texture_07.png" id="9_d7n77"]
-[ext_resource type="PackedScene" uid="uid://bv62qrbvo4nw" path="res://Assets/test_item.tscn" id="11_pqqip"]
-[ext_resource type="PackedScene" uid="uid://bwdo45kmauhhp" path="res://Assets/cube.tscn" id="12_vxpea"]
+[ext_resource type="Script" path="res://DebugScripts/UI/PlayersDebug.cs" id="10_mua2l"]
+[ext_resource type="PackedScene" path="res://Assets/test_item.tscn" id="11_pqqip"]
+[ext_resource type="PackedScene" path="res://Assets/cube.tscn" id="12_vxpea"]
 [ext_resource type="Texture2D" uid="uid://dqaojpvos6vsf" path="res://Imports/prototype_textures/Green/texture_13.png" id="13_ar1fk"]
 [ext_resource type="Script" path="res://DebugScripts/Node/PlayerAttackDebug.cs" id="13_ffadi"]
 
@@ -59,6 +60,7 @@ PlayerModel = ExtResource("4_6m8ne")
 JumpHeight = 5.0
 JumpTimeToPeak = 0.7
 JumpTimeToDescend = 0.6
+AttackHitbox = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_yr1yl")
@@ -101,6 +103,11 @@ custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
 script = ExtResource("8_4fafd")
 ItemPrefab = ExtResource("11_pqqip")
+
+[node name="players" type="Label" parent="ui/VBoxContainer"]
+custom_minimum_size = Vector2(200, 50)
+layout_mode = 2
+script = ExtResource("10_mua2l")
 
 [node name="host" type="Button" parent="ui"]
 offset_left = 323.0
