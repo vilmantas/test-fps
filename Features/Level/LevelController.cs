@@ -18,6 +18,6 @@ public partial class LevelController : Node
 	
 	public void _on_host_pressed()
 	{
-		MultiplayerManager.Instance.StartHost();
+		MultiplayerManager.Instance.StartHost(GameManager.PlayerName);
 	}
 }

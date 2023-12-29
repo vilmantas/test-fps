@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using Godot;
 using Godot.Collections;
@@ -7,6 +8,11 @@ namespace testfps.Scripts;
 public partial class ClientManager : Node
 {
     public static ClientManager Instance;
+
+    private long ClientId;
+    
+    public Action OnJoined;
+        
     
     public override void _Ready()
     {
@@ -15,23 +21,16 @@ public partial class ClientManager : Node
 
     public void OnJoin(long id)
     {
-        Debug.Print("Requesting Players");
-        Rpc("GetConnectedPlayers", id);
+        ClientId = id;
+        
+        GameServerManager.Instance.RequestConnectedPlayers(id);
+        
+        OnJoined?.Invoke();
     }
     
-        
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    public void GetConnectedPlayers(long id)
-    {
-        Debug.Print($"Player {id} is requesting players list");
-        Debug.Print(Multiplayer.IsServer().ToString());
-        
-        RpcId(id, "SetConnectedPlayers", GameManager.ConnectedPlayers);
-    }
-    
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     public void SetConnectedPlayers(Dictionary<long, string> players)
     {
-        GameManager.ConnectedPlayers = players;
+        Debug.Print(players.Keys.ToString());
+        GameManager.Instance.SetConnectedPlayers(players);
     }
 }

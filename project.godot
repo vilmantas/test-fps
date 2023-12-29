@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="test-fps"
-run/main_scene="res://Assets/main.tscn"
+run/main_scene="res://Scenes/menu.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
@@ -31,9 +31,13 @@ project/assembly_name="test-fps"
 
 folder_colors={
 "res://Animations/": "green",
-"res://DebugScripts/": "blue",
+"res://Assets/": "green",
+"res://DebugScripts/": "gray",
+"res://Features/": "yellow",
 "res://Imports/": "red",
-"res://Models/": "green"
+"res://Models/": "green",
+"res://Scenes/": "pink",
+"res://Scripts/": "yellow"
 }
 
 [input]

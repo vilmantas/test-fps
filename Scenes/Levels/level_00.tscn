@@ -1,20 +1,20 @@
 [gd_scene load_steps=27 format=3 uid="uid://bf5savv56mx5x"]
 
-[ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_bk11s"]
-[ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="1_tstet"]
-[ext_resource type="Script" path="res://DebugScripts/UI/PlayerVelocityDebug.cs" id="2_hgurd"]
-[ext_resource type="Script" path="res://DebugScripts/UI/CameraForwardDebug.cs" id="3_i3018"]
-[ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="4_6m8ne"]
-[ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="6_ksqkm"]
-[ext_resource type="Script" path="res://DebugScripts/UI/PlayerPositionDebug.cs" id="6_qbnei"]
-[ext_resource type="Script" path="res://DebugScripts/Node/PlayerGroundDistanceDebug.cs" id="7_3mrxm"]
-[ext_resource type="Script" path="res://DebugScripts/UI/BonesDebug.cs" id="8_4fafd"]
-[ext_resource type="Texture2D" uid="uid://dc3tv7slwyjs4" path="res://Imports/prototype_textures/Light/texture_07.png" id="9_d7n77"]
-[ext_resource type="Script" path="res://DebugScripts/UI/PlayersDebug.cs" id="10_mua2l"]
-[ext_resource type="PackedScene" path="res://Assets/test_item.tscn" id="11_pqqip"]
-[ext_resource type="PackedScene" path="res://Assets/cube.tscn" id="12_vxpea"]
-[ext_resource type="Texture2D" uid="uid://dqaojpvos6vsf" path="res://Imports/prototype_textures/Green/texture_13.png" id="13_ar1fk"]
-[ext_resource type="Script" path="res://DebugScripts/Node/PlayerAttackDebug.cs" id="13_ffadi"]
+[ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_71gf2"]
+[ext_resource type="PackedScene" uid="uid://d2dvfml0wryba" path="res://Features/Player/player.tscn" id="2_buass"]
+[ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="3_fim07"]
+[ext_resource type="Script" path="res://DebugScripts/UI/CameraForwardDebug.cs" id="4_b8cof"]
+[ext_resource type="Script" path="res://DebugScripts/UI/PlayerVelocityDebug.cs" id="5_40o3j"]
+[ext_resource type="Script" path="res://DebugScripts/UI/PlayerPositionDebug.cs" id="6_bw17o"]
+[ext_resource type="Script" path="res://DebugScripts/Node/PlayerGroundDistanceDebug.cs" id="7_esg0e"]
+[ext_resource type="Script" path="res://DebugScripts/UI/BonesDebug.cs" id="8_qti41"]
+[ext_resource type="PackedScene" uid="uid://bv62qrbvo4nw" path="res://Assets/test_item.tscn" id="9_ux53v"]
+[ext_resource type="Script" path="res://DebugScripts/UI/PlayersDebug.cs" id="10_bkst4"]
+[ext_resource type="PackedScene" uid="uid://dnvxt0o8iq6aw" path="res://Features/Camera/camera.tscn" id="11_65udi"]
+[ext_resource type="PackedScene" uid="uid://bwdo45kmauhhp" path="res://Assets/cube.tscn" id="12_6dypj"]
+[ext_resource type="Texture2D" uid="uid://dqaojpvos6vsf" path="res://Imports/prototype_textures/Green/texture_13.png" id="13_ur8v2"]
+[ext_resource type="Script" path="res://DebugScripts/Node/PlayerAttackDebug.cs" id="14_tdx7w"]
+[ext_resource type="Texture2D" uid="uid://dc3tv7slwyjs4" path="res://Imports/prototype_textures/Light/texture_07.png" id="15_kllrd"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_v72as"]
 
@@ -26,7 +26,7 @@ background_mode = 2
 sky = SubResource("Sky_y5bj8")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_e5aju"]
-albedo_texture = ExtResource("13_ar1fk")
+albedo_texture = ExtResource("13_ur8v2")
 uv1_triplanar = true
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_csh3n"]
@@ -36,7 +36,7 @@ size = Vector3(65.815, 0.001, 65.69)
 size = Vector2(10, 10)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3afgb"]
-albedo_texture = ExtResource("9_d7n77")
+albedo_texture = ExtResource("15_kllrd")
 metallic_specular = 0.0
 uv1_triplanar = true
 texture_filter = 0
@@ -49,18 +49,17 @@ texture_filter = 0
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_4021c"]
 
-[node name="main" type="Node3D"]
+[node name="level_00" type="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0083313, 0, -0.0205119)
-script = ExtResource("1_bk11s")
+script = ExtResource("1_71gf2")
 
-[node name="player" parent="." instance=ExtResource("1_tstet")]
+[node name="player" parent="." instance=ExtResource("2_buass")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.053287, 0)
 collision_layer = 3
-PlayerModel = ExtResource("4_6m8ne")
+PlayerModel = ExtResource("3_fim07")
 JumpHeight = 5.0
 JumpTimeToPeak = 0.7
 JumpTimeToDescend = 0.6
-AttackHitbox = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_yr1yl")
@@ -81,33 +80,33 @@ size_flags_vertical = 3
 [node name="camera_forward" type="Label" parent="ui/VBoxContainer"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-script = ExtResource("3_i3018")
+script = ExtResource("4_b8cof")
 
 [node name="velocity" type="Label" parent="ui/VBoxContainer"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-script = ExtResource("2_hgurd")
+script = ExtResource("5_40o3j")
 
 [node name="position" type="Label" parent="ui/VBoxContainer"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-script = ExtResource("6_qbnei")
+script = ExtResource("6_bw17o")
 
 [node name="distance" type="Label" parent="ui/VBoxContainer"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-script = ExtResource("7_3mrxm")
+script = ExtResource("7_esg0e")
 
 [node name="bones" type="Label" parent="ui/VBoxContainer"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-script = ExtResource("8_4fafd")
-ItemPrefab = ExtResource("11_pqqip")
+script = ExtResource("8_qti41")
+ItemPrefab = ExtResource("9_ux53v")
 
 [node name="players" type="Label" parent="ui/VBoxContainer"]
 custom_minimum_size = Vector2(200, 50)
 layout_mode = 2
-script = ExtResource("10_mua2l")
+script = ExtResource("10_bkst4")
 
 [node name="host" type="Button" parent="ui"]
 offset_left = 323.0
@@ -124,13 +123,13 @@ offset_bottom = 32.0
 text = "JOIN
 "
 
-[node name="camera" parent="." instance=ExtResource("6_ksqkm")]
+[node name="camera" parent="." instance=ExtResource("11_65udi")]
 
-[node name="Cube" parent="." instance=ExtResource("12_vxpea")]
+[node name="Cube" parent="." instance=ExtResource("12_6dypj")]
 transform = Transform3D(0.702843, 0.598414, 0.793109, -0.396888, 1.05972, -0.44786, -0.910824, 0, 0.807161, -3.87939, 1.06374, -0.829152)
 skeleton = NodePath("../ground")
 surface_material_override/0 = SubResource("StandardMaterial3D_e5aju")
-script = ExtResource("13_ffadi")
+script = ExtResource("14_tdx7w")
 
 [node name="ground" type="Node3D" parent="."]
 

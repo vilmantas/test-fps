@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://cr8fg016nxf4v"]
+
+[ext_resource type="Script" path="res://Features/Lobby/LobbyController.cs" id="1_8t1y1"]
+[ext_resource type="PackedScene" uid="uid://horvsyl52tp3" path="res://Features/Lobby/pref_player_lobby.tscn" id="2_7bl73"]
+
+[node name="lobby" type="Node2D"]
+script = ExtResource("1_8t1y1")
+PlayerPrefab = ExtResource("2_7bl73")
+
+[node name="label_player_name" type="Label" parent="."]
+offset_right = 57.0
+offset_bottom = 23.0
+text = "Players"
+
+[node name="container_players" type="VFlowContainer" parent="."]
+custom_minimum_size = Vector2(200, 500)
+offset_left = 6.0
+offset_top = 45.0
+offset_right = 6.0
+offset_bottom = 45.0

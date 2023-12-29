@@ -20,19 +20,20 @@ public partial class MultiplayerManager : Node
         Multiplayer.ConnectionFailed += OnConnectionFailed;
     }
 
-    public void StartHost()
+    public void StartHost(string name)
     {
         var peer = new ENetMultiplayerPeer();
         peer.CreateServer(DEFAULT_PORT, 4);
 
         Multiplayer.MultiplayerPeer = peer;
         
-        GameManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), "Player 1");
+        GameManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), name);
     }
 
     public void ConnectToHost()
     {
         var peer = new ENetMultiplayerPeer();
+        
         peer.CreateClient(DEFAULT_IP, DEFAULT_PORT);
 
         Multiplayer.MultiplayerPeer = peer;
@@ -59,7 +60,6 @@ public partial class MultiplayerManager : Node
 
     private void OnConnectedToServer()
     {
-        Debug.Print($"Player {Multiplayer.GetUniqueId()} connected to server.");
         ClientManager.Instance.OnJoin(Multiplayer.GetUniqueId());
     }
 

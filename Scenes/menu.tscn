@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://bfq4osmgc4qcv"]
+
+[ext_resource type="Script" path="res://Features/Menu/MenuController.cs" id="1_uja63"]
+[ext_resource type="PackedScene" uid="uid://cr8fg016nxf4v" path="res://Scenes/lobby.tscn" id="2_6vkor"]
+
+[node name="menu" type="Node2D"]
+script = ExtResource("1_uja63")
+LobbyScene = ExtResource("2_6vkor")
+
+[node name="host" type="Button" parent="."]
+offset_left = 8.0
+offset_top = 10.0
+offset_right = 160.0
+offset_bottom = 41.0
+text = "Host"
+
+[node name="join" type="Button" parent="."]
+offset_left = 202.0
+offset_top = 11.0
+offset_right = 363.0
+offset_bottom = 42.0
+text = "Join"
+
+[node name="button_name" type="Button" parent="."]
+offset_left = 290.0
+offset_top = 87.0
+offset_right = 366.0
+offset_bottom = 118.0
+text = "Set"
+
+[node name="label_name" type="Label" parent="."]
+offset_left = 2.0
+offset_top = 91.0
+offset_right = 42.0
+offset_bottom = 114.0
+text = "Name:"
+
+[node name="line_name" type="LineEdit" parent="."]
+offset_left = 74.0
+offset_top = 88.0
+offset_right = 278.0
+offset_bottom = 119.0

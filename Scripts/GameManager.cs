@@ -12,10 +12,17 @@ public partial class GameManager : Node
 	public static CameraController CameraController;
 
 	public static Dictionary<long, string> ConnectedPlayers = new();
+
+	public static string PlayerName = "Player";
     
 	public override void _Ready()
 	{
 		Instance = this;
+	}
+	
+	public void SetConnectedPlayers(Dictionary<long, string> players)
+	{
+		ConnectedPlayers = players;
 	}
 	
 	public void OnPlayerConnected(long id, string name)
@@ -27,5 +34,10 @@ public partial class GameManager : Node
 	{
 		PlayerController = level.GetNode<PlayerController>("player");
 		CameraController = level.GetNode<CameraController>("camera");
+	}
+	
+	public void SetPlayerName(string name)
+	{
+		PlayerName = name;
 	}
 }
