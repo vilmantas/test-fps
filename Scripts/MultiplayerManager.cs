@@ -26,8 +26,10 @@ public partial class MultiplayerManager : Node
         peer.CreateServer(DEFAULT_PORT, 4);
 
         Multiplayer.MultiplayerPeer = peer;
+
+        ClientManager.Instance.ClientId = Multiplayer.GetUniqueId();
         
-        GameManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), name);
+        GameServerManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), name);
     }
 
     public void ConnectToHost()
@@ -53,19 +55,13 @@ public partial class MultiplayerManager : Node
     {
         if (!Multiplayer.IsServer()) return;
         
-        var name = $"Player {GameManager.ConnectedPlayers.Count + 1}";
+        var name = $"Player {GameManager.Core.Players.Length + 1}";
          
-        Rpc("AnnounceNewPlayer", id, name);
+        GameServerManager.Instance.OnPlayerConnected(id, name);
     }
 
     private void OnConnectedToServer()
     {
         ClientManager.Instance.OnJoin(Multiplayer.GetUniqueId());
-    }
-
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void AnnounceNewPlayer(long id, string name)
-    {
-        GameManager.Instance.OnPlayerConnected(id, name);
     }
 }

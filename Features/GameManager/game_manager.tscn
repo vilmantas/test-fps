@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://dtcmjsaovfnpt"]
+
+[ext_resource type="Script" path="res://Features/GameManager/GameManagerController.cs" id="1_i1on6"]
+[ext_resource type="PackedScene" uid="uid://b8xh8y1gw38wu" path="res://Features/Multiplayer/player_data.tscn" id="2_mhscs"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_ryv7c"]
+properties/0/path = NodePath(".:Players")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[node name="game_manager" type="Node2D"]
+script = ExtResource("1_i1on6")
+PlayerDataScene = ExtResource("2_mhscs")
+
+[node name="container_players" type="Node" parent="."]
+
+[node name="spawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Features/Multiplayer/player_data.tscn")
+spawn_path = NodePath("../container_players")
+spawn_limit = 4
+
+[node name="synchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_ryv7c")

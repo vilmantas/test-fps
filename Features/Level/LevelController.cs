@@ -10,14 +10,4 @@ public partial class LevelController : Node
 	{
 		GameManager.Instance.OnLevelLoaded(this);
 	}
-
-	public void _on_join_pressed()
-	{
-		MultiplayerManager.Instance.ConnectToHost();
-	}
-	
-	public void _on_host_pressed()
-	{
-		MultiplayerManager.Instance.StartHost(GameManager.PlayerName);
-	}
 }

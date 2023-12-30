@@ -9,7 +9,7 @@ public partial class ClientManager : Node
 {
     public static ClientManager Instance;
 
-    private long ClientId;
+    [Export] public long ClientId;
     
     public Action OnJoined;
         
@@ -23,14 +23,21 @@ public partial class ClientManager : Node
     {
         ClientId = id;
         
-        GameServerManager.Instance.RequestConnectedPlayers(id);
+        GameServerManager.Instance.UpdateClientName(GameManager.PlayerName);
         
         OnJoined?.Invoke();
     }
-    
-    public void SetConnectedPlayers(Dictionary<long, string> players)
+
+    public void OnStartGame()
     {
-        Debug.Print(players.Keys.ToString());
-        GameManager.Instance.SetConnectedPlayers(players);
+        Rpc("StartGame");
+    }
+    
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void StartGame()
+    {
+        GameManager.Instance.SetCurrentPlayerData((int)ClientId);
+        
+        GetTree().ChangeSceneToFile("res://Scenes/Levels/level_00.tscn");
     }
 }

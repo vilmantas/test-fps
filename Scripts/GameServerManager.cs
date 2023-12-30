@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Godot;
 using Godot.Collections;
 
@@ -11,26 +12,45 @@ public partial class GameServerManager : Node
     {
         Instance = this;
     }
-    
-    public void RequestConnectedPlayers(long id)
+
+    public void StartGame()
     {
-        Rpc("GetConnectedPlayers", id);
+        ClientManager.Instance.OnStartGame();
     }
     
-    public void UpdateClientName(long id, string name)
+    public void OnPlayerConnected(long id, string name)
     {
-        Rpc("SetPlayerName", name);
+        GameManager.Instance.SpawnPlayer((int)id, name);
     }
     
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    public void GetConnectedPlayers(long id)
+    public void UpdateClientName(string name)
     {
-        RpcId(id, "SetConnectedPlayers", GameManager.ConnectedPlayers);
+        SendHostMessage("UpdatePlayerName", name);
     }
     
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    public void SetConnectedPlayers(Dictionary<long, string> players)
+    public void UpdateClientModel(string model)
     {
-        ClientManager.Instance.SetConnectedPlayers(players);
+        SendHostMessage("UpdatePlayerModel", model);
+    }
+    
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void UpdatePlayerName(string name)
+    {
+        var id = Multiplayer.GetRemoteSenderId();
+
+        GameManager.Instance.UpdatePlayerName(id, name);
+    }
+    
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void UpdatePlayerModel(string model)
+    {
+        var id = Multiplayer.GetRemoteSenderId();
+
+        GameManager.Instance.UpdatePlayerModel(id, model);
+    }
+    
+    private void SendHostMessage(string method, params Variant[] args)
+    {
+        RpcId(1, method, args);
     }
 }

@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2dvfml0wryba"]
+[gd_scene load_steps=7 format=3 uid="uid://d2dvfml0wryba"]
 
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
@@ -9,9 +9,23 @@
 radius = 0.251076
 height = 1.65717
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_hmdv7"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath(".:sync_Velocity")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_3nu1d")
 PlayerModel = ExtResource("2_uibfj")
+JumpHeight = 3.0
+JumpTimeToPeak = 0.7
+JumpTimeToDescend = 0.5
 
 [node name="character" parent="." instance=ExtResource("1_ixuhh")]
 
@@ -28,3 +42,9 @@ script = ExtResource("4_sa7vv")
 
 [node name="spawn_attack_hitbox" type="Node3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -0.547059)
+
+[node name="synchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_hmdv7")
+
+[node name="debug" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08283, 1.91341, -0.0246153)

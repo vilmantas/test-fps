@@ -10,7 +10,11 @@ using Vector3 = Godot.Vector3;
 
 public partial class PlayerController : CharacterBody3D
 {
-	[Export] private Mesh PlayerModel;
+	[Export] public Mesh PlayerModel;
+
+	[Export] public Vector3 sync_Velocity;
+
+	public Vector3 StartingPos;
 	
 	public int horizontalModifier = 0;
 	public int verticalModifier = 0;
@@ -46,9 +50,15 @@ public partial class PlayerController : CharacterBody3D
 	[Export] public PackedScene AttackHitbox;
 
 	public Node3D AttackHitboxSpawn;
-	
+
+	private Label3D Debug;
+    
 	public override void _Ready()
 	{
+		Debug = GetNode<Label3D>("debug");
+		
+		Debug.Text = $"{GetMultiplayerAuthority()}:{GameManager.Core.GetById(GetMultiplayerAuthority()).PlayerName}";
+		
 		JumpVelocity = 2 * JumpHeight / JumpTimeToPeak;
 		JumpGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToPeak, 2);
 		FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
@@ -70,6 +80,15 @@ public partial class PlayerController : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!IsMultiplayerAuthority())
+		{
+			Velocity = sync_Velocity;
+
+			SetAnimationData();
+			
+			return;
+		}
+		
 		var cameraBasis = GameManager.CameraController.GlobalTransform.Basis;
 
 		velocity = Vector3.Zero;
@@ -120,7 +139,9 @@ public partial class PlayerController : CharacterBody3D
 		velocity.Z *= speed;
 		
 		Velocity = velocity;
-        
+
+		sync_Velocity = Velocity;
+		
 		SetAnimationData();
 		
 		MoveAndSlide();
@@ -154,7 +175,7 @@ public partial class PlayerController : CharacterBody3D
 
 	private void SelectAnimation()
 	{
-		if (!PlayerInputManager.Instance.MovementInputEngaged)
+		if (Velocity is {X: 0, Z: 0})
 		{
 			Character.SetPlayerAnimation("Idle");
 		}

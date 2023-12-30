@@ -18,3 +18,34 @@ offset_left = 6.0
 offset_top = 45.0
 offset_right = 6.0
 offset_bottom = 45.0
+
+[node name="PrefPlayerLobby" parent="container_players" instance=ExtResource("2_7bl73")]
+layout_mode = 2
+
+[node name="PrefPlayerLobby2" parent="container_players" instance=ExtResource("2_7bl73")]
+layout_mode = 2
+
+[node name="PrefPlayerLobby3" parent="container_players" instance=ExtResource("2_7bl73")]
+layout_mode = 2
+
+[node name="PrefPlayerLobby4" parent="container_players" instance=ExtResource("2_7bl73")]
+layout_mode = 2
+
+[node name="container_buttons" type="VFlowContainer" parent="."]
+offset_left = 562.0
+offset_top = 61.0
+offset_right = 658.0
+offset_bottom = 293.0
+
+[node name="start_button" type="Button" parent="container_buttons"]
+layout_mode = 2
+text = "Start Game
+"
+
+[node name="set_knight" type="Button" parent="container_buttons"]
+layout_mode = 2
+text = "Set Knight Character"
+
+[node name="set_sporty" type="Button" parent="container_buttons"]
+layout_mode = 2
+text = "Set Sporty Character"

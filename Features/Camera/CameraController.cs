@@ -18,16 +18,19 @@ public partial class CameraController : Node3D
 		Arm = GetNode<Node3D>("SpringArm3D");
 
 		PlayerInputManager.Instance.OnRotationEnabled += OnRotationChanged;
+	}
 
-		Player = GameManager.PlayerController;
+	public void Initialize(PlayerController player)
+	{
+		Player = player;
 	}
 	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
-		var player = GameManager.PlayerController;
-
-		Position = player.Hitbox.GlobalPosition + player.Hitbox.Position;
+		if (Player == null) return;
+		
+		Position = Player.Hitbox.GlobalPosition + Player.Hitbox.Position;
 		
 		RotateMouse(delta);
 		
