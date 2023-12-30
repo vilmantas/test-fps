@@ -354,7 +354,7 @@ _data = {
 [node name="Skeleton3D" parent="Armature" index="0"]
 bones/0/position = Vector3(0.0142323, -2.05212, -92.5613)
 bones/0/rotation = Quaternion(-0.727913, -0.052347, 0.0134719, 0.683535)
-bones/1/rotation = Quaternion(-0.00112318, 0.0113793, 0.0212457, 0.999709)
+bones/1/rotation = Quaternion(-0.00112319, 0.0113793, 0.0212457, 0.999709)
 bones/2/rotation = Quaternion(0.0100911, 0.00149787, 0.0137891, 0.999853)
 bones/3/rotation = Quaternion(0.00986806, 0.00168973, 0.0138361, 0.999854)
 bones/4/rotation = Quaternion(0.0792755, -0.00100147, 0.00390072, 0.996845)

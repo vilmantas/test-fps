@@ -19,9 +19,13 @@ public partial class LobbyController : Node
 		
 		var SetSportyButton = GetNode<Button>("container_buttons/set_sporty");
 		
+		var SetJacketButton = GetNode<Button>("container_buttons/set_jacket");
+        
 		SetKnightButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/knight_1.res");
 		
 		SetSportyButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/sporty_male.res");
+		
+		SetJacketButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/male_jacket.res");
 		
 		StartButton.Pressed += OnStartPressed;
 		

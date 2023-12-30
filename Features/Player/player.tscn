@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
-[ext_resource type="ArrayMesh" uid="uid://b111tbrgf4mfe" path="res://Imports/meshes/sporty_male.res" id="2_uibfj"]
+[ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="2_e7st4"]
 [ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="4_sa7vv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
@@ -19,10 +19,16 @@ properties/1/replication_mode = 1
 properties/2/path = NodePath(".:sync_Velocity")
 properties/2/spawn = true
 properties/2/replication_mode = 1
+properties/3/path = NodePath(".:sync_Aiming")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+properties/4/path = NodePath(".:sync_MovementInput")
+properties/4/spawn = true
+properties/4/replication_mode = 1
 
 [node name="player" type="CharacterBody3D"]
 script = ExtResource("1_3nu1d")
-PlayerModel = ExtResource("2_uibfj")
+PlayerModel = ExtResource("2_e7st4")
 JumpHeight = 3.0
 JumpTimeToPeak = 0.7
 JumpTimeToDescend = 0.5
@@ -34,6 +40,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.834642, 0)
 shape = SubResource("CapsuleShape3D_c3us5")
 
 [node name="ground_distance_ray" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 target_position = Vector3(0, -5, 0)
 collision_mask = 3
 

@@ -49,3 +49,7 @@ text = "Set Knight Character"
 [node name="set_sporty" type="Button" parent="container_buttons"]
 layout_mode = 2
 text = "Set Sporty Character"
+
+[node name="set_jacket" type="Button" parent="container_buttons"]
+layout_mode = 2
+text = "Set Jacket Character"
