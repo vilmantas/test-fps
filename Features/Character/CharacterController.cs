@@ -38,6 +38,12 @@ public partial class CharacterController : Node3D
 		m_AnimationTree.Set("parameters/JumpOneShot/request",
 			(int) AnimationNodeOneShot.OneShotRequest.Fire);
 	}
+    
+	public void TriggerAttack()
+	{
+		m_AnimationTree.Set("parameters/AttackOneShot/request",
+			(int) AnimationNodeOneShot.OneShotRequest.Fire);
+	}
 
 	public void SetFloorDistance(float distance, float gravity)
 	{

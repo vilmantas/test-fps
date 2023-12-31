@@ -58,6 +58,8 @@ public partial class PlayerController : CharacterBody3D
 	{
 		DebugLabel.Text = $"{Health.CurrentHealth}/{Health.MaxHealth}";
 
+		DebugLabel.GlobalBasis = GameManager.CameraController.GlobalTransform.Basis;
+		
 		if (IsMultiplayerAuthority())
 		{
 			ProcessInput(delta);
@@ -187,7 +189,7 @@ public partial class PlayerController : CharacterBody3D
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
 	private void TriggerAttack()
 	{
-		
+		Character.TriggerAttack();
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
