@@ -43,6 +43,8 @@ public partial class GameplayController : Node
     private void InitializePlayer(PlayerController player, PlayerDataController data, SpawnPointController spawn)
     {
         player.SetMultiplayerAuthority(data.Id);
+
+        player.Name = data.PlayerName;
         
         player.PlayerModel = GD.Load<Mesh>(data.SelectedSkin);
 

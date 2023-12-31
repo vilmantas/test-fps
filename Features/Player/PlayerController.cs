@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using Godot;
+using testfps.Features.Combat;
 using testfps.Scripts;
 using Vector2 = Godot.Vector2;
 using Vector3 = Godot.Vector3;
@@ -20,9 +21,6 @@ public partial class PlayerController : CharacterBody3D
 	[Export] private float JumpTimeToPeak = 2f;
 	[Export] private float JumpTimeToDescend = 2f;
     
-	private int horizontalModifier;
-	private int verticalModifier;
-	private Vector3 velocity = Vector3.Zero;
 	private bool JumpQueued;
 
 	public CharacterController Character;
@@ -149,6 +147,8 @@ public partial class PlayerController : CharacterBody3D
 		attackTimer.Timeout += AttackTimerOnTimeout;
 
 		attackCooldownTimer.Timeout += EnableAttack;
+
+		Rpc("TriggerAttack");
 	}
 
 	void EnableAttack()
@@ -158,17 +158,24 @@ public partial class PlayerController : CharacterBody3D
 	
 	void AttackTimerOnTimeout()
 	{
-		var instance = AttackHitbox.Instantiate<HitboxController>();
+		var instance = AttackHitbox.Instantiate<DamageHitboxController>();
 
 		instance.Name = "hitbox_attack";
         
+		instance.OnHit += HandleHit;
+
 		AddChild(instance);
 		
 		instance.GlobalPosition = AttackHitboxSpawn.GlobalPosition;
 
-		var despawnTimer = GetTree().CreateTimer(50f);
+		var despawnTimer = GetTree().CreateTimer(1f);
 
 		despawnTimer.Timeout += () => RemoveHitbox(instance);
+	}
+	
+	void HandleHit(Node3D obj)
+	{
+		CombatManager.Instance.Damage(this, obj);
 	}
 
 	private void RemoveHitbox(Node3D instance)

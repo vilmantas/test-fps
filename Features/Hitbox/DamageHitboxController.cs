@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-public partial class HitboxController : Node3D
+public partial class DamageHitboxController : Node3D
 {
 	private Area3D HitboxArea;
 
@@ -13,6 +13,8 @@ public partial class HitboxController : Node3D
 	public bool AllowMultipleCollisions;
 
 	public List<Node> Hits = new();
+
+	public Action<Node3D> OnHit;
     
 	public override void _Ready()
 	{
@@ -29,8 +31,15 @@ public partial class HitboxController : Node3D
 
 		if (!AllowMultipleCollisions && Hits.Any(x => x == body)) return;
 		
+		TargetHit(body);
+	}
+
+	private void TargetHit(Node3D body)
+	{
 		Hits.Add(body);
-        
+		
+		OnHit?.Invoke(body);
+		
 		Debug.Print($"Attacked {body.Name}");
 	}
 }
