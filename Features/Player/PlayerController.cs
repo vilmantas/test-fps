@@ -1,9 +1,6 @@
-using Godot;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Numerics;
+using Godot;
 using testfps.Scripts;
 using Vector2 = Godot.Vector2;
 using Vector3 = Godot.Vector3;
@@ -22,21 +19,20 @@ public partial class PlayerController : CharacterBody3D
 	[Export] private float JumpHeight = 200f;
 	[Export] private float JumpTimeToPeak = 2f;
 	[Export] private float JumpTimeToDescend = 2f;
-	
-	private float JumpVelocity = 0f;
-	private float JumpGravity = 0f;
-	private float FallGravity = 0f;
     
-	private int horizontalModifier = 0;
-	private int verticalModifier = 0;
+	private int horizontalModifier;
+	private int verticalModifier;
 	private Vector3 velocity = Vector3.Zero;
-	private bool JumpQueued = false;
+	private bool JumpQueued;
 
 	public CharacterController Character;
 	public RayCast3D GroundDistanceRay;
 	public CollisionShape3D Hitbox;
 	public Node3D AttackHitboxSpawn;
 	public Label3D DebugLabel;
+	public HealthController Health;
+
+	private ThirdPersonController MovementController;
     
 	public override void _Ready()
 	{
@@ -45,22 +41,25 @@ public partial class PlayerController : CharacterBody3D
 		Hitbox = GetNode<CollisionShape3D>("core_hitbox");
 		Character = GetNode<CharacterController>("character");
 		AttackHitboxSpawn = GetNode<Node3D>("spawn_attack_hitbox");
-
+		Health = GetNode<HealthController>("health_module");
+		
 		Character.SetModel(PlayerModel);
-
-		JumpVelocity = 2 * JumpHeight / JumpTimeToPeak;
-		JumpGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToPeak, 2);
-		FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
+		
+		MovementController = new ThirdPersonController(Speed, LookSpeed, JumpHeight, JumpTimeToPeak, JumpTimeToDescend);
 		
 		if (!IsMultiplayerAuthority()) return;
 		
 		PlayerInputManager.Instance.OnJumpPressed += OnJumpPressed;
 
 		PlayerInputManager.Instance.OnRotationEnabled += OnRotationEnabled;
+
+		PlayerInputManager.Instance.OnAttackPressed += OnAttackPressed;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
+		DebugLabel.Text = $"{Health.CurrentHealth}/{Health.MaxHealth}";
+		
 		if (IsMultiplayerAuthority())
 		{
 			ProcessInput(delta);
@@ -77,71 +76,25 @@ public partial class PlayerController : CharacterBody3D
 
 	private void ProcessInput(double delta)
 	{
-		var cameraBasis = GameManager.CameraController.GlobalTransform.Basis;
+		var result = MovementController.GetVelocity(delta, Velocity, Rotation, JumpQueued);
 
-		velocity = Vector3.Zero;
-		
-		horizontalModifier = PlayerInputManager.Instance.MovementInput.Horizontal;
-		
-		verticalModifier = PlayerInputManager.Instance.MovementInput.Vertical;
-		
-		sync_MovementInput = new Vector2(horizontalModifier, verticalModifier).Normalized();
-        
-		if (PlayerInputManager.Instance.MovementInputEngaged)
-		{
-			velocity = cameraBasis.Z * verticalModifier;
-			velocity += cameraBasis.X * horizontalModifier;
-
-			velocity = velocity.Normalized();
-			
-			float angle;
-			
-			if (PlayerInputManager.Instance.RotationEnabled)
-			{
-				var vect = -cameraBasis.Z;
-				
-				angle = new Vector2(vect.Z, vect.X).Angle();
-			}
-			else
-			{
-				angle = new Vector2(velocity.Z, velocity.X).Angle();	
-			}
-
-			var newRot = Rotation;
-		
-			newRot.Y = (float)Mathf.LerpAngle(newRot.Y, angle - Math.PI, delta * LookSpeed);
-		
-			Rotation = newRot;
-		}
-
-		velocity.Y = Velocity.Y;
-		
-		velocity.Y += GetGravity() * (float)delta;
-
-		if (JumpQueued)
+		if (result.JumpEngaged)
 		{
 			JumpQueued = false;
 			Rpc("TriggerJump");
-			velocity.Y = JumpVelocity;
 		}
         
-		velocity.X *= Speed;
-		velocity.Z *= Speed;
-		
-		Velocity = velocity;
+		Velocity = result.Velocity;
+		Rotation = result.Rotation;
 
 		sync_Velocity = Velocity;
+		sync_MovementInput = result.MovementInput;
 		
 		SetAnimationData();
 		
 		MoveAndSlide();
 	}
 
-	public float GetGravity()
-	{
-		return Velocity.Y > 0 ? JumpGravity : FallGravity;
-	}
-    
 	private void OnJumpPressed()
 	{
 		JumpQueued = true;
@@ -158,7 +111,7 @@ public partial class PlayerController : CharacterBody3D
 			groundDistance = GlobalPosition.DistanceTo(GroundDistanceRay.GetCollisionPoint());
 		}
 		
-		Character.SetFloorDistance(groundDistance, GetGravity());
+		Character.SetFloorDistance(groundDistance, MovementController.GetGravity(Velocity));
         
 		SelectAnimation();
 	}
@@ -179,6 +132,54 @@ public partial class PlayerController : CharacterBody3D
 	{
 		sync_Aiming = flag;
 		Character.SetAimingState(flag);
+	}
+
+	private bool AttackAvailable = true;
+	
+	private void OnAttackPressed()
+	{
+		if (!AttackAvailable) return;
+
+		AttackAvailable = false;
+        
+		var attackTimer = GetTree().CreateTimer(0.3f);
+
+		var attackCooldownTimer = GetTree().CreateTimer(1f);
+		
+		attackTimer.Timeout += AttackTimerOnTimeout;
+
+		attackCooldownTimer.Timeout += EnableAttack;
+	}
+
+	void EnableAttack()
+	{
+		AttackAvailable = true;
+	}
+	
+	void AttackTimerOnTimeout()
+	{
+		var instance = AttackHitbox.Instantiate<HitboxController>();
+
+		instance.Name = "hitbox_attack";
+        
+		AddChild(instance);
+		
+		instance.GlobalPosition = AttackHitboxSpawn.GlobalPosition;
+
+		var despawnTimer = GetTree().CreateTimer(50f);
+
+		despawnTimer.Timeout += () => RemoveHitbox(instance);
+	}
+
+	private void RemoveHitbox(Node3D instance)
+	{
+		instance.QueueFree();
+	}
+
+	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+	private void TriggerAttack()
+	{
+		
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]

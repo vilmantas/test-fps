@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2dvfml0wryba"]
+[gd_scene load_steps=8 format=3 uid="uid://d2dvfml0wryba"]
 
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
 [ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/knight_1.res" id="2_e7st4"]
+[ext_resource type="PackedScene" uid="uid://b5aoffmuot6d6" path="res://Features/Hitbox/hitbox.tscn" id="2_tg6kw"]
 [ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="4_sa7vv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
@@ -27,7 +28,9 @@ properties/4/spawn = true
 properties/4/replication_mode = 1
 
 [node name="player" type="CharacterBody3D"]
+collision_layer = 5
 script = ExtResource("1_3nu1d")
+AttackHitbox = ExtResource("2_tg6kw")
 PlayerModel = ExtResource("2_e7st4")
 JumpHeight = 3.0
 JumpTimeToPeak = 0.7

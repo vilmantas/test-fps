@@ -18,7 +18,5 @@ public partial class PlayerGroundDistanceDebug : Label
 
             groundDistance = player.GlobalPosition.DistanceTo(point);
         }
-
-        Text = $"{groundDistance}; {player.GetGravity()}";
     }
 }

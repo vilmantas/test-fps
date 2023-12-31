@@ -1,8 +1,6 @@
-using Godot;
-using System;
 using System.Linq;
+using Godot;
 using Godot.Collections;
-using testfps.DebugScripts.UI;
 using testfps.Features.Multiplayer;
 
 public partial class GameManagerController : Node
@@ -48,14 +46,9 @@ public partial class GameManagerController : Node
 
 		m_Players[id].SelectedSkin = model;
 	}
+
+	public PlayerDataController GetByName(string name) => Players.First(x => x.PlayerName == name);
 	
-	public PlayerDataController GetByName(string name)
-	{
-		return Players.First(x => x.PlayerName == name);
-	}
+	public PlayerDataController GetById(int id) => Players.First(x => x.Name == id.ToString());
 	
-	public PlayerDataController GetById(int id)
-	{
-		return Players.First(x => x.Name == id.ToString());
-	}
 }
