@@ -26,7 +26,7 @@ public class ThirdPersonController
         FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
     }
     
-    public MovementResult GetVelocity(double delta, Vector3 CurrentVelocity, Vector3 CurrentRotation, bool JumpQueued)
+    public MovementResult GetVelocity(double delta, Vector3 CurrentVelocity, Vector3 CurrentRotation, bool JumpQueued, Vector2 CurrentMovementInput)
     {
         var cameraBasis = GameManager.CameraController.GlobalTransform.Basis;
 
@@ -34,8 +34,10 @@ public class ThirdPersonController
         
         m_Velocity = Vector3.Zero;
 
-        m_MovementInput = new Vector2(PlayerInputManager.Instance.MovementInput.Horizontal,
-            PlayerInputManager.Instance.MovementInput.Vertical).Normalized();
+        m_MovementInput = new Vector2(
+            PlayerInputManager.Instance.MovementInput.Horizontal,
+            PlayerInputManager.Instance.MovementInput.Vertical
+            );
         
         if (PlayerInputManager.Instance.MovementInputEngaged)
         {
@@ -81,6 +83,7 @@ public class ThirdPersonController
             MovementInput = m_MovementInput,
             Rotation = m_Rotation,
             Velocity = m_Velocity,
+            LerpedMovementInput = LerpWithLimit(CurrentMovementInput, m_MovementInput, (float)delta * m_LookSpeed)
         };
     }
     
@@ -89,11 +92,27 @@ public class ThirdPersonController
         return CurrentVelocity.Y > 0 ? JumpGravity : FallGravity;
     }
 
+    private Vector2 LerpWithLimit(Vector2 from, Vector2 to, float by)
+    {
+        var result = from.Lerp(to, by);;
+        
+        if (m_MovementInput == Vector2.Zero)
+        {
+            if (Math.Abs(result.X) < 0.001 && Math.Abs(result.Y) < 0.001)
+            {
+                result = Vector2.Zero;
+            }
+        }
+
+        return result;
+    }
+
     public class MovementResult
     {
         public Vector3 Velocity { get; set; }
         public Vector3 Rotation { get; set; }
-        public Vector2 MovementInput { get; set; }
         public bool JumpEngaged { get; set; }
+        public Vector2 MovementInput { get; set; }
+        public Vector2 LerpedMovementInput { get; set; }
     }
 }

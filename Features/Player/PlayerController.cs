@@ -57,7 +57,7 @@ public partial class PlayerController : CharacterBody3D
 	public override void _PhysicsProcess(double delta)
 	{
 		DebugLabel.Text = $"{Health.CurrentHealth}/{Health.MaxHealth}";
-		
+
 		if (IsMultiplayerAuthority())
 		{
 			ProcessInput(delta);
@@ -74,8 +74,8 @@ public partial class PlayerController : CharacterBody3D
 
 	private void ProcessInput(double delta)
 	{
-		var result = MovementController.GetVelocity(delta, Velocity, Rotation, JumpQueued);
-
+		var result = MovementController.GetVelocity(delta, Velocity, Rotation, JumpQueued, sync_MovementInput);
+		
 		if (result.JumpEngaged)
 		{
 			JumpQueued = false;
@@ -86,7 +86,8 @@ public partial class PlayerController : CharacterBody3D
 		Rotation = result.Rotation;
 
 		sync_Velocity = Velocity;
-		sync_MovementInput = result.MovementInput;
+
+		sync_MovementInput = result.LerpedMovementInput;
 		
 		SetAnimationData();
 		

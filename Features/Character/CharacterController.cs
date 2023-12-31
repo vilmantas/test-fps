@@ -30,7 +30,7 @@ public partial class CharacterController : Node3D
 
 	public void SetMovementInput(Vector2 dir)
 	{
-		m_AnimationTree.Set("parameters/AimingRun/blend_position", dir.Normalized());
+		m_AnimationTree.Set("parameters/AimingRun/blend_position", dir);
 	}
 
 	public void TriggerJump()
