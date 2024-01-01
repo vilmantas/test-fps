@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Godot;
 using Godot.Collections;
+using testfps.Features.Multiplayer;
 
 namespace testfps.Scripts;
 
@@ -15,54 +16,44 @@ public partial class GameServerManager : Node
 
     public void StartGame()
     {
-        ClientManager.Instance.OnStartGame();
+        ClientManager.Instance.SendClientMessage(nameof(ClientManager.Instance.SendClientMessage));
     }
     
     public void OnPlayerConnected(long id, string name)
     {
         GameManager.Instance.SpawnPlayer((int)id, name);
-    }
-    
-    public void UpdateClientName(string name)
-    {
-        SendHostMessage("UpdatePlayerName", name);
-    }
-    
-    public void UpdateClientModel(string model)
-    {
-        SendHostMessage("UpdatePlayerModel", model);
-    }
 
-    public void UpdateClientWeapon(string model)
+        if (id == 1)
+        {
+            ClientManager.Instance.OnPlayerSpawned();
+        }
+        else
+        {
+            ClientManager.Instance.SendClientMessage(id, nameof(ClientManager.OnPlayerSpawned));    
+        }
+    }
+    
+    public void UpdateClientData(PlayerDataController data)
     {
-        SendHostMessage("UpdatePlayerWeapon", model);
+        var dataBag = new Dictionary<string, Variant>()
+        {
+            {nameof(PlayerDataController.PlayerName), data.PlayerName},
+            {nameof(PlayerDataController.SelectedSkin) , data.SelectedSkin},
+            {nameof(PlayerDataController.SelectedWeapon), data.SelectedWeapon}
+        };
+        
+        SendHostMessage("UpdatePlayerData", dataBag);
     }
     
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void UpdatePlayerName(string name)
+    private void UpdatePlayerData(Dictionary<string, Variant> data)
     {
         var id = Multiplayer.GetRemoteSenderId();
 
-        GameManager.Instance.UpdatePlayerName(id, name);
+        GameManager.Instance.UpdatePlayerData(id, data);
     }
     
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void UpdatePlayerModel(string model)
-    {
-        var id = Multiplayer.GetRemoteSenderId();
-
-        GameManager.Instance.UpdatePlayerModel(id, model);
-    }
-    
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
-    private void UpdatePlayerWeapon(string model)
-    {
-        var id = Multiplayer.GetRemoteSenderId();
-
-        GameManager.Instance.UpdatePlayerWeapon(id, model);
-    }
-    
-    private void SendHostMessage(string method, params Variant[] args)
+    public void SendHostMessage(string method, params Variant[] args)
     {
         RpcId(1, method, args);
     }

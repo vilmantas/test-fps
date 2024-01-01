@@ -24,3 +24,8 @@ text = "NAME NOT SET"
 layout_mode = 2
 size_flags_horizontal = 4
 text = "MODEL NOT SET"
+
+[node name="label_weapon" type="Label" parent="container"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "WEAPON NOT SET"

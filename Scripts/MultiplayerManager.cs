@@ -27,9 +27,9 @@ public partial class MultiplayerManager : Node
 
         Multiplayer.MultiplayerPeer = peer;
 
-        ClientManager.Instance.ClientId = Multiplayer.GetUniqueId();
+        OnConnectedToServer();
         
-        GameServerManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), name);
+        GameManager.Instance.SpawnPlayer(Multiplayer.GetUniqueId(), name);
     }
 
     public void ConnectToHost()

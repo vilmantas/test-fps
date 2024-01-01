@@ -36,8 +36,6 @@ public partial class MenuController : Node
 	private void OnHostPressed()
 	{
 		MultiplayerManager.Instance.StartHost(GameManager.PlayerName);
-
-		GetTree().ChangeSceneToPacked(LobbyScene);
 	}
 	
 	private void JoinButtonOnPressed()

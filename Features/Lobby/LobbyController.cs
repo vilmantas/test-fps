@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using testfps.Scripts;
 
 public partial class LobbyController : Node
@@ -25,26 +26,57 @@ public partial class LobbyController : Node
 		
 		var Sword4Button = GetNode<Button>("container_buttons/set_sword_4");
         
-		SetKnightButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/knight_1.res");
+		SetKnightButton.Pressed += () => UpdateClientModel("res://Imports/meshes/characters/knight_1.res");
 		
-		SetSportyButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/sporty_male.res");
+		SetSportyButton.Pressed += () => UpdateClientModel("res://Imports/meshes/characters/sporty_male.res");
 		
-		SetJacketButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/male_jacket.res");
+		SetJacketButton.Pressed += () => UpdateClientModel("res://Imports/meshes/characters/male_jacket.res");
 		
-		Sword1Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/sword_bobo.tsnc");
+		Sword1Button.Pressed += () => UpdateClientWeapon("res://Assets/Weapons/sword_bobo.tsnc");
 		
-		Sword4Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/sword_slicer.tscn");
+		Sword4Button.Pressed += () => UpdateClientWeapon("res://Assets/Weapons/sword_slicer.tscn");
 		
 		StartButton.Pressed += OnStartPressed;
 		
 		if (Multiplayer.IsServer()) return;
 		
-		StartButton.Hide();
+		// StartButton.Hide();
 	}
 
 	private void OnStartPressed()
 	{
-		GameServerManager.Instance.StartGame();
+		// GameServerManager.Instance.StartGame();
+		
+		if (Multiplayer.IsServer()) return;
+		
+		UpdateClientName("WDAIFNERSUJGHBNE");
+	}
+	
+	public void UpdateClientName(string name)
+	{
+		var data = GameManager.CurrentPlayerData;
+		
+		data.PlayerName = name;
+		
+		GameServerManager.Instance.UpdateClientData(data);
+	}
+	
+	public void UpdateClientModel(string model)
+	{
+		var data = GameManager.CurrentPlayerData;
+		
+		data.SelectedSkin = model;
+		
+		GameServerManager.Instance.UpdateClientData(data);
+	}
+	
+	void UpdateClientWeapon(string weapon)
+	{
+		var data = GameManager.CurrentPlayerData;
+		
+		data.SelectedWeapon = weapon;
+		
+		GameServerManager.Instance.UpdateClientData(data);
 	}
 
 	public override void _Process(double delta)

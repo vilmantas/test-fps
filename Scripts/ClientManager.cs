@@ -23,21 +23,28 @@ public partial class ClientManager : Node
     {
         ClientId = id;
         
-        GameServerManager.Instance.UpdateClientName(GameManager.PlayerName);
-        
         OnJoined?.Invoke();
     }
 
-    public void OnStartGame()
+    [Rpc(CallLocal = false)]
+    public void OnPlayerSpawned()
     {
-        Rpc("StartGame");
+        GameManager.Instance.SetCurrentPlayerData(ClientId);
     }
     
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
     private void StartGame()
     {
-        GameManager.Instance.SetCurrentPlayerData((int)ClientId);
-        
         GetTree().ChangeSceneToFile("res://Scenes/Levels/level_00.tscn");
+    }
+    
+    public void SendClientMessage(long id, string method, params Variant[] args)
+    {
+        RpcId(id, method, args);
+    }
+    
+    public void SendClientMessage(string method, params Variant[] args)
+    {
+        Rpc(method, args);
     }
 }

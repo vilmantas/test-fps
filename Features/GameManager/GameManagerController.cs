@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Linq;
 using Godot;
 using Godot.Collections;
@@ -7,7 +8,7 @@ public partial class GameManagerController : Node
 {
 	[Export] public PackedScene PlayerDataScene;
 
-	[Export] private Dictionary<int, PlayerDataController> m_Players = new();
+	[Export] private Dictionary<long, PlayerDataController> m_Players = new();
 	
 	public PlayerDataController[] Players => Container.GetChildren().Cast<PlayerDataController>().ToArray();
 
@@ -37,6 +38,8 @@ public partial class GameManagerController : Node
 	
 	public void UpdatePlayerName(int id, string name)
 	{
+		Debug.WriteLine(m_Players.Count);
+		
 		if (!m_Players.ContainsKey(id)) return;
 
 		m_Players[id].PlayerName = name;

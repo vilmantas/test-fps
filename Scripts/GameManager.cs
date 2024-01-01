@@ -50,7 +50,22 @@ public partial class GameManager : Node
 		Core.UpdatePlayerWeapon(id, newName);
 	}
 	
-	public void SetCurrentPlayerData(int id)
+	public void UpdatePlayerData(long id, Dictionary<string, Variant> data)
+	{
+		var name = data[nameof(PlayerDataController.PlayerName)].ToString();
+		
+		var model = data[nameof(PlayerDataController.SelectedSkin)].ToString();
+		
+		var weapon = data[nameof(PlayerDataController.SelectedWeapon)].ToString();
+		
+		UpdatePlayerName((int)id, name);
+		
+		UpdatePlayerModel((int)id, model);
+		
+		UpdatePlayerWeapon((int)id, weapon);
+	}
+	
+	public void SetCurrentPlayerData(long id)
 	{
 		CurrentPlayerData = Core.Players.First(x => x.Name == id.ToString());
 	}
