@@ -6,9 +6,9 @@ using System.Linq;
 
 public partial class DamageHitboxController : Node3D
 {
+	public Node3D Source;
+	
 	private Area3D HitboxArea;
-
-	private Node Parent;
 
 	public bool AllowMultipleCollisions;
 
@@ -21,13 +21,11 @@ public partial class DamageHitboxController : Node3D
 		HitboxArea = GetNode<Area3D>("area");
 		
 		HitboxArea.BodyEntered += OnHitboxHit;
-
-		Parent = GetParent();
 	}
 	
 	void OnHitboxHit(Node3D body)
 	{
-		if (body == GetParent()) return;
+		if (body == Source) return;
 
 		if (!AllowMultipleCollisions && Hits.Any(x => x == body)) return;
 		

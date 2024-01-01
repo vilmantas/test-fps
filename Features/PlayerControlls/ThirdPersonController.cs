@@ -26,7 +26,7 @@ public class ThirdPersonController
         FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
     }
     
-    public MovementResult GetVelocity(double delta, Vector3 CurrentVelocity, Vector3 CurrentRotation, bool JumpQueued, Vector2 CurrentMovementInput)
+    public MovementResult GetVelocity(ThirdPersonControllerArgs args)
     {
         var cameraBasis = GameManager.CameraController.GlobalTransform.Basis;
 
@@ -59,16 +59,16 @@ public class ThirdPersonController
                 angle = new Vector2(m_Velocity.Z, m_Velocity.X).Angle();	
             }
 
-            m_Rotation = CurrentRotation;
+            m_Rotation = args.CurrentRotation;
 		
-            m_Rotation.Y = (float)Mathf.LerpAngle(m_Rotation.Y, angle - Math.PI, delta * m_LookSpeed);
+            m_Rotation.Y = (float)Mathf.LerpAngle(m_Rotation.Y, angle - Math.PI, args.Delta * m_LookSpeed);
         }
 
-        m_Velocity.Y = CurrentVelocity.Y;
+        m_Velocity.Y = args.CurrentVelocity.Y;
 		
-        m_Velocity.Y += GetGravity(CurrentVelocity) * (float)delta;
+        m_Velocity.Y += GetGravity(args.CurrentVelocity) * (float)args.Delta;
 
-        if (JumpQueued)
+        if (args.JumpQueued)
         {
             m_Velocity.Y = JumpVelocity;
             m_JumpEngaged = true;
@@ -83,7 +83,7 @@ public class ThirdPersonController
             MovementInput = m_MovementInput,
             Rotation = m_Rotation,
             Velocity = m_Velocity,
-            LerpedMovementInput = LerpWithLimit(CurrentMovementInput, m_MovementInput, (float)delta * m_LookSpeed)
+            LerpedMovementInput = LerpWithLimit(args.CurrentMovementInput, m_MovementInput, (float)args.Delta * m_LookSpeed)
         };
     }
     
@@ -107,6 +107,17 @@ public class ThirdPersonController
         return result;
     }
 
+    public class ThirdPersonControllerArgs
+    {
+        public double Delta { get; set; }
+        public Vector3 CurrentVelocity { get; set; }
+        public Vector3 CurrentRotation { get; set; }
+        public bool JumpQueued { get; set; }
+        public Vector2 CurrentMovementInput { get; set; }
+        public float Speed { get; set; }
+        public float LookSpeed { get; set; }
+    }
+    
     public class MovementResult
     {
         public Vector3 Velocity { get; set; }

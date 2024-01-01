@@ -9,6 +9,11 @@ using Vector3 = Godot.Vector3;
 public partial class PlayerController : CharacterBody3D
 {
 	[Export] public PackedScene AttackHitbox;
+	[Export] public Node3D AttackHitboxSpawn;
+	[Export] public float AttackHitboxDelay = 0.3f;
+	[Export] public float AttackHitboxDuration = 0.3f;
+	[Export] public float AttackCooldown;
+	
 	[Export] public Mesh PlayerModel;
 	[Export] public int Speed = 10;
 	[Export] public int LookSpeed = 10;
@@ -26,12 +31,14 @@ public partial class PlayerController : CharacterBody3D
 	public CharacterController Character;
 	public RayCast3D GroundDistanceRay;
 	public CollisionShape3D Hitbox;
-	public Node3D AttackHitboxSpawn;
+
 	public Label3D DebugLabel;
-	public HealthController Health;
+	
+	public HealthController HealthModule;
+	private AttackController AttackModule;
 
 	private ThirdPersonController MovementController;
-    
+
 	public override void _Ready()
 	{
 		DebugLabel = GetNode<Label3D>("debug");
@@ -39,7 +46,21 @@ public partial class PlayerController : CharacterBody3D
 		Hitbox = GetNode<CollisionShape3D>("core_hitbox");
 		Character = GetNode<CharacterController>("character");
 		AttackHitboxSpawn = GetNode<Node3D>("spawn_attack_hitbox");
-		Health = GetNode<HealthController>("health_module");
+		HealthModule = GetNode<HealthController>("health_module");
+		AttackModule = GetNode<AttackController>("attack_module");
+
+		var attackConfiguration = new AttackConfiguration()
+		{
+			Hitbox = AttackHitbox,
+			HitboxSpawn = AttackHitboxSpawn,
+			Cooldown = AttackCooldown,
+			HitboxDelay = AttackHitboxDelay,
+			HitboxDuration = AttackHitboxDuration,
+		};
+        
+		AttackModule.Initialize(attackConfiguration);
+
+		AttackModule.OnHit += HandleHit;
 		
 		Character.SetModel(PlayerModel);
 		
@@ -56,7 +77,7 @@ public partial class PlayerController : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		DebugLabel.Text = $"{Health.CurrentHealth}/{Health.MaxHealth}";
+		DebugLabel.Text = $"{HealthModule.CurrentHealth}/{HealthModule.MaxHealth}";
 
 		DebugLabel.GlobalBasis = GameManager.CameraController.GlobalTransform.Basis;
 		
@@ -74,13 +95,33 @@ public partial class PlayerController : CharacterBody3D
 		}
 	}
 
+	private bool m_IsJumping;
+	
+	public override void _Process(double delta)
+	{
+		if (m_IsJumping && IsOnFloor())
+		{
+			m_IsJumping = false;
+		}
+	}
+
 	private void ProcessInput(double delta)
 	{
-		var result = MovementController.GetVelocity(delta, Velocity, Rotation, JumpQueued, sync_MovementInput);
+		var args = new ThirdPersonController.ThirdPersonControllerArgs()
+		{
+			Delta = delta,
+			CurrentRotation = Rotation,
+			CurrentVelocity = Velocity,
+			CurrentMovementInput = sync_MovementInput,
+			JumpQueued = JumpQueued,
+			LookSpeed = LookSpeed,
+			Speed = Speed,
+		};
+		
+		var result = MovementController.GetVelocity(args);
 		
 		if (result.JumpEngaged)
 		{
-			JumpQueued = false;
 			Rpc("TriggerJump");
 		}
         
@@ -139,51 +180,14 @@ public partial class PlayerController : CharacterBody3D
 	
 	private void OnAttackPressed()
 	{
-		if (!AttackAvailable) return;
-
-		AttackAvailable = false;
-        
-		var attackTimer = GetTree().CreateTimer(0.3f);
-
-		var attackCooldownTimer = GetTree().CreateTimer(1f);
-		
-		attackTimer.Timeout += AttackTimerOnTimeout;
-
-		attackCooldownTimer.Timeout += EnableAttack;
+		if (!AttackModule.Attack()) return;
 
 		Rpc("TriggerAttack");
-	}
-
-	void EnableAttack()
-	{
-		AttackAvailable = true;
-	}
-	
-	void AttackTimerOnTimeout()
-	{
-		var instance = AttackHitbox.Instantiate<DamageHitboxController>();
-
-		instance.Name = "hitbox_attack";
-        
-		instance.OnHit += HandleHit;
-
-		AddChild(instance);
-		
-		instance.GlobalPosition = AttackHitboxSpawn.GlobalPosition;
-
-		var despawnTimer = GetTree().CreateTimer(1f);
-
-		despawnTimer.Timeout += () => RemoveHitbox(instance);
 	}
 	
 	void HandleHit(Node3D obj)
 	{
 		CombatManager.Instance.Damage(this, obj);
-	}
-
-	private void RemoveHitbox(Node3D instance)
-	{
-		instance.QueueFree();
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
@@ -196,5 +200,7 @@ public partial class PlayerController : CharacterBody3D
 	private void TriggerJump()
 	{
 		Character.TriggerJump();
+		JumpQueued = false;
+		m_IsJumping = true;
 	}
 }
