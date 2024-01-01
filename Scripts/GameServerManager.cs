@@ -32,6 +32,11 @@ public partial class GameServerManager : Node
     {
         SendHostMessage("UpdatePlayerModel", model);
     }
+
+    public void UpdateClientWeapon(string model)
+    {
+        SendHostMessage("UpdatePlayerWeapon", model);
+    }
     
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
     private void UpdatePlayerName(string name)
@@ -47,6 +52,14 @@ public partial class GameServerManager : Node
         var id = Multiplayer.GetRemoteSenderId();
 
         GameManager.Instance.UpdatePlayerModel(id, model);
+    }
+    
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true, TransferMode = MultiplayerPeer.TransferModeEnum.Reliable)]
+    private void UpdatePlayerWeapon(string model)
+    {
+        var id = Multiplayer.GetRemoteSenderId();
+
+        GameManager.Instance.UpdatePlayerWeapon(id, model);
     }
     
     private void SendHostMessage(string method, params Variant[] args)

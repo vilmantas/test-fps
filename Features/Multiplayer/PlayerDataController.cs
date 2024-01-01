@@ -11,6 +11,8 @@ public partial class PlayerDataController : Node
 
     [Export] public string SelectedSkin = String.Empty;
     
+    [Export] public string SelectedWeapon = String.Empty;
+    
     public void Initialize(string name)
     {
         PlayerName = name;

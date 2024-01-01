@@ -47,6 +47,8 @@ public partial class GameplayController : Node
         player.Name = data.PlayerName;
         
         player.PlayerModel = GD.Load<Mesh>(data.SelectedSkin);
+        
+        player.Weapon = GD.Load<PackedScene>(data.SelectedWeapon);
 
         Container.AddChild(player, true);
             

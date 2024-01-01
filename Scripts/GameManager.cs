@@ -45,6 +45,11 @@ public partial class GameManager : Node
 		Core.UpdatePlayerModel(id, newName);
 	}
 	
+	public void UpdatePlayerWeapon(int id, string newName)
+	{
+		Core.UpdatePlayerWeapon(id, newName);
+	}
+	
 	public void SetCurrentPlayerData(int id)
 	{
 		CurrentPlayerData = Core.Players.First(x => x.Name == id.ToString());

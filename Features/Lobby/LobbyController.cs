@@ -20,12 +20,20 @@ public partial class LobbyController : Node
 		var SetSportyButton = GetNode<Button>("container_buttons/set_sporty");
 		
 		var SetJacketButton = GetNode<Button>("container_buttons/set_jacket");
+		
+		var Sword1Button = GetNode<Button>("container_buttons/set_sword_1");
+		
+		var Sword4Button = GetNode<Button>("container_buttons/set_sword_4");
         
 		SetKnightButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/knight_1.res");
 		
 		SetSportyButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/sporty_male.res");
 		
 		SetJacketButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/male_jacket.res");
+		
+		Sword1Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/weapon_sword_1.tsnc");
+		
+		Sword4Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/weapon_sword_4.tscn");
 		
 		StartButton.Pressed += OnStartPressed;
 		

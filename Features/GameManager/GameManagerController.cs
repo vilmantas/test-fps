@@ -27,6 +27,8 @@ public partial class GameManagerController : Node
 		player.Name = id.ToString();
 
 		player.SelectedSkin = "res://Imports/meshes/characters/sporty_male.res";
+		
+		player.SelectedWeapon = "res://Assets/Weapons/weapon_sword_1.tscn";
         
 		Container.AddChild(player, true);
 		
@@ -47,6 +49,14 @@ public partial class GameManagerController : Node
 		m_Players[id].SelectedSkin = model;
 	}
 
+	public void UpdatePlayerWeapon(int id, string model)
+	{
+		if (!m_Players.ContainsKey(id)) return;
+
+		m_Players[id].SelectedWeapon = model;
+	}
+	
+	
 	public PlayerDataController GetByName(string name) => Players.First(x => x.PlayerName == name);
 	
 	public PlayerDataController GetById(int id) => Players.First(x => x.Name == id.ToString());
