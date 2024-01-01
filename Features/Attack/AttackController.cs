@@ -7,25 +7,11 @@ public partial class AttackController : Node
 	[Export] public Node3D HitboxSpawn;
 	[Export] public float HitboxDelay = 0.3f;
 	[Export] public float HitboxDuration = 0.3f;
-	[Export] public float Cooldown;
+	[Export] public float Cooldown = 0.5f;
 	
 	public Action<Node3D> OnHit;
 	
 	public bool AttackAvailable = true;
-	
-	public void Initialize(AttackConfiguration configuration)
-	{
-		HitboxDelay = configuration.HitboxDelay;
-		HitboxDuration = configuration.HitboxDuration;
-		Cooldown = configuration.Cooldown;
-		Hitbox = configuration.Hitbox;
-		HitboxSpawn = configuration.HitboxSpawn;
-	}
-
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-	}
 	
 	public bool Attack()
 	{
@@ -33,9 +19,9 @@ public partial class AttackController : Node
 
 		AttackAvailable = false;
         
-		var attackTimer = GetTree().CreateTimer(0.3f);
+		var attackTimer = GetTree().CreateTimer(HitboxDelay);
 
-		var attackCooldownTimer = GetTree().CreateTimer(1f);
+		var attackCooldownTimer = GetTree().CreateTimer(Cooldown);
 		
 		attackTimer.Timeout += AttackTimerOnTimeout;
 
@@ -44,7 +30,7 @@ public partial class AttackController : Node
 		return true;
 	}
 	
-	void AttackTimerOnTimeout()
+	private void AttackTimerOnTimeout()
 	{
 		var instance = Hitbox.Instantiate<DamageHitboxController>();
 
@@ -58,7 +44,7 @@ public partial class AttackController : Node
 		
 		instance.GlobalPosition = HitboxSpawn.GlobalPosition;
 
-		var despawnTimer = GetTree().CreateTimer(1f);
+		var despawnTimer = GetTree().CreateTimer(HitboxDuration);
 
 		despawnTimer.Timeout += () => RemoveHitbox(instance);
 	}
@@ -77,14 +63,4 @@ public partial class AttackController : Node
 	{
 		instance.QueueFree();
 	}
-}
-
-[Serializable]
-public class AttackConfiguration
-{
-	public float HitboxDelay { get; set; }
-	public float HitboxDuration { get; set; }
-	public float Cooldown { get; set; }
-	public PackedScene Hitbox { get; set; }
-	public Node3D HitboxSpawn { get; set; }
 }

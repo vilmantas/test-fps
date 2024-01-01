@@ -26,7 +26,7 @@ public partial class GameManagerController : Node
 		
 		player.Name = id.ToString();
 
-		player.SelectedSkin = "res://Imports/meshes/sporty_male.res";
+		player.SelectedSkin = "res://Imports/meshes/characters/sporty_male.res";
         
 		Container.AddChild(player, true);
 		

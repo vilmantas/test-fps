@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://gwg4ycsccnjc"]
 
 [ext_resource type="PackedScene" uid="uid://dn32kdccw2f5j" path="res://Imports/char_male_jacket/male_jacket.glb" id="1_jx344"]
-[ext_resource type="ArrayMesh" uid="uid://b6cf8xog270l8" path="res://Imports/meshes/male_jacket.res" id="2_87v5j"]
+[ext_resource type="ArrayMesh" uid="uid://b6cf8xog270l8" path="res://Imports/meshes/characters/male_jacket.res" id="2_87v5j"]
 [ext_resource type="Animation" uid="uid://cswf2etkamgl1" path="res://Animations/Idle.res" id="2_26644"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_hxpyy"]

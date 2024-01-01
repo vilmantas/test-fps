@@ -4,23 +4,17 @@ using testfps.Scripts;
 
 public class ThirdPersonController
 {
-    private float JumpVelocity;
-    private float JumpGravity;
-    private float FallGravity;
+    private readonly float JumpVelocity;
+    private readonly float JumpGravity;
+    private readonly float FallGravity;
     
     private Vector3 m_Velocity;
     private Vector2 m_MovementInput;
     private Vector3 m_Rotation;
     private bool m_JumpEngaged;
 
-    private readonly float m_Speed;
-    private readonly float m_LookSpeed;
-
-    public ThirdPersonController(float Speed, float LookSpeed, float JumpHeight, float JumpTimeToPeak, float JumpTimeToDescend)
+    public ThirdPersonController(float JumpHeight, float JumpTimeToPeak, float JumpTimeToDescend)
     {
-        m_Speed = Speed;
-        m_LookSpeed = LookSpeed;
-        
         JumpVelocity = 2 * JumpHeight / JumpTimeToPeak;
         JumpGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToPeak, 2);
         FallGravity = (-2 * JumpHeight) / Mathf.Pow(JumpTimeToDescend, 2);
@@ -61,7 +55,7 @@ public class ThirdPersonController
 
             m_Rotation = args.CurrentRotation;
 		
-            m_Rotation.Y = (float)Mathf.LerpAngle(m_Rotation.Y, angle - Math.PI, args.Delta * m_LookSpeed);
+            m_Rotation.Y = (float)Mathf.LerpAngle(m_Rotation.Y, angle - Math.PI, args.Delta * args.LookSpeed);
         }
 
         m_Velocity.Y = args.CurrentVelocity.Y;
@@ -74,8 +68,8 @@ public class ThirdPersonController
             m_JumpEngaged = true;
         }
         
-        m_Velocity.X *= m_Speed;
-        m_Velocity.Z *= m_Speed;
+        m_Velocity.X *= args.Speed;
+        m_Velocity.Z *= args.Speed;
 
         return new MovementResult()
         {
@@ -83,7 +77,7 @@ public class ThirdPersonController
             MovementInput = m_MovementInput,
             Rotation = m_Rotation,
             Velocity = m_Velocity,
-            LerpedMovementInput = LerpWithLimit(args.CurrentMovementInput, m_MovementInput, (float)args.Delta * m_LookSpeed)
+            LerpedMovementInput = LerpWithLimit(args.CurrentMovementInput, m_MovementInput, (float)args.Delta * args.LookSpeed)
         };
     }
     
@@ -106,24 +100,24 @@ public class ThirdPersonController
 
         return result;
     }
+}
 
-    public class ThirdPersonControllerArgs
-    {
-        public double Delta { get; set; }
-        public Vector3 CurrentVelocity { get; set; }
-        public Vector3 CurrentRotation { get; set; }
-        public bool JumpQueued { get; set; }
-        public Vector2 CurrentMovementInput { get; set; }
-        public float Speed { get; set; }
-        public float LookSpeed { get; set; }
-    }
-    
-    public class MovementResult
-    {
-        public Vector3 Velocity { get; set; }
-        public Vector3 Rotation { get; set; }
-        public bool JumpEngaged { get; set; }
-        public Vector2 MovementInput { get; set; }
-        public Vector2 LerpedMovementInput { get; set; }
-    }
+public class MovementResult
+{
+    public Vector3 Velocity { get; set; }
+    public Vector3 Rotation { get; set; }
+    public bool JumpEngaged { get; set; }
+    public Vector2 MovementInput { get; set; }
+    public Vector2 LerpedMovementInput { get; set; }
+}
+
+public class ThirdPersonControllerArgs
+{
+    public double Delta { get; set; }
+    public Vector3 CurrentVelocity { get; set; }
+    public Vector3 CurrentRotation { get; set; }
+    public bool JumpQueued { get; set; }
+    public Vector2 CurrentMovementInput { get; set; }
+    public float Speed { get; set; }
+    public float LookSpeed { get; set; }
 }

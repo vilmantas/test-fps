@@ -1,33 +1,39 @@
-[gd_scene load_steps=3 format=3 uid="uid://bv62qrbvo4nw"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_uhmio"]
+[gd_scene load_steps=2 format=3 uid="uid://c1ae4adwyawwn"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_vb03g"]
 
 [node name="test" type="MeshInstance3D"]
-transform = Transform3D(0.16, 0, 0, 0, 0.16, 0, 0, 0, 0.16, 2.08165e-12, 2.08165e-12, 2.08165e-12)
-mesh = SubResource("CapsuleMesh_uhmio")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 2.08165e-12, 2.08165e-12)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+[node name="Node3D" type="Node3D" parent="."]
+transform = Transform3D(0.105, 0, 0, 0, 0.105, 0, 0, 0, 0.105, 0, -0.0132366, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.10246, 0)
 mesh = SubResource("CapsuleMesh_vb03g")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.21643, 0)
 mesh = SubResource("CapsuleMesh_vb03g")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.78525, 0)
 mesh = SubResource("CapsuleMesh_vb03g")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.33482, 0)
 mesh = SubResource("CapsuleMesh_vb03g")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60368, 0)
 mesh = SubResource("CapsuleMesh_vb03g")
+skeleton = NodePath("../..")
 
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="Node3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.60368, 0)
 mesh = SubResource("CapsuleMesh_vb03g")
+skeleton = NodePath("../..")

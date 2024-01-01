@@ -15,6 +15,7 @@ public partial class PlayerController : CharacterBody3D
 	[Export] public float AttackCooldown;
 	
 	[Export] public Mesh PlayerModel;
+	[Export] public PackedScene Weapon;
 	[Export] public int Speed = 10;
 	[Export] public int LookSpeed = 10;
 
@@ -45,26 +46,25 @@ public partial class PlayerController : CharacterBody3D
 		GroundDistanceRay = GetNode<RayCast3D>("ground_distance_ray");
 		Hitbox = GetNode<CollisionShape3D>("core_hitbox");
 		Character = GetNode<CharacterController>("character");
-		AttackHitboxSpawn = GetNode<Node3D>("spawn_attack_hitbox");
 		HealthModule = GetNode<HealthController>("health_module");
+
 		AttackModule = GetNode<AttackController>("attack_module");
+		AttackHitboxSpawn = GetNode<Node3D>("attack_module/spawn_attack_hitbox");
 
-		var attackConfiguration = new AttackConfiguration()
-		{
-			Hitbox = AttackHitbox,
-			HitboxSpawn = AttackHitboxSpawn,
-			Cooldown = AttackCooldown,
-			HitboxDelay = AttackHitboxDelay,
-			HitboxDuration = AttackHitboxDuration,
-		};
-        
-		AttackModule.Initialize(attackConfiguration);
-
+		AttackModule.Hitbox = AttackHitbox;
+		AttackModule.HitboxSpawn = AttackHitboxSpawn;
+		AttackModule.Cooldown = AttackCooldown;
+		AttackModule.HitboxDelay = AttackHitboxDelay;
+		AttackModule.HitboxDuration = AttackHitboxDuration;
 		AttackModule.OnHit += HandleHit;
 		
 		Character.SetModel(PlayerModel);
+
+		var instance = Weapon.Instantiate<Node3D>();
 		
-		MovementController = new ThirdPersonController(Speed, LookSpeed, JumpHeight, JumpTimeToPeak, JumpTimeToDescend);
+		Character.SetMainWeapon(instance);
+		
+		MovementController = new ThirdPersonController(JumpHeight, JumpTimeToPeak, JumpTimeToDescend);
 		
 		if (!IsMultiplayerAuthority()) return;
 		
@@ -107,18 +107,7 @@ public partial class PlayerController : CharacterBody3D
 
 	private void ProcessInput(double delta)
 	{
-		var args = new ThirdPersonController.ThirdPersonControllerArgs()
-		{
-			Delta = delta,
-			CurrentRotation = Rotation,
-			CurrentVelocity = Velocity,
-			CurrentMovementInput = sync_MovementInput,
-			JumpQueued = JumpQueued,
-			LookSpeed = LookSpeed,
-			Speed = Speed,
-		};
-		
-		var result = MovementController.GetVelocity(args);
+		var result = MovementController.GetVelocity(GetMovementArgs(delta));
 		
 		if (result.JumpEngaged)
 		{
@@ -175,8 +164,6 @@ public partial class PlayerController : CharacterBody3D
 		sync_Aiming = flag;
 		Character.SetAimingState(flag);
 	}
-
-	private bool AttackAvailable = true;
 	
 	private void OnAttackPressed()
 	{
@@ -202,5 +189,19 @@ public partial class PlayerController : CharacterBody3D
 		Character.TriggerJump();
 		JumpQueued = false;
 		m_IsJumping = true;
+	}
+
+	private ThirdPersonControllerArgs GetMovementArgs(double delta)
+	{
+		return new ThirdPersonControllerArgs()
+		{
+			Delta = delta,
+			CurrentRotation = Rotation,
+			CurrentVelocity = Velocity,
+			CurrentMovementInput = sync_MovementInput,
+			JumpQueued = JumpQueued,
+			LookSpeed = LookSpeed,
+			Speed = Speed,
+		};
 	}
 }
