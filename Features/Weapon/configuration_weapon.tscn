@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://c5glvd7xhw6al"]
+
+[ext_resource type="Script" path="res://Features/Weapon/WeaponConfiguration.cs" id="1_nnnl4"]
+
+[node name="configuration_weapon" type="Node" node_paths=PackedStringArray("HitboxConfiguration")]
+script = ExtResource("1_nnnl4")
+HitboxConfiguration = NodePath("")

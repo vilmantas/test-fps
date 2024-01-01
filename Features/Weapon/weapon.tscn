@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=3 uid="uid://co0312enf6vl4"]
+
+[ext_resource type="PackedScene" uid="uid://cmellox5kpwhf" path="res://Features/Hitbox/configuration_hitbox.tscn" id="1_06t7t"]
+[ext_resource type="PackedScene" uid="uid://c5glvd7xhw6al" path="res://Features/Weapon/configuration_weapon.tscn" id="1_l823k"]
+[ext_resource type="Script" path="res://Features/Weapon/WeaponController.cs" id="1_tuo2h"]
+[ext_resource type="PackedScene" uid="uid://bvowppwwxnyax" path="res://Assets/Weapons/weapon_sword_4.tscn" id="3_3uptu"]
+
+[node name="weapon" type="Node3D" node_paths=PackedStringArray("WeaponConfiguration", "HitboxConfiguration")]
+script = ExtResource("1_tuo2h")
+WeaponConfiguration = NodePath("configuration_weapon")
+HitboxConfiguration = NodePath("configuration_hitbox")
+
+[node name="configuration_hitbox" parent="." instance=ExtResource("1_06t7t")]
+
+[node name="configuration_weapon" parent="." node_paths=PackedStringArray("HitboxConfiguration") instance=ExtResource("1_l823k")]
+Name = "Slicer"
+WeaponModel = ExtResource("3_3uptu")
+HitboxConfiguration = NodePath("../configuration_hitbox")

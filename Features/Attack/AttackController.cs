@@ -3,36 +3,32 @@ using System;
 
 public partial class AttackController : Node
 {
-	[Export] public PackedScene Hitbox;
 	[Export] public Node3D HitboxSpawn;
-	[Export] public float HitboxDelay = 0.3f;
-	[Export] public float HitboxDuration = 0.3f;
-	[Export] public float Cooldown = 0.5f;
 	
 	public Action<Node3D> OnHit;
 	
 	public bool AttackAvailable = true;
 	
-	public bool Attack()
+	public bool Attack(WeaponController weapon)
 	{
 		if (!AttackAvailable) return false;
 
 		AttackAvailable = false;
         
-		var attackTimer = GetTree().CreateTimer(HitboxDelay);
+		var attackTimer = GetTree().CreateTimer(weapon.HitboxConfiguration.Delay);
 
-		var attackCooldownTimer = GetTree().CreateTimer(Cooldown);
+		var attackCooldownTimer = GetTree().CreateTimer(weapon.WeaponConfiguration.AttackCooldown);
 		
-		attackTimer.Timeout += AttackTimerOnTimeout;
+		attackTimer.Timeout += () => AttackTimerOnTimeout(weapon);
 
 		attackCooldownTimer.Timeout += EnableAttack;
 
 		return true;
 	}
 	
-	private void AttackTimerOnTimeout()
+	private void AttackTimerOnTimeout(WeaponController weapon)
 	{
-		var instance = Hitbox.Instantiate<DamageHitboxController>();
+		var instance = weapon.HitboxConfiguration.HitboxModel.Instantiate<DamageHitboxController>();
 
 		instance.Name = "hitbox_attack";
         
@@ -44,7 +40,7 @@ public partial class AttackController : Node
 		
 		instance.GlobalPosition = HitboxSpawn.GlobalPosition;
 
-		var despawnTimer = GetTree().CreateTimer(HitboxDuration);
+		var despawnTimer = GetTree().CreateTimer(weapon.HitboxConfiguration.Duration);
 
 		despawnTimer.Timeout += () => RemoveHitbox(instance);
 	}

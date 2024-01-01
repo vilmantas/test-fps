@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://d2dvfml0wryba"]
+[gd_scene load_steps=9 format=3 uid="uid://d2dvfml0wryba"]
 
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
 [ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/characters/knight_1.res" id="2_e7st4"]
 [ext_resource type="PackedScene" uid="uid://b5aoffmuot6d6" path="res://Features/Hitbox/hitbox_damage.tscn" id="2_tg6kw"]
-[ext_resource type="PackedScene" uid="uid://b8q1crdp6akoa" path="res://Assets/Weapons/weapon_sword_1.tscn" id="4_ow7v5"]
 [ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="4_sa7vv"]
 [ext_resource type="Script" path="res://Features/Attack/AttackController.cs" id="6_iyf1l"]
 
@@ -40,7 +39,6 @@ AttackHitboxSpawn = NodePath("attack_module/spawn_attack_hitbox")
 AttackHitboxDuration = 0.5
 AttackCooldown = 1.0
 PlayerModel = ExtResource("2_e7st4")
-Weapon = ExtResource("4_ow7v5")
 JumpHeight = 3.0
 JumpTimeToPeak = 0.7
 JumpTimeToDescend = 0.5
@@ -68,7 +66,6 @@ script = ExtResource("4_sa7vv")
 [node name="attack_module" type="Node3D" parent="." node_paths=PackedStringArray("HitboxSpawn")]
 script = ExtResource("6_iyf1l")
 HitboxSpawn = NodePath("spawn_attack_hitbox")
-Cooldown = 1.0
 
 [node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -0.783805)

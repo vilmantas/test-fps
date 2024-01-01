@@ -28,7 +28,7 @@ public partial class GameManagerController : Node
 
 		player.SelectedSkin = "res://Imports/meshes/characters/sporty_male.res";
 		
-		player.SelectedWeapon = "res://Assets/Weapons/weapon_sword_1.tscn";
+		player.SelectedWeapon = "res://Assets/Weapons/sword_bobo.tscn";
         
 		Container.AddChild(player, true);
 		

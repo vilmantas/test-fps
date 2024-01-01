@@ -31,9 +31,9 @@ public partial class LobbyController : Node
 		
 		SetJacketButton.Pressed += () => GameServerManager.Instance.UpdateClientModel("res://Imports/meshes/characters/male_jacket.res");
 		
-		Sword1Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/weapon_sword_1.tsnc");
+		Sword1Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/sword_bobo.tsnc");
 		
-		Sword4Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/weapon_sword_4.tscn");
+		Sword4Button.Pressed += () => GameServerManager.Instance.UpdateClientWeapon("res://Assets/Weapons/sword_slicer.tscn");
 		
 		StartButton.Pressed += OnStartPressed;
 		

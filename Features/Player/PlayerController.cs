@@ -15,7 +15,7 @@ public partial class PlayerController : CharacterBody3D
 	[Export] public float AttackCooldown;
 	
 	[Export] public Mesh PlayerModel;
-	[Export] public PackedScene Weapon;
+	[Export] public PackedScene EquippedWeapon;
 	[Export] public int Speed = 10;
 	[Export] public int LookSpeed = 10;
 
@@ -39,6 +39,7 @@ public partial class PlayerController : CharacterBody3D
 	private AttackController AttackModule;
 
 	private ThirdPersonController MovementController;
+	private WeaponController Weapon;
 
 	public override void _Ready()
 	{
@@ -51,18 +52,14 @@ public partial class PlayerController : CharacterBody3D
 		AttackModule = GetNode<AttackController>("attack_module");
 		AttackHitboxSpawn = GetNode<Node3D>("attack_module/spawn_attack_hitbox");
 
-		AttackModule.Hitbox = AttackHitbox;
 		AttackModule.HitboxSpawn = AttackHitboxSpawn;
-		AttackModule.Cooldown = AttackCooldown;
-		AttackModule.HitboxDelay = AttackHitboxDelay;
-		AttackModule.HitboxDuration = AttackHitboxDuration;
 		AttackModule.OnHit += HandleHit;
 		
 		Character.SetModel(PlayerModel);
 
-		var instance = Weapon.Instantiate<Node3D>();
+		Weapon = EquippedWeapon.Instantiate<WeaponController>();
 		
-		Character.SetMainWeapon(instance);
+		Character.SetMainWeapon(Weapon);
 		
 		MovementController = new ThirdPersonController(JumpHeight, JumpTimeToPeak, JumpTimeToDescend);
 		
@@ -167,7 +164,7 @@ public partial class PlayerController : CharacterBody3D
 	
 	private void OnAttackPressed()
 	{
-		if (!AttackModule.Attack()) return;
+		if (!AttackModule.Attack(Weapon)) return;
 
 		Rpc("TriggerAttack");
 	}
