@@ -12,6 +12,8 @@ public partial class PlayerDataController : Node
     [Export] public string SelectedSkin = String.Empty;
     
     [Export] public string SelectedWeapon = String.Empty;
+
+    [Export] public bool IsFreeLook;
     
     public void Initialize(string name)
     {

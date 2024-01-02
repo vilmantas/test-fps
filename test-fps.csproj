@@ -6,4 +6,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>testfps</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Features\Camera\FreeLook\" />
+  </ItemGroup>
 </Project>

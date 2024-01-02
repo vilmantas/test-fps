@@ -29,7 +29,7 @@ public partial class MultiplayerManager : Node
 
         OnConnectedToServer();
         
-        GameManager.Instance.SpawnPlayer(Multiplayer.GetUniqueId(), name);
+        GameServerManager.Instance.OnPlayerConnected(Multiplayer.GetUniqueId(), name);
     }
 
     public void ConnectToHost()

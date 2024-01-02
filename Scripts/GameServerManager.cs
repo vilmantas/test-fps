@@ -16,7 +16,7 @@ public partial class GameServerManager : Node
 
     public void StartGame()
     {
-        ClientManager.Instance.SendClientMessage(nameof(ClientManager.Instance.SendClientMessage));
+        ClientManager.Instance.SendClientMessage(nameof(ClientManager.Instance.StartGame));
     }
     
     public void OnPlayerConnected(long id, string name)

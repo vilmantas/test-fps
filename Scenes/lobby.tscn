@@ -42,6 +42,10 @@ layout_mode = 2
 text = "Start Game
 "
 
+[node name="set_free_look" type="Button" parent="container_buttons"]
+layout_mode = 2
+text = "Free Look"
+
 [node name="set_knight" type="Button" parent="container_buttons"]
 layout_mode = 2
 text = "Set Knight Character"

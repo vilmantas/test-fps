@@ -33,7 +33,7 @@ public partial class ClientManager : Node
     }
     
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
-    private void StartGame()
+    public void StartGame()
     {
         GetTree().ChangeSceneToFile("res://Scenes/Levels/level_00.tscn");
     }

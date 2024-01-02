@@ -15,6 +15,11 @@ public partial class PlayerInputManager : Node
     
     public const string jump = "player_jump";
     public const string attack = "player_attack";
+
+    public const string run_toggle = "player_run";
+    public const string crouch_toggle = "player_crouch";
+    
+    public const string camera_rotate = "player_camera_rotate";
     
     public (int Horizontal, int Vertical) MovementInput = new (0, 0);
     
@@ -27,6 +32,10 @@ public partial class PlayerInputManager : Node
     public Action OnJumpPressed;
 
     public Action OnAttackPressed;
+
+    public Action<bool> OnRunToggled;
+    
+    public Action<bool> OnCrouchToggled;
     
     public override void _Ready()
     {
@@ -45,6 +54,26 @@ public partial class PlayerInputManager : Node
         if (Input.IsActionJustPressed(attack))
         {
             OnAttackPressed?.Invoke();
+        }
+
+        if (Input.IsActionJustPressed(run_toggle))
+        {
+            OnRunToggled?.Invoke(true);
+        }
+
+        if (Input.IsActionJustReleased(run_toggle))
+        {
+            OnRunToggled?.Invoke(false);
+        }
+        
+        if (Input.IsActionJustPressed(crouch_toggle))
+        {
+            OnCrouchToggled?.Invoke(true);
+        }
+
+        if (Input.IsActionJustReleased(crouch_toggle))
+        {
+            OnCrouchToggled?.Invoke(false);
         }
     }
 
@@ -88,12 +117,12 @@ public partial class PlayerInputManager : Node
     
     private void CheckRotation()
     {
-        if (Input.IsActionJustPressed("player_camera_rotate"))
+        if (Input.IsActionJustPressed(camera_rotate))
         {
             EnableRotation();
         }
 
-        if (Input.IsActionJustReleased("player_camera_rotate"))
+        if (Input.IsActionJustReleased(camera_rotate))
         {
             DisableRotation();
         }

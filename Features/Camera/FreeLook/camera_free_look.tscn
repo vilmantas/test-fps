@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://txg3by4mp4xy"]
+
+[ext_resource type="Script" path="res://Features/Camera/FreeLook/CameraFreeLookController.cs" id="1_5744y"]
+
+[node name="camera_free_look" type="Node3D" node_paths=PackedStringArray("Camera")]
+script = ExtResource("1_5744y")
+Camera = NodePath("camera")
+MouseSensitivity = 3
+
+[node name="camera" type="Camera3D" parent="."]

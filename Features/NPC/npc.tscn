@@ -1,0 +1,22 @@
+[gd_scene load_steps=5 format=3 uid="uid://cns23q7nxi7yg"]
+
+[ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_hw580"]
+[ext_resource type="Script" path="res://Features/NPC/NPCController.cs" id="1_qs3cl"]
+[ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="3_0xh8r"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5vogd"]
+radius = 0.251076
+height = 1.65717
+
+[node name="npc" type="CharacterBody3D"]
+collision_layer = 5
+script = ExtResource("1_qs3cl")
+
+[node name="character" parent="." instance=ExtResource("1_hw580")]
+
+[node name="core_hitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.834642, 0)
+shape = SubResource("CapsuleShape3D_5vogd")
+
+[node name="health_module" type="Node" parent="."]
+script = ExtResource("3_0xh8r")

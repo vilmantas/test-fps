@@ -10,7 +10,9 @@ public partial class GameManagerController : Node
 
 	[Export] private Dictionary<long, PlayerDataController> m_Players = new();
 	
-	public PlayerDataController[] Players => Container.GetChildren().Cast<PlayerDataController>().ToArray();
+	public PlayerDataController[] Players => Container.GetChildren().Cast<PlayerDataController>().Where(x => !x.IsFreeLook).ToArray();
+	
+	public PlayerDataController[] Spectators => Container.GetChildren().Cast<PlayerDataController>().Where(x => x.IsFreeLook).ToArray();
 
 	private Node Container;
     

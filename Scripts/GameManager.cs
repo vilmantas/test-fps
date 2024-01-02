@@ -15,7 +15,7 @@ public partial class GameManager : Node
 
 	public static PlayerDataController CurrentPlayerData;
 	
-	public static CameraController CameraController;
+	public static Node3D CameraController;
 
 	public static string PlayerName = "Player";
     
@@ -72,8 +72,6 @@ public partial class GameManager : Node
 	
 	public void OnLevelLoaded(Node level)
 	{
-		CameraController = level.GetNode<CameraController>("camera");
-		
 		var gameplay = GD.Load<PackedScene>("res://Features/Gameplay/gameplay.tscn");
 		
 		level.AddChild(gameplay.Instantiate());

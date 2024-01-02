@@ -15,6 +15,8 @@ public partial class LobbyController : Node
 		PlayerContainer = GetNode<Node>("container_players");
 
 		var StartButton = GetNode<Button>("container_buttons/start_button");
+		
+		var FreeLookButton = GetNode<Button>("container_buttons/set_free_look");
 
 		var SetKnightButton = GetNode<Button>("container_buttons/set_knight");
 		
@@ -35,21 +37,25 @@ public partial class LobbyController : Node
 		Sword1Button.Pressed += () => UpdateClientWeapon("res://Assets/Weapons/sword_bobo.tsnc");
 		
 		Sword4Button.Pressed += () => UpdateClientWeapon("res://Assets/Weapons/sword_slicer.tscn");
+
+		StartButton.Pressed += GameServerManager.Instance.StartGame;
 		
-		StartButton.Pressed += OnStartPressed;
-		
+		FreeLookButton.Pressed += FreeLookButtonOnPressed;
+
 		if (Multiplayer.IsServer()) return;
 		
-		// StartButton.Hide();
+		StartButton.Hide();
+		
+		FreeLookButton.Hide();
 	}
 
-	private void OnStartPressed()
+	private void FreeLookButtonOnPressed()
 	{
-		// GameServerManager.Instance.StartGame();
+		var data = GameManager.CurrentPlayerData;
 		
-		if (Multiplayer.IsServer()) return;
+		data.IsFreeLook = true;
 		
-		UpdateClientName("WDAIFNERSUJGHBNE");
+		GameServerManager.Instance.UpdateClientData(data);
 	}
 	
 	public void UpdateClientName(string name)

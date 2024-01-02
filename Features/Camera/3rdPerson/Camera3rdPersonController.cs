@@ -2,8 +2,10 @@ using Godot;
 using System;
 using testfps.Scripts;
 
-public partial class CameraController : Node3D
+public partial class Camera3rdPersonController : Node3D
 {
+	public Camera3D Camera;
+	
 	private bool RotationEnabled;
 	
 	private Vector2 Offset = Vector2.Zero;
@@ -15,7 +17,9 @@ public partial class CameraController : Node3D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		Arm = GetNode<Node3D>("SpringArm3D");
+		Arm = GetNode<Node3D>("arm");
+		
+		Camera = GetNode<Camera3D>("arm/camera");
 
 		PlayerInputManager.Instance.OnRotationEnabled += OnRotationChanged;
 	}

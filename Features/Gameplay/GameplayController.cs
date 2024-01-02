@@ -23,23 +23,46 @@ public partial class GameplayController : Node
         
         Spawns = GetTree().GetNodesInGroup("location_spawn").Cast<SpawnPointController>().ToArray();
 
+        foreach (var data in GameManager.Core.Spectators) 
+        {
+            AddFreeLookCamera(data);
+        }
+        
         for (var i = 0; i < GameManager.Core.Players.Length; i++)
         {
             var data = GameManager.Core.Players[i];
             
             var instance = player.Instantiate<PlayerController>();
-            
-            if (data == GameManager.CurrentPlayerData)
-            {
-                SetLocalInfo(instance);
-            }
-            
+        
             InitializePlayer(instance, data, Spawns[i % Spawns.Length]);
-            
+        
             Players.Add(instance);
         }
     }
 
+    private void AddFreeLookCamera(PlayerDataController data)
+    {
+        var prefab = GD.Load<PackedScene>("res://Features/Camera/FreeLook/camera_free_look.tscn");
+        
+        var instance = prefab.Instantiate<CameraFreeLookController>();
+        
+        GetParent().AddChild(instance);
+
+        if (data == GameManager.CurrentPlayerData)
+        {
+            instance.MouseSensitivity = 10f;
+            GameManager.CameraController = instance;
+
+            instance.Camera.Current = true;
+            
+            instance.Initialize(true);
+        }
+        else
+        {
+            instance.Initialize(false);
+        }
+    }
+    
     private void InitializePlayer(PlayerController player, PlayerDataController data, SpawnPointController spawn)
     {
         player.SetMultiplayerAuthority(data.Id);
@@ -53,12 +76,27 @@ public partial class GameplayController : Node
         Container.AddChild(player, true);
             
         player.GlobalPosition = spawn.SpawnLocation.GlobalPosition;
+        
+        if (data == GameManager.CurrentPlayerData)
+        {
+            SetLocalInfo(player);
+        }
     }
 
     private void SetLocalInfo(PlayerController player)
     {
         GameManager.PlayerController = player;
 
-        GameManager.CameraController.Initialize(player);
+        var cameraScene = GD.Load<PackedScene>("res://Features/Camera/3rdPerson/camera_3rd_person.tscn");
+
+        var cameraInstance = cameraScene.Instantiate<Camera3rdPersonController>();
+        
+        GetParent().AddChild(cameraInstance);
+        
+        cameraInstance.Initialize(player);
+        
+        cameraInstance.Camera.Current = true;
+
+        GameManager.CameraController = cameraInstance;
     }
 }
