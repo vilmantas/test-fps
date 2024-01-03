@@ -23,24 +23,51 @@ public partial class GameplayController : Node
         
         Spawns = GetTree().GetNodesInGroup("location_spawn").Cast<SpawnPointController>().ToArray();
 
+        Debug.WriteLine(GameManager.Core.Players.Length);
+        
         foreach (var data in GameManager.Core.Spectators) 
         {
-            AddFreeLookCamera(data);
+            AddSpectator(data);
         }
         
         for (var i = 0; i < GameManager.Core.Players.Length; i++)
         {
-            var data = GameManager.Core.Players[i];
-            
-            var instance = player.Instantiate<PlayerController>();
-        
-            InitializePlayer(instance, data, Spawns[i % Spawns.Length]);
-        
-            Players.Add(instance);
+            AddPlayer(i, player);
         }
+        
+        AddDungeonMaster();
+    }
+    
+    private void AddDungeonMaster()
+    {
+        var data = GameManager.Core.Boss;
+
+        if (data == null) return;
+        
+        var dungeonMasterScene = GD.Load<PackedScene>("res://Features/DungeonMaster/dungeon_master.tscn");
+        
+        var instance = dungeonMasterScene.Instantiate<DungeonMasterController>();
+        
+        GetParent().AddChild(instance);
+
+        instance.CameraFreeLook.Initialize(GameManager.CurrentPlayerData == data);
+
+        GameManager.CameraController = instance.CameraFreeLook;
+    }
+    
+
+    private void AddPlayer(int i, PackedScene player)
+    {
+        var data = GameManager.Core.Players[i];
+            
+        var instance = player.Instantiate<PlayerController>();
+        
+        InitializePlayer(instance, data, Spawns[i % Spawns.Length]);
+        
+        Players.Add(instance);
     }
 
-    private void AddFreeLookCamera(PlayerDataController data)
+    private void AddSpectator(PlayerDataController data)
     {
         var prefab = GD.Load<PackedScene>("res://Features/Camera/FreeLook/camera_free_look.tscn");
         

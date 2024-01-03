@@ -12,9 +12,15 @@ properties/1/replication_mode = 2
 properties/2/path = NodePath(".:SelectedWeapon")
 properties/2/spawn = true
 properties/2/replication_mode = 2
-properties/3/path = NodePath(".:IsFreeLook")
+properties/3/path = NodePath(".:IsSpectator")
 properties/3/spawn = true
 properties/3/replication_mode = 2
+properties/4/path = NodePath(".:IsDungeonMaster")
+properties/4/spawn = true
+properties/4/replication_mode = 2
+properties/5/path = NodePath(".:IsPlayer")
+properties/5/spawn = true
+properties/5/replication_mode = 2
 
 [node name="player_data" type="Node3D"]
 script = ExtResource("1_sg7aw")

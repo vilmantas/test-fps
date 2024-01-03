@@ -13,7 +13,11 @@ public partial class PlayerDataController : Node
     
     [Export] public string SelectedWeapon = String.Empty;
 
-    [Export] public bool IsFreeLook;
+    [Export] public bool IsPlayer = true;
+    
+    [Export] public bool IsSpectator;
+
+    [Export] public bool IsDungeonMaster;
     
     public void Initialize(string name)
     {

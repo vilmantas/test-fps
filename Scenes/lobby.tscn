@@ -46,6 +46,10 @@ text = "Start Game
 layout_mode = 2
 text = "Free Look"
 
+[node name="set_dungeon_master" type="Button" parent="container_buttons"]
+layout_mode = 2
+text = "Dungeon Master"
+
 [node name="set_knight" type="Button" parent="container_buttons"]
 layout_mode = 2
 text = "Set Knight Character"

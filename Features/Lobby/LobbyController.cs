@@ -17,6 +17,8 @@ public partial class LobbyController : Node
 		var StartButton = GetNode<Button>("container_buttons/start_button");
 		
 		var FreeLookButton = GetNode<Button>("container_buttons/set_free_look");
+		
+		var DungeonMasterButton = GetNode<Button>("container_buttons/set_dungeon_master");
 
 		var SetKnightButton = GetNode<Button>("container_buttons/set_knight");
 		
@@ -42,6 +44,8 @@ public partial class LobbyController : Node
 		
 		FreeLookButton.Pressed += FreeLookButtonOnPressed;
 
+		DungeonMasterButton.Pressed += DungeonMasterButtonOnPressed;
+
 		if (Multiplayer.IsServer()) return;
 		
 		StartButton.Hide();
@@ -49,11 +53,23 @@ public partial class LobbyController : Node
 		FreeLookButton.Hide();
 	}
 
+	private void DungeonMasterButtonOnPressed()
+	{
+		var data = GameManager.CurrentPlayerData;
+		
+		data.IsDungeonMaster = true;
+
+		data.IsPlayer = false;
+		
+		GameServerManager.Instance.UpdateClientData(data);
+	}
+
 	private void FreeLookButtonOnPressed()
 	{
 		var data = GameManager.CurrentPlayerData;
 		
-		data.IsFreeLook = true;
+		data.IsSpectator = true;
+		data.IsPlayer = false;
 		
 		GameServerManager.Instance.UpdateClientData(data);
 	}
