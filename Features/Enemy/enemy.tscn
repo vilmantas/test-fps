@@ -1,0 +1,35 @@
+[gd_scene load_steps=8 format=3 uid="uid://c0in4756syrja"]
+
+[ext_resource type="Script" path="res://Features/Enemy/EnemyController.cs" id="1_iu5hl"]
+[ext_resource type="Texture2D" uid="uid://kf8pkeqiw2ps" path="res://addons/kenney_prototype_textures/dark/texture_06.png" id="2_lc6m3"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_76jag"]
+radius = 0.606354
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_fjjhk"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tws4k"]
+albedo_texture = ExtResource("2_lc6m3")
+
+[sub_resource type="BoxMesh" id="BoxMesh_wrvl6"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_d22lk"]
+albedo_color = Color(0.976471, 0.368627, 0, 1)
+
+[node name="enemy" type="CharacterBody3D"]
+script = ExtResource("1_iu5hl")
+
+[node name="core_hitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("CapsuleShape3D_76jag")
+
+[node name="model" type="MeshInstance3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 0)
+mesh = SubResource("CapsuleMesh_fjjhk")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_tws4k")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="model"]
+transform = Transform3D(0.794713, 0, 0, 0, 0.578455, 0, 0, 0, 1, 0, 0.31239, 0.357202)
+mesh = SubResource("BoxMesh_wrvl6")
+surface_material_override/0 = SubResource("StandardMaterial3D_d22lk")

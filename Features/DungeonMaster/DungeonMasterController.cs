@@ -9,6 +9,8 @@ public partial class DungeonMasterController : Node3D
 
     [Export] public PackedScene DebugScene;
     
+    [Export] public PackedScene EnemyPrefab;
+    
     private RayCast3D RayCast;
 
     private Node3D DebugInstance;
@@ -36,23 +38,31 @@ public partial class DungeonMasterController : Node3D
         var to = from + camera3D.ProjectRayNormal(GetViewport().GetMousePosition()) * 10f;
 
         var result = GetWorld3D().DirectSpaceState.IntersectRay(new PhysicsRayQueryParameters3D() { From = from, To = to, CollisionMask = 1 << 0 });
+
+        if (result.Count <= 0) return;
         
-        if (result.Count > 0)
+        var sb = result["collider"].As<StaticBody3D>();
+
+        if (sb == null) return;
+            
+        var normal = result["normal"].As<Vector3>();
+            
+        DebugInstance.GlobalPosition = result["position"].As<Vector3>();
+
+        var x = DebugInstance.Basis;
+
+        x.Y = normal;
+        x.X = -DebugInstance.Basis.Z.Cross(normal);
+
+        DebugInstance.GlobalRotation = normal;
+        
+        if (Input.IsActionJustPressed("player_attack"))
         {
-            var sb = result["collider"].As<StaticBody3D>();
+            var enemy = EnemyPrefab.Instantiate<EnemyController>();
 
-            if (sb == null) return;
-            
-            var normal = result["normal"].As<Vector3>();
-            
-            DebugInstance.GlobalPosition = result["position"].As<Vector3>();
+            enemy.GlobalTransform = DebugInstance.GlobalTransform;
 
-            var x = DebugInstance.Basis;
-
-            x.Y = normal;
-            x.X = -DebugInstance.Basis.Z.Cross(normal);
-
-            DebugInstance.GlobalRotation = normal;
+            GetParent().AddChild(enemy);
         }
     }
 }

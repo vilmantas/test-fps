@@ -1,0 +1,60 @@
+[gd_scene load_steps=11 format=3 uid="uid://ckfsbgjnq773c"]
+
+[ext_resource type="Texture2D" uid="uid://coft7aejg6wlr" path="res://addons/kenney_prototype_textures/light/texture_07.png" id="1_k2bjr"]
+[ext_resource type="PackedScene" uid="uid://c0in4756syrja" path="res://Features/Enemy/enemy.tscn" id="2_0l2pr"]
+[ext_resource type="PackedScene" uid="uid://txg3by4mp4xy" path="res://Features/Camera/FreeLook/camera_free_look.tscn" id="3_13uy0"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ghbb6"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_c1v35"]
+sky_material = SubResource("ProceduralSkyMaterial_ghbb6")
+
+[sub_resource type="Environment" id="Environment_de1vi"]
+background_mode = 2
+sky = SubResource("Sky_c1v35")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_1fly2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j867b"]
+size = Vector3(60, 0.01, 50)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_22ja1"]
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4uly3"]
+albedo_texture = ExtResource("1_k2bjr")
+uv1_triplanar = true
+
+[node name="EnemyDebug" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_de1vi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="enemy" parent="." instance=ExtResource("2_0l2pr")]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+
+[node name="camera_free_look" parent="." instance=ExtResource("3_13uy0")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.221064, 2.32805, 7.574)
+
+[node name="player" type="MeshInstance3D" parent="." groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25648, 0.922263, -5.84262)
+mesh = SubResource("BoxMesh_1fly2")
+
+[node name="ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground"]
+shape = SubResource("BoxShape3D_j867b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ground"]
+mesh = SubResource("PlaneMesh_22ja1")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_4uly3")

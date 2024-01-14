@@ -5,6 +5,5 @@
 [node name="camera_free_look" type="Node3D" node_paths=PackedStringArray("Camera")]
 script = ExtResource("1_5744y")
 Camera = NodePath("camera")
-MouseSensitivity = 3
 
 [node name="camera" type="Camera3D" parent="."]
