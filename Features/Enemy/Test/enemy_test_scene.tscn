@@ -1,0 +1,107 @@
+[gd_scene load_steps=12 format=3 uid="uid://ckfsbgjnq773c"]
+
+[ext_resource type="Script" path="res://Features/Enemy/Test/EnemyTestScene.cs" id="1_dks7p"]
+[ext_resource type="PackedScene" uid="uid://c0in4756syrja" path="res://Features/Enemy/enemy.tscn" id="2_fw66b"]
+[ext_resource type="PackedScene" uid="uid://txg3by4mp4xy" path="res://Features/Camera/FreeLook/camera_free_look.tscn" id="3_i472l"]
+[ext_resource type="Texture2D" uid="uid://coft7aejg6wlr" path="res://addons/kenney_prototype_textures/light/texture_07.png" id="4_bml3a"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ghbb6"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_c1v35"]
+sky_material = SubResource("ProceduralSkyMaterial_ghbb6")
+
+[sub_resource type="Environment" id="Environment_de1vi"]
+background_mode = 2
+sky = SubResource("Sky_c1v35")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_1fly2"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_j867b"]
+size = Vector3(60, 0.01, 50)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_22ja1"]
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4uly3"]
+albedo_texture = ExtResource("4_bml3a")
+uv1_triplanar = true
+
+[node name="enemy_test_scene" type="Node3D"]
+script = ExtResource("1_dks7p")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_de1vi")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="enemy" parent="." instance=ExtResource("2_fw66b")]
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+
+[node name="camera_free_look" parent="." instance=ExtResource("3_i472l")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.221064, 2.32805, 7.574)
+
+[node name="target_player" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.4091, 0, -10.5709)
+
+[node name="mesh" type="MeshInstance3D" parent="target_player" groups=["player"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.922, 0)
+mesh = SubResource("BoxMesh_1fly2")
+skeleton = NodePath("../..")
+
+[node name="ground" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ground"]
+shape = SubResource("BoxShape3D_j867b")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="ground"]
+mesh = SubResource("PlaneMesh_22ja1")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_4uly3")
+
+[node name="spawns" type="Node3D" parent="."]
+
+[node name="spawn_1" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.2231, 0, -14.7244)
+
+[node name="spawn_2" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.1488, 0, -9.12607)
+
+[node name="spawn_3" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 14.0466, 0, 12.8025)
+
+[node name="spawn_4" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 15.5526, 0, -4.61725)
+
+[node name="spawn_5" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.50719, -1.90735e-06, -7.16084)
+
+[node name="spawn_6" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.188, -1.90735e-06, -17.4959)
+
+[node name="spawn_7" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.29969, -1.90735e-06, -15.8459)
+
+[node name="spawn_8" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -13.5459, -1.90735e-06, 10.1689)
+
+[node name="spawn_9" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0544033, -1.90735e-06, 16.9095)
+
+[node name="spawn_10" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -15.3346, -1.90735e-06, -3.49866)
+
+[node name="spawn_11" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -22.7919, -1.90735e-06, -19.539)
+
+[node name="spawn_12" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8983, -1.90735e-06, -22.3685)
+
+[node name="spawn_13" type="Node3D" parent="spawns" groups=["spawn"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.1234, -1.90735e-06, 13.6456)
