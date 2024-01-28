@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://bfq4osmgc4qcv"]
+[gd_scene load_steps=3 format=3 uid="uid://bxl3mxa3l6p4g"]
 
 [ext_resource type="Script" path="res://Features/Menu/MenuController.cs" id="1_uja63"]
 [ext_resource type="PackedScene" uid="uid://cr8fg016nxf4v" path="res://Scenes/lobby.tscn" id="2_6vkor"]

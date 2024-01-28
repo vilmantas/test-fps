@@ -60,9 +60,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08283, 1.91341, -0.0246153)
 [node name="health_module" type="Node3D" parent="."]
 script = ExtResource("4_sa7vv")
 
-[node name="attack_module" type="Node3D" parent="." node_paths=PackedStringArray("HitboxSpawn")]
+[node name="attack_module" type="Node3D" parent="."]
 script = ExtResource("6_iyf1l")
-HitboxSpawn = NodePath("")
 
 [node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -0.783805)

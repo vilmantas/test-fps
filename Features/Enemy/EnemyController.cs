@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using testfps.Features.Combat;
 
 public enum EnemyState
 {
@@ -12,18 +13,24 @@ public enum EnemyState
 
 public partial class EnemyController : CharacterBody3D
 {
-	private Node3D Target;
+	public Node3D Target;
+	
+	public NavigationAgent3D NavigationAgent;
 	
 	private Label3D DebugLabel;
 
-	private EnemyState CurrentState;
+	public EnemyState CurrentState;
 
 	private AttackController AttackModule;
 	
 	private WeaponController Weapon;
+	
+	private HealthController HealthModule;
 
 	public override void _Ready()
 	{
+		HealthModule = GetNode<HealthController>("health_module");
+		
 		DebugLabel = GetNode<Label3D>("debug_label");
 		
 		AttackModule = GetNode<AttackController>("attack_module");
@@ -31,21 +38,26 @@ public partial class EnemyController : CharacterBody3D
 		AttackModule.OnHit += DamageTarget;
 		
 		Weapon = GetNode<WeaponController>("weapon_slicer");
+		
+		NavigationAgent = GetNode<NavigationAgent3D>("navigation_agent");
 	}
 
 	public override void _Process(double delta)
 	{
-		CheckTarget();
+		if (DebugLabel != null)
+		{
+			DebugLabel.Text = HealthModule.CurrentHealth.ToString();
 
+			DebugLabel.GlobalBasis = GetViewport().GetCamera3D().GlobalTransform.Basis;			
+		}
+
+		if (!IsMultiplayerAuthority()) return;
+		
+		CheckTarget();
+		
 		CheckState();
         
 		HandleState();
-
-		if (DebugLabel == null) return;
-		
-		DebugLabel.Text = CurrentState.ToString();
-		
-		DebugLabel.GlobalBasis = GetViewport().GetCamera3D().GlobalTransform.Basis;
 	}
 
 	private void CheckTarget()
@@ -90,6 +102,7 @@ public partial class EnemyController : CharacterBody3D
 			case EnemyState.Idle:
 				break;
 			case EnemyState.Chase:
+				NavigationAgent.TargetPosition = Target.GlobalTransform.Origin;
 				break;
 			case EnemyState.Attack:
 				HandleAttack();
@@ -101,13 +114,17 @@ public partial class EnemyController : CharacterBody3D
 	{
 		if (CurrentState != EnemyState.Chase) return;
 
-		var direction = (Target.GlobalTransform.Origin - GlobalTransform.Origin).Normalized();
+		var destination = NavigationAgent.GetNextPathPosition();
+
+		if (destination == GlobalTransform.Origin) return;
+		
+		var direction = (destination - GlobalTransform.Origin).Normalized();
 		
 		direction.Y = 0;
 		
 		Velocity = direction * 5f;
 
-		var lookDir = Target.GlobalTransform.Origin;
+		var lookDir = destination;
 
 		lookDir.Y = GlobalPosition.Y;
 		
@@ -125,8 +142,11 @@ public partial class EnemyController : CharacterBody3D
 
 	private void DamageTarget(Node3D target)
 	{
-		var health = target.GetNode<HealthController>("health_module");
-		
-		health.Damage(1);
+		CombatManager.Instance.Damage(this, target);
+	}
+
+	public void HandleDeath(Node3D killer)
+	{
+		ProcessMode = ProcessModeEnum.Disabled;
 	}
 }

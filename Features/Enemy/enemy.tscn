@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c0in4756syrja"]
+[gd_scene load_steps=16 format=3 uid="uid://c0in4756syrja"]
 
 [ext_resource type="Script" path="res://Features/Enemy/EnemyController.cs" id="1_iu5hl"]
 [ext_resource type="Texture2D" uid="uid://kf8pkeqiw2ps" path="res://addons/kenney_prototype_textures/dark/texture_06.png" id="2_lc6m3"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b5aoffmuot6d6" path="res://Features/Hitbox/hitbox_damage.tscn" id="5_t0prx"]
 [ext_resource type="PackedScene" uid="uid://c5glvd7xhw6al" path="res://Features/Weapon/configuration_weapon.tscn" id="6_thhk2"]
 [ext_resource type="PackedScene" uid="uid://bvowppwwxnyax" path="res://Assets/Weapons/weapon_sword_4.tscn" id="7_5slyg"]
+[ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="9_3ssm1"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_76jag"]
 radius = 0.606354
@@ -30,7 +31,7 @@ properties/1/path = NodePath(".:rotation")
 properties/1/spawn = true
 properties/1/replication_mode = 1
 
-[node name="enemy" type="CharacterBody3D"]
+[node name="enemy" type="CharacterBody3D" groups=["enemy"]]
 collision_layer = 5
 script = ExtResource("1_iu5hl")
 
@@ -76,3 +77,11 @@ HitboxSpawn = NodePath("spawn_attack_hitbox")
 
 [node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -1.69787)
+
+[node name="navigation_agent" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+
+[node name="health_module" type="Node3D" parent="."]
+script = ExtResource("9_3ssm1")
+MaxHealth = 5
+CurrentHealth = 5

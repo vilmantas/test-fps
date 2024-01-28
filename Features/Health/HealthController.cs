@@ -32,4 +32,6 @@ public partial class HealthController : Node
 	}
 	
 	public bool IsExpended => CurrentHealth <= 0;
+	
+	public bool IsAlive => !IsExpended;
 }

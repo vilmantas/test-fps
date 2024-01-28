@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://bf5savv56mx5x"]
+[gd_scene load_steps=11 format=3 uid="uid://cbm5l4q82rcut"]
 
 [ext_resource type="Texture2D" uid="uid://dg55mv8sl0p21" path="res://addons/kenney_prototype_textures/light/texture_05.png" id="1_2ejvc"]
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_71gf2"]
-[ext_resource type="PackedScene" path="res://Assets/spawn.tscn" id="2_r4jpv"]
+[ext_resource type="PackedScene" uid="uid://cfn4gsty4i5pb" path="res://Assets/spawn.tscn" id="2_r4jpv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8nrdk"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -26,6 +26,10 @@ size = Vector2(50, 50)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yqgtq"]
 albedo_texture = ExtResource("1_2ejvc")
 uv1_triplanar = true
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_xa2eg"]
+vertices = PackedVector3Array(25, 0, 25, -25, 0, 25, 25, 0, -25, -25, 0, -25)
+polygons = [PackedInt32Array(0, 1, 2), PackedInt32Array(1, 3, 2)]
 
 [node name="Level00" type="Node3D"]
 script = ExtResource("1_71gf2")
@@ -51,6 +55,9 @@ shape = SubResource("BoxShape3D_4jvkj")
 mesh = SubResource("PlaneMesh_krf73")
 surface_material_override/0 = SubResource("StandardMaterial3D_yqgtq")
 
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="environment/ground/MeshInstance3D"]
+navigation_mesh = SubResource("NavigationMesh_xa2eg")
+
 [node name="spawns" type="Node3D" parent="environment"]
 
 [node name="spawn_1" parent="environment/spawns" instance=ExtResource("2_r4jpv")]
@@ -63,3 +70,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.03583, 0, 1.4789)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.49965, 2.38419e-07, 0.47373)
 
 [node name="container_players" type="Node3D" parent="."]
+
+[node name="container_enemies" type="Node3D" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="container_enemies"]
+_spawnable_scenes = PackedStringArray("res://Features/Enemy/enemy.tscn")
+spawn_path = NodePath("..")
+spawn_limit = 100

@@ -35,7 +35,7 @@ public partial class DungeonMasterController : Node3D
     {
         var camera3D = CameraFreeLook.Camera;
         var from = camera3D.ProjectRayOrigin(GetViewport().GetMousePosition());
-        var to = from + camera3D.ProjectRayNormal(GetViewport().GetMousePosition()) * 10f;
+        var to = from + camera3D.ProjectRayNormal(GetViewport().GetMousePosition()) * 100f;
 
         var result = GetWorld3D().DirectSpaceState.IntersectRay(new PhysicsRayQueryParameters3D() { From = from, To = to, CollisionMask = 1 << 0 });
 
@@ -62,7 +62,7 @@ public partial class DungeonMasterController : Node3D
 
             enemy.GlobalTransform = DebugInstance.GlobalTransform;
 
-            GetParent().AddChild(enemy);
+            GameManager.CurrentGameplay.SpawnEnemy(enemy);
         }
     }
 }

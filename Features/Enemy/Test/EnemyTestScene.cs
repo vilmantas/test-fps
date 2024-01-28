@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Godot;
 using System.Linq;
 
@@ -6,9 +7,13 @@ public partial class EnemyTestScene : Node3D
     private bool IsHidden = false;
     private Node3D Player;
 
+    private PlayerController ActualPlayer;
+    
     public override void _Ready()
     {
         Player = GetNode<Node3D>("target_player");
+
+        ActualPlayer = GetNode<PlayerController>("player");
     }
 
     public override void _Process(double delta)
@@ -32,8 +37,6 @@ public partial class EnemyTestScene : Node3D
 
         if (Input.IsActionJustPressed("player_attack"))
         {
-            
-            
             if (IsHidden)
             {
                 GetTree().CurrentScene.AddChild(Player);

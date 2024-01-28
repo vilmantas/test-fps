@@ -4,11 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using Godot.Collections;
 using testfps.Features.Multiplayer;
+using testfps.Scripts;
 
 public partial class GameManager : Node
 {
 	public static GameManager Instance;
 
+	public static GameplayController CurrentGameplay;
+	
 	public static GameManagerController Core;
 	
 	public static PlayerController PlayerController;
@@ -73,8 +76,12 @@ public partial class GameManager : Node
 	public void OnLevelLoaded(Node level)
 	{
 		var gameplay = GD.Load<PackedScene>("res://Features/Gameplay/gameplay.tscn");
+
+		var instance = gameplay.Instantiate<GameplayController>();
 		
-		level.AddChild(gameplay.Instantiate());
+		CurrentGameplay = instance;
+        
+		level.AddChild(instance);
 	}
 	
 	public void SetPlayerName(string name)

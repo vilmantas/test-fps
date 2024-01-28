@@ -11,7 +11,11 @@ public partial class GameplayController : Node
 {
     public List<PlayerController> Players = new();
 
-    private Node3D Container;
+    public Node3D ContainerPlayers;
+    
+    public Node3D ContainerEnemies;
+
+    private Dictionary<string, int> PlayerKills = new();
     
     private SpawnPointController[] Spawns;
     
@@ -19,7 +23,9 @@ public partial class GameplayController : Node
     {
         var player = GD.Load<PackedScene>("res://Features/Player/player.tscn");
 
-        Container = GetParent().GetNode<Node3D>("container_players");
+        ContainerPlayers = GetParent().GetNode<Node3D>("container_players");
+
+        ContainerEnemies = GetParent().GetNode<Node3D>("container_enemies");
         
         Spawns = GetTree().GetNodesInGroup("location_spawn").Cast<SpawnPointController>().ToArray();
 
@@ -59,6 +65,10 @@ public partial class GameplayController : Node
         if (GameManager.CurrentPlayerData == data)
         {
             GameManager.CameraController = instance.CameraFreeLook;
+        }
+        else
+        {
+            instance.ProcessMode = ProcessModeEnum.Disabled;
         }
     }
     
@@ -107,7 +117,7 @@ public partial class GameplayController : Node
         
         player.EquippedWeapon = GD.Load<PackedScene>(data.SelectedWeapon);
 
-        Container.AddChild(player, true);
+        ContainerPlayers.AddChild(player, true);
             
         player.GlobalPosition = spawn.SpawnLocation.GlobalPosition;
         
@@ -132,5 +142,33 @@ public partial class GameplayController : Node
         cameraInstance.Camera.Current = true;
 
         GameManager.CameraController = cameraInstance;
+    }
+
+    public void SpawnEnemy(EnemyController enemy)
+    {
+        enemy.Name = "Nate";
+        
+        ContainerEnemies.AddChild(enemy, true);
+    }
+    
+    public void OnEnemyDeath(EnemyController enemy, Node3D killer)
+    {
+        enemy.HandleDeath(killer);
+        
+        if (killer is PlayerController player)
+        {
+            if (PlayerKills.TryAdd(player.Name, 0) == false)
+            {
+                PlayerKills[player.Name] = PlayerKills[player.Name] + 1;
+            }
+        }
+        
+        ContainerEnemies.RemoveChild(enemy);
+        
+        enemy.QueueFree();
+    }
+    
+    public void OnPlayerDeath(PlayerController player)
+    {
     }
 }

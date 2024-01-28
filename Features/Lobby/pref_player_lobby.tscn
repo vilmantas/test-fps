@@ -13,8 +13,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_7pt6x")
 
-[node name="label_name" type="Label" parent="."]
-layout_mode = 1
-offset_right = 117.0
-offset_bottom = 23.0
+[node name="container" type="HFlowContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="label_name" type="Label" parent="container"]
+layout_mode = 2
 text = "NAME NOT SET"
+
+[node name="label_model" type="Label" parent="container"]
+layout_mode = 2
+text = "MODEL NOT SET"
+
+[node name="label_weapon" type="Label" parent="container"]
+layout_mode = 2
+text = "WEAPON NOT SET"

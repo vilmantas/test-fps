@@ -56,7 +56,7 @@ public partial class PlayerController : CharacterBody3D
 		AttackModule.OnHit += HandleHit;
 		
 		Character.SetModel(PlayerModel);
-
+        
 		Weapon = EquippedWeapon.Instantiate<WeaponController>();
 		
 		Character.SetMainWeapon(Weapon);
@@ -76,6 +76,8 @@ public partial class PlayerController : CharacterBody3D
 	{
 		DebugLabel.Text = $"{HealthModule.CurrentHealth}/{HealthModule.MaxHealth}";
 
+		if (GameManager.CameraController == null) return;
+		
 		DebugLabel.GlobalBasis = GameManager.CameraController.GlobalTransform.Basis;
 		
 		if (IsMultiplayerAuthority())

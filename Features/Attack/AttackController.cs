@@ -30,6 +30,8 @@ public partial class AttackController : Node
 	{
 		var instance = weapon.HitboxConfiguration.HitboxModel.Instantiate<DamageHitboxController>();
 
+		instance.AllowMultipleCollisions = false;
+		
 		instance.Name = "hitbox_attack";
         
 		instance.OnHit += HandleHit;

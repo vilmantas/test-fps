@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="test-fps"
-run/main_scene="res://Features/Enemy/Test/enemy_test_scene.tscn"
+run/main_scene="res://Scenes/menu.tscn"
 config/features=PackedStringArray("4.2", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 

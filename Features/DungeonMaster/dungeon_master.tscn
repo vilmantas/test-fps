@@ -10,7 +10,6 @@ CameraFreeLook = NodePath("camera_free_look")
 DebugScene = ExtResource("2_ovhp3")
 
 [node name="camera_free_look" parent="." instance=ExtResource("2_76wog")]
-MouseSensitivity = 3.0
 
 [node name="RayCast3D" type="RayCast3D" parent="camera_free_look"]
 target_position = Vector3(0, 0, -10)
