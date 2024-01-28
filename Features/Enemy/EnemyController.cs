@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 public enum EnemyState
@@ -17,9 +18,19 @@ public partial class EnemyController : CharacterBody3D
 
 	private EnemyState CurrentState;
 
+	private AttackController AttackModule;
+	
+	private WeaponController Weapon;
+
 	public override void _Ready()
 	{
 		DebugLabel = GetNode<Label3D>("debug_label");
+		
+		AttackModule = GetNode<AttackController>("attack_module");
+		
+		AttackModule.OnHit += DamageTarget;
+		
+		Weapon = GetNode<WeaponController>("weapon_slicer");
 	}
 
 	public override void _Process(double delta)
@@ -53,6 +64,8 @@ public partial class EnemyController : CharacterBody3D
 
 	private void CheckState()
 	{
+		if (CurrentState == EnemyState.Attack && !AttackModule.AttackAvailable) return;
+        
 		if (Target == null)
 		{
 			CurrentState = EnemyState.Idle;
@@ -72,23 +85,21 @@ public partial class EnemyController : CharacterBody3D
 	
 	private void HandleState()
 	{
-		// switch (CurrentState)
-		// {
-		// 	case EnemyState.Idle:
-		// 		HandleIdle();
-		// 		break;
-		// 	case EnemyState.Chase:
-		// 		HandleChase();
-		// 		break;
-		// 	case EnemyState.Attack:
-		// 		HandleAttack();
-		// 		break;
-		// }
+		switch (CurrentState)
+		{
+			case EnemyState.Idle:
+				break;
+			case EnemyState.Chase:
+				break;
+			case EnemyState.Attack:
+				HandleAttack();
+				break;
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (Target == null) return;
+		if (CurrentState != EnemyState.Chase) return;
 
 		var direction = (Target.GlobalTransform.Origin - GlobalTransform.Origin).Normalized();
 		
@@ -105,5 +116,17 @@ public partial class EnemyController : CharacterBody3D
 		if (GlobalPosition.DistanceTo(Target.GlobalPosition) < 2f) return;
             
 		MoveAndSlide();
+	}
+
+	public void HandleAttack()
+	{
+		AttackModule.Attack(Weapon);
+	}
+
+	private void DamageTarget(Node3D target)
+	{
+		var health = target.GetNode<HealthController>("health_module");
+		
+		health.Damage(1);
 	}
 }

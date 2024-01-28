@@ -4,15 +4,13 @@ using System;
 public partial class HealthController : Node
 {
 	[Export] public int MaxHealth = 10;
-	[Export] public int StartingHealth = 8;
-
-	[Export] public int CurrentHealth;
+	[Export] public int CurrentHealth = 8;
 	
 	public Action<int , int> OnHealthChanged;
 	
 	public override void _Ready()
 	{
-		CurrentHealth = Math.Min(StartingHealth, MaxHealth);
+		CurrentHealth = Math.Min(CurrentHealth, MaxHealth);
 	}
 
 	public void Damage(int amount)

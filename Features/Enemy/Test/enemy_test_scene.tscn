@@ -1,9 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://ckfsbgjnq773c"]
+[gd_scene load_steps=15 format=3 uid="uid://ckfsbgjnq773c"]
 
 [ext_resource type="Script" path="res://Features/Enemy/Test/EnemyTestScene.cs" id="1_dks7p"]
 [ext_resource type="PackedScene" uid="uid://c0in4756syrja" path="res://Features/Enemy/enemy.tscn" id="2_fw66b"]
 [ext_resource type="PackedScene" uid="uid://txg3by4mp4xy" path="res://Features/Camera/FreeLook/camera_free_look.tscn" id="3_i472l"]
 [ext_resource type="Texture2D" uid="uid://coft7aejg6wlr" path="res://addons/kenney_prototype_textures/light/texture_07.png" id="4_bml3a"]
+[ext_resource type="Script" path="res://Features/Enemy/Test/EnemyTargetTest.cs" id="4_xr5uo"]
+[ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="5_m6xbf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ghbb6"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
@@ -17,6 +19,8 @@ background_mode = 2
 sky = SubResource("Sky_c1v35")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rk636"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_1fly2"]
 
@@ -44,11 +48,39 @@ shadow_enabled = true
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 
+[node name="enemy2" parent="." instance=ExtResource("2_fw66b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.89132, 0, 6.54822)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+
+[node name="enemy3" parent="." instance=ExtResource("2_fw66b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.92368, 0, 8.0568)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+
 [node name="camera_free_look" parent="." instance=ExtResource("3_i472l")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.221064, 2.32805, 7.574)
 
-[node name="target_player" type="Node3D" parent="."]
+[node name="target_player" type="Node3D" parent="." node_paths=PackedStringArray("HealthLabel", "Health")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.4091, 0, -10.5709)
+script = ExtResource("4_xr5uo")
+HealthLabel = NodePath("debug")
+Health = NodePath("StaticBody3D/health_module")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="target_player"]
+collision_layer = 5
+
+[node name="health_module" type="Node3D" parent="target_player/StaticBody3D"]
+script = ExtResource("5_m6xbf")
+MaxHealth = 500
+CurrentHealth = 500
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="target_player/StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+shape = SubResource("BoxShape3D_rk636")
+
+[node name="debug" type="Label3D" parent="target_player"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0828304, 1.91341, -0.0246153)
 
 [node name="mesh" type="MeshInstance3D" parent="target_player" groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.922, 0)

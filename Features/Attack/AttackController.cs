@@ -15,11 +15,11 @@ public partial class AttackController : Node
 
 		AttackAvailable = false;
         
-		var attackTimer = GetTree().CreateTimer(weapon.HitboxConfiguration.Delay);
+		var attackStartTimer = GetTree().CreateTimer(weapon.HitboxConfiguration.Delay);
 
 		var attackCooldownTimer = GetTree().CreateTimer(weapon.WeaponConfiguration.AttackCooldown);
 		
-		attackTimer.Timeout += () => AttackTimerOnTimeout(weapon);
+		attackStartTimer.Timeout += () => AttackTimerOnTimeout(weapon);
 
 		attackCooldownTimer.Timeout += EnableAttack;
 
