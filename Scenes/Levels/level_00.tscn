@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://cbm5l4q82rcut"]
+[gd_scene load_steps=10 format=3 uid="uid://bf5savv56mx5x"]
 
 [ext_resource type="Texture2D" uid="uid://dg55mv8sl0p21" path="res://addons/kenney_prototype_textures/light/texture_05.png" id="1_2ejvc"]
 [ext_resource type="Script" path="res://Features/Level/LevelController.cs" id="1_71gf2"]
-[ext_resource type="PackedScene" uid="uid://cfn4gsty4i5pb" path="res://Assets/spawn.tscn" id="2_r4jpv"]
+[ext_resource type="PackedScene" path="res://Assets/spawn.tscn" id="2_r4jpv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8nrdk"]
 sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)

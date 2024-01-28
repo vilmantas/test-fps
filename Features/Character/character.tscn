@@ -11,7 +11,7 @@
 [ext_resource type="Animation" uid="uid://eu7nm3kglv6w" path="res://Animations/Jumping Start.res" id="9_l2fds"]
 [ext_resource type="Animation" uid="uid://c74xbgpexj37f" path="res://Animations/Jumping Idle.res" id="10_kc2sn"]
 [ext_resource type="Animation" uid="uid://cel0n2pbnv8sh" path="res://Animations/Jumping Down.res" id="11_ddp7o"]
-[ext_resource type="Animation" uid="uid://k6s8pwrl68e6" path="res://Animations/Stable Sword Outward Slash.res" id="12_hhmrd"]
+[ext_resource type="Animation" uid="uid://ddybn6ek68bl7" path="res://Animations/Stable Sword Outward Slash.res" id="12_hhmrd"]
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_7lh75"]
 _data = {
@@ -530,7 +530,7 @@ mesh = ExtResource("2_vm8xk")
 skin = ExtResource("3_o7gns")
 
 [node name="bone_left_thumb" type="BoneAttachment3D" parent="Armature/Skeleton3D"]
-transform = Transform3D(0.203706, -0.393903, -0.896295, -0.868078, 0.350657, -0.351399, 0.452709, 0.849636, -0.270507, 25.9972, 4.59852, -77.6781)
+transform = Transform3D(0.203706, -0.393903, -0.896295, -0.868078, 0.350657, -0.351399, 0.452709, 0.849636, -0.270508, 25.9972, 4.59851, -77.6781)
 bone_name = "LeftHandThumb1"
 bone_idx = 11
 
@@ -538,7 +538,7 @@ bone_idx = 11
 transform = Transform3D(-4.37114e-08, -1, -4.37114e-08, -1.5246e-23, -4.37114e-08, 1, -1, 4.37114e-08, 1.91069e-15, 0, 0, 0)
 
 [node name="bone_right_thumb" type="BoneAttachment3D" parent="Armature/Skeleton3D"]
-transform = Transform3D(0.628683, 0.0156929, 0.777503, 0.749955, 0.252263, -0.611499, -0.205731, 0.967532, 0.146824, -20.5733, 3.48997, -64.8815)
+transform = Transform3D(0.628683, 0.015693, 0.777503, 0.749955, 0.252263, -0.611499, -0.205731, 0.967532, 0.146824, -20.5733, 3.48997, -64.8815)
 bone_name = "RightHandThumb4"
 bone_idx = 30
 

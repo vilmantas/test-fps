@@ -4,28 +4,17 @@
 
 [node name="PrefPlayerLobby" type="Control"]
 layout_mode = 3
-anchors_preset = 0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_7pt6x")
 
-[node name="container" type="VFlowContainer" parent="."]
-layout_mode = 0
-offset_right = 304.0
-offset_bottom = 384.0
-
-[node name="label_name" type="Label" parent="container"]
-layout_mode = 2
-size_flags_vertical = 1
-theme_type_variation = &"HeaderLarge"
+[node name="label_name" type="Label" parent="."]
+layout_mode = 1
+offset_right = 117.0
+offset_bottom = 23.0
 text = "NAME NOT SET"
-
-[node name="label_model" type="Label" parent="container"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "MODEL NOT SET"
-
-[node name="label_weapon" type="Label" parent="container"]
-layout_mode = 2
-size_flags_horizontal = 4
-text = "WEAPON NOT SET"
