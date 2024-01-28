@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://d3qtfr4dykkb6"]
+
+[ext_resource type="Script" path="res://Features/DungeonMasterUI/Test/DMUITestController.cs" id="1_ly4jj"]
+[ext_resource type="PackedScene" uid="uid://dn04mojeiplsi" path="res://Features/DungeonMasterUI/dungeon_master_ui.tscn" id="2_a78oh"]
+
+[node name="DmUiTest" type="Node3D"]
+script = ExtResource("1_ly4jj")
+DungeonMasterUIScene = ExtResource("2_a78oh")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.925408, 0.378972, 0, -0.378972, 0.925408, -0.137981, 0.460142, 1.56881)
