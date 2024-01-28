@@ -29,19 +29,13 @@ public partial class CombatManager : Node
     {
         Debug.WriteLine($"#1 {source} attacked {target}");
 
-        // KRW NESURANDA KAZKODEL TARGETO BLET
-        
-        var s = GameManager.CurrentGameplay.ContainerPlayers.FindChild(source) ?? GameManager.CurrentGameplay.ContainerEnemies.FindChild(source);
+        var s = GameManager.CurrentGameplay.ContainerPlayers.GetNode<Node3D>(source) ?? GameManager.CurrentGameplay.ContainerEnemies.GetNode<Node3D>(source);
 
-        var t = GameManager.CurrentGameplay.ContainerPlayers.FindChild(target) ?? GameManager.CurrentGameplay.ContainerEnemies.FindChild(target);
-
-        var ss = s as Node3D;
+        var t = GameManager.CurrentGameplay.ContainerPlayers.GetNode<Node3D>(target) ?? GameManager.CurrentGameplay.ContainerEnemies.GetNode<Node3D>(target);
         
-       var tt = t as Node3D;
+        Debug.WriteLine($"#2 {t} attacked {t}");
         
-        Debug.WriteLine($"#2 {ss} attacked {tt}");
-        
-        DamageTrue(ss, tt);
+        DamageTrue(t, t);
     }
 
     private void DamageTrue(Node3D source, Node3D target)
