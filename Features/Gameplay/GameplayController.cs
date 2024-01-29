@@ -159,7 +159,7 @@ public partial class GameplayController : Node
         {
             if (PlayerKills.TryAdd(player.Name, 0) == false)
             {
-                PlayerKills[player.Name] = PlayerKills[player.Name] + 1;
+                PlayerKills[player.Name] += 1;
             }
         }
         

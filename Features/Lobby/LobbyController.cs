@@ -1,7 +1,4 @@
 using Godot;
-using System;
-using System.Diagnostics;
-using System.Linq;
 using testfps.Scripts;
 
 public partial class LobbyController : Node
