@@ -48,6 +48,8 @@ public partial class LobbyController : Node
 
 		if (Multiplayer.IsServer()) return;
 		
+        DungeonMasterButton.Hide();
+        
 		StartButton.Hide();
 		
 		FreeLookButton.Hide();
