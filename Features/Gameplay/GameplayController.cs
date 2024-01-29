@@ -11,6 +11,8 @@ public partial class GameplayController : Node
 {
     public List<PlayerController> Players = new();
 
+    public EntityContainerController Containers;
+    
     public Node3D ContainerPlayers;
     
     public Node3D ContainerEnemies;
@@ -23,14 +25,14 @@ public partial class GameplayController : Node
     {
         var player = GD.Load<PackedScene>("res://Features/Player/player.tscn");
 
-        ContainerPlayers = GetParent().GetNode<Node3D>("container_players");
+        Containers = GetParent().GetNode<EntityContainerController>("entity_containers");
 
-        ContainerEnemies = GetParent().GetNode<Node3D>("container_enemies");
+        ContainerPlayers = Containers.PlayersContainer;
+
+        ContainerEnemies = Containers.EnemiesContainer;
         
         Spawns = GetTree().GetNodesInGroup("location_spawn").Cast<SpawnPointController>().ToArray();
 
-        Debug.WriteLine(GameManager.Core.Players.Length);
-        
         foreach (var data in GameManager.Core.Spectators) 
         {
             AddSpectator(data);
@@ -167,6 +169,11 @@ public partial class GameplayController : Node
         
         enemy.QueueFree();
     }
+
+    public Node3D FindPlayerOrEnemy(string name) => AllEntities.FirstOrDefault(x => x.Name == name);
+
+    public List<Node3D> AllEntities =>
+        ContainerPlayers.GetChildren().Concat(ContainerEnemies.GetChildren()).ToList().Cast<Node3D>().ToList();
     
     public void OnPlayerDeath(PlayerController player)
     {

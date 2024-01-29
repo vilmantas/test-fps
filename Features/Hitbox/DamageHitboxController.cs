@@ -37,7 +37,5 @@ public partial class DamageHitboxController : Node3D
 		Hits.Add(body);
 		
 		OnHit?.Invoke(body);
-		
-		Debug.Print($"Attacked {body.Name}");
 	}
 }

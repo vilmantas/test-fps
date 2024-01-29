@@ -40,10 +40,10 @@ public partial class DungeonMasterController : Node3D
         var result = GetWorld3D().DirectSpaceState.IntersectRay(new PhysicsRayQueryParameters3D() { From = from, To = to, CollisionMask = 1 << 0 });
 
         if (result.Count <= 0) return;
-        
-        var sb = result["collider"].As<StaticBody3D>();
 
-        if (sb == null) return;
+        var xx = result["collider"].As<Node3D>();
+
+        if (xx is not StaticBody3D sb) return;
             
         var normal = result["normal"].As<Vector3>();
             

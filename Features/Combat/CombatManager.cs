@@ -14,32 +14,27 @@ public partial class CombatManager : Node
     
     public void Damage(Node3D source, Node3D target)
     {
-        if (Multiplayer.IsServer())
-        {
-            DamageTrue(source, target);
-        }
-        else
-        {
-            RpcId(1, nameof(DamagePrivate), source.Name, target.Name);
-        }
+        RpcId(1, nameof(DamageRPC), source.Name, target.Name);
     }
     
-    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = false)]
-    private void DamagePrivate(string source, string target)
+    [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
+    private void DamageRPC(string sourceName, string targetName)
     {
-        Debug.WriteLine($"#1 {source} attacked {target}");
-
-        var s = GameManager.CurrentGameplay.ContainerPlayers.GetNode<Node3D>(source) ?? GameManager.CurrentGameplay.ContainerEnemies.GetNode<Node3D>(source);
-
-        var t = GameManager.CurrentGameplay.ContainerPlayers.GetNode<Node3D>(target) ?? GameManager.CurrentGameplay.ContainerEnemies.GetNode<Node3D>(target);
+        if (!Multiplayer.IsServer()) return;
         
-        Debug.WriteLine($"#2 {t} attacked {t}");
+        var sourceNode = GameManager.CurrentGameplay.FindPlayerOrEnemy(sourceName);
+
+        var targetNode = GameManager.CurrentGameplay.FindPlayerOrEnemy(targetName);
         
-        DamageTrue(t, t);
+        Debug.WriteLine($"#2 {sourceNode.Name} attacked {targetNode.Name}");
+        
+        DamageTrue(sourceNode, targetNode);
     }
 
     private void DamageTrue(Node3D source, Node3D target)
     {
+        if (source == null || target == null) return;
+        
         var health = target.GetNode<HealthController>("health_module");
         
         if (health == null) return;

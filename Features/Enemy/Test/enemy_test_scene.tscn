@@ -141,3 +141,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.8983, -1.90735e-06, -22.3
 
 [node name="spawn_13" type="Node3D" parent="spawns" groups=["spawn"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16.1234, -1.90735e-06, 13.6456)
+
+[node name="container_players" type="Node3D" parent="."]
+
+[node name="container_enemies" type="Node3D" parent="."]

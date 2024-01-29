@@ -14,6 +14,8 @@ public partial class EnemyTestScene : Node3D
         Player = GetNode<Node3D>("target_player");
 
         ActualPlayer = GetNode<PlayerController>("player");
+        
+        GameManager.Instance.OnLevelLoaded(this);
     }
 
     public override void _Process(double delta)

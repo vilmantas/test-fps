@@ -1,0 +1,17 @@
+[gd_scene load_steps=2 format=3 uid="uid://tctd6unmhswk"]
+
+[ext_resource type="Script" path="res://Features/Level/EntityContainerController.cs" id="1_fnpsv"]
+
+[node name="entity_containers" type="Node3D" node_paths=PackedStringArray("PlayersContainer", "EnemiesContainer", "EnemySpawner")]
+script = ExtResource("1_fnpsv")
+PlayersContainer = NodePath("players")
+EnemiesContainer = NodePath("enemies")
+EnemySpawner = NodePath("enemy_spawner")
+
+[node name="players" type="Node3D" parent="."]
+
+[node name="enemies" type="Node3D" parent="."]
+
+[node name="enemy_spawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Features/Enemy/enemy.tscn")
+spawn_path = NodePath("../enemies")

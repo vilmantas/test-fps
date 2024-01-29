@@ -142,6 +142,8 @@ public partial class EnemyController : CharacterBody3D
 
 	private void DamageTarget(Node3D target)
 	{
+		if (target is EnemyController) return;
+		
 		CombatManager.Instance.Damage(this, target);
 	}
 

@@ -1,4 +1,7 @@
 using Godot;
+using System;
+using System.Diagnostics;
+using System.Linq;
 using testfps.Scripts;
 
 public partial class LobbyController : Node
@@ -45,8 +48,8 @@ public partial class LobbyController : Node
 
 		if (Multiplayer.IsServer()) return;
 		
-        DungeonMasterButton.Hide();
-        
+		DungeonMasterButton.Hide();
+		
 		StartButton.Hide();
 		
 		FreeLookButton.Hide();
