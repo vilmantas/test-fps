@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://4w3d40eeetny"]
+
+[ext_resource type="Script" path="res://Features/Combat/Weapon/WeaponConfiguration.cs" id="1_nnnl4"]
+
+[node name="configuration_weapon" type="Node"]
+script = ExtResource("1_nnnl4")

@@ -3,9 +3,9 @@
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
 [ext_resource type="ArrayMesh" uid="uid://c7km7jeq1xmpv" path="res://Imports/meshes/characters/knight_1.res" id="2_e7st4"]
-[ext_resource type="PackedScene" uid="uid://b5aoffmuot6d6" path="res://Features/Hitbox/hitbox_damage.tscn" id="2_tg6kw"]
-[ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="4_sa7vv"]
-[ext_resource type="Script" path="res://Features/Attack/AttackController.cs" id="6_iyf1l"]
+[ext_resource type="PackedScene" uid="uid://p0kvyasajslm" path="res://Features/Combat/Hitbox/hitbox_damage.tscn" id="2_tg6kw"]
+[ext_resource type="Script" path="res://Features/Combat/Health/HealthController.cs" id="5_0j4ew"]
+[ext_resource type="Script" path="res://Features/Combat/Attack/AttackController.cs" id="6_lq84r"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
 radius = 0.251076
@@ -58,10 +58,11 @@ replication_config = SubResource("SceneReplicationConfig_hmdv7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08283, 1.91341, -0.0246153)
 
 [node name="health_module" type="Node3D" parent="."]
-script = ExtResource("4_sa7vv")
+script = ExtResource("5_0j4ew")
 
-[node name="attack_module" type="Node3D" parent="."]
-script = ExtResource("6_iyf1l")
+[node name="attack_module" type="Node3D" parent="." node_paths=PackedStringArray("HitboxSpawn")]
+script = ExtResource("6_lq84r")
+HitboxSpawn = NodePath("spawn_attack_hitbox")
 
 [node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -0.783805)

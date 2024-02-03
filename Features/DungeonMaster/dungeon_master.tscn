@@ -1,13 +1,16 @@
-[gd_scene load_steps=4 format=3 uid="uid://bgih84ji82cy0"]
+[gd_scene load_steps=6 format=3 uid="uid://bgih84ji82cy0"]
 
 [ext_resource type="Script" path="res://Features/DungeonMaster/DungeonMasterController.cs" id="1_erh5n"]
 [ext_resource type="PackedScene" uid="uid://txg3by4mp4xy" path="res://Features/Camera/FreeLook/camera_free_look.tscn" id="2_76wog"]
 [ext_resource type="PackedScene" uid="uid://be6dc2imuy7y1" path="res://Features/DungeonMaster/debugger.tscn" id="2_ovhp3"]
+[ext_resource type="PackedScene" uid="uid://c0in4756syrja" path="res://Features/Enemy/enemy.tscn" id="3_1q0ml"]
+[ext_resource type="PackedScene" uid="uid://8vpmccjm10ci" path="res://Features/Enemy/enemy_ranged.tscn" id="4_axe31"]
 
 [node name="dungeon_master" type="Node3D" node_paths=PackedStringArray("CameraFreeLook")]
 script = ExtResource("1_erh5n")
 CameraFreeLook = NodePath("camera_free_look")
 DebugScene = ExtResource("2_ovhp3")
+Enemies = Array[PackedScene]([ExtResource("3_1q0ml"), ExtResource("4_axe31")])
 
 [node name="camera_free_look" parent="." instance=ExtResource("2_76wog")]
 

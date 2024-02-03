@@ -1,20 +1,28 @@
-[gd_scene load_steps=6 format=3 uid="uid://cptf5kvte4hnn"]
+[gd_scene load_steps=7 format=3 uid="uid://cptf5kvte4hnn"]
 
-[ext_resource type="PackedScene" uid="uid://cmellox5kpwhf" path="res://Features/Hitbox/configuration_hitbox.tscn" id="1_aovlc"]
-[ext_resource type="Script" path="res://Features/Weapon/WeaponController.cs" id="1_t1k2b"]
-[ext_resource type="PackedScene" uid="uid://c5glvd7xhw6al" path="res://Features/Weapon/configuration_weapon.tscn" id="2_1bb0f"]
-[ext_resource type="PackedScene" uid="uid://b5aoffmuot6d6" path="res://Features/Hitbox/hitbox_damage.tscn" id="2_x8kvl"]
+[ext_resource type="Script" path="res://Features/Combat/Weapon/WeaponController.cs" id="1_d8im8"]
 [ext_resource type="PackedScene" uid="uid://bvowppwwxnyax" path="res://Assets/Weapons/weapon_sword_4.tscn" id="3_hrytg"]
+[ext_resource type="PackedScene" uid="uid://4w3d40eeetny" path="res://Features/Combat/Weapon/configuration_weapon.tscn" id="6_inqs6"]
+[ext_resource type="PackedScene" uid="uid://dwmtpmcjiyjd8" path="res://Assets/Weapons/hitbox_sword.tscn" id="6_xsheq"]
+[ext_resource type="Script" path="res://Features/Combat/Weapon/MeleeWeaponConfiguration.cs" id="9_6crs4"]
+[ext_resource type="PackedScene" uid="uid://ba6vfifut1fl8" path="res://Features/Combat/Hitbox/configuration_hitbox.tscn" id="10_h5pc3"]
 
-[node name="weapon" type="Node3D" node_paths=PackedStringArray("WeaponConfiguration", "HitboxConfiguration")]
-script = ExtResource("1_t1k2b")
-WeaponConfiguration = NodePath("configuration_weapon")
-HitboxConfiguration = NodePath("configuration_hitbox")
+[node name="sword_slicer" type="Node3D" node_paths=PackedStringArray("WeaponConfiguration", "MeleeWeaponConfiguration")]
+script = ExtResource("1_d8im8")
+WeaponConfiguration = NodePath("configuration_base")
+MeleeWeaponConfiguration = NodePath("configuration_melee")
 
-[node name="configuration_hitbox" parent="." instance=ExtResource("1_aovlc")]
-HitboxModel = ExtResource("2_x8kvl")
+[node name="configuration_base" parent="." instance=ExtResource("6_inqs6")]
+Model = ExtResource("3_hrytg")
+DamageMin = 1
+DamageMax = 3
+Cooldown = 1.0
 
-[node name="configuration_weapon" parent="." node_paths=PackedStringArray("HitboxConfiguration") instance=ExtResource("2_1bb0f")]
-Name = "Slicer"
-WeaponModel = ExtResource("3_hrytg")
+[node name="configuration_melee" parent="." node_paths=PackedStringArray("HitboxConfiguration") instance=ExtResource("6_inqs6")]
+script = ExtResource("9_6crs4")
 HitboxConfiguration = NodePath("../configuration_hitbox")
+
+[node name="configuration_hitbox" parent="." instance=ExtResource("10_h5pc3")]
+HitboxModel = ExtResource("6_xsheq")
+Delay = 0.2
+Duration = 0.5

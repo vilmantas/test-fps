@@ -2,16 +2,24 @@
 
 [ext_resource type="Script" path="res://Features/Level/EntityContainerController.cs" id="1_fnpsv"]
 
-[node name="entity_containers" type="Node3D" node_paths=PackedStringArray("PlayersContainer", "EnemiesContainer", "EnemySpawner")]
+[node name="entity_containers" type="Node3D" node_paths=PackedStringArray("PlayersContainer", "EnemiesContainer", "EnemySpawner", "ProjectilesContainer", "ProjectileSpawner")]
 script = ExtResource("1_fnpsv")
 PlayersContainer = NodePath("players")
 EnemiesContainer = NodePath("enemies")
 EnemySpawner = NodePath("enemy_spawner")
+ProjectilesContainer = NodePath("projectiles")
+ProjectileSpawner = NodePath("projectile_spawner")
 
 [node name="players" type="Node3D" parent="."]
 
 [node name="enemies" type="Node3D" parent="."]
 
+[node name="projectiles" type="Node3D" parent="."]
+
 [node name="enemy_spawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://Features/Enemy/enemy.tscn")
+_spawnable_scenes = PackedStringArray("res://Features/Enemy/enemy.tscn", "res://Features/Enemy/enemy_ranged.tscn")
 spawn_path = NodePath("../enemies")
+
+[node name="projectile_spawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("res://Assets/Projectiles/projectile_arrow_test.tscn")
+spawn_path = NodePath("../projectiles")

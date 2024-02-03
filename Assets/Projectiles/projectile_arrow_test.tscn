@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://dyut813lf3si6"]
+
+[ext_resource type="Script" path="res://Features/Combat/Projectile/ProjectileController.cs" id="1_o0yoo"]
+[ext_resource type="PackedScene" uid="uid://p0kvyasajslm" path="res://Features/Combat/Hitbox/hitbox_damage.tscn" id="2_q4wo7"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4rsea"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_cjr1e"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_4tmx4"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[node name="projectile_arrow_test" type="Node3D" node_paths=PackedStringArray("HitboxController")]
+script = ExtResource("1_o0yoo")
+HitboxController = NodePath("hitbox_damage")
+
+[node name="model" type="Node3D" parent="."]
+transform = Transform3D(0.121455, 0, 0, 0, 0.121455, 0, 0, 0, 0.121455, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="model"]
+transform = Transform3D(0.6132, 0, 0, 0, 0.6132, 0, 0, 0, 5.16718, 0, 0, 0)
+mesh = SubResource("BoxMesh_4rsea")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="model"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0173626, 0.0184383, -2.81436)
+mesh = SubResource("BoxMesh_cjr1e")
+skeleton = NodePath("../..")
+
+[node name="hitbox_damage" parent="." instance=ExtResource("2_q4wo7")]
+transform = Transform3D(0.0912994, -3.18441e-17, 2.41885e-16, 3.18441e-17, 0.0912994, -2.41885e-16, -3.18441e-17, 3.18441e-17, 0.693507, -0.002, 0, -0.025)
+
+[node name="synchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_4tmx4")

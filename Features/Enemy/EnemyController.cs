@@ -13,6 +13,10 @@ public enum EnemyState
 
 public partial class EnemyController : CharacterBody3D
 {
+	[Export] public WeaponController Weapon;
+	
+	[Export] public float ChaseRange = 2f;
+    
 	public Node3D Target;
 	
 	public NavigationAgent3D NavigationAgent;
@@ -22,8 +26,6 @@ public partial class EnemyController : CharacterBody3D
 	public EnemyState CurrentState;
 
 	private AttackController AttackModule;
-	
-	private WeaponController Weapon;
 	
 	private HealthController HealthModule;
 
@@ -37,7 +39,7 @@ public partial class EnemyController : CharacterBody3D
 		
 		AttackModule.OnHit += DamageTarget;
 		
-		Weapon = GetNode<WeaponController>("weapon_slicer");
+		Weapon ??= GetNode<WeaponController>("weapon_slicer");
 		
 		NavigationAgent = GetNode<NavigationAgent3D>("navigation_agent");
 	}
@@ -85,7 +87,7 @@ public partial class EnemyController : CharacterBody3D
 			return;
 		}
 		
-		if (GlobalPosition.DistanceTo(Target.GlobalPosition) < 2f)
+		if (GlobalPosition.DistanceTo(Target.GlobalPosition) < ChaseRange)
 		{
 			CurrentState = EnemyState.Attack;
 		}
@@ -112,6 +114,11 @@ public partial class EnemyController : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (CurrentState == EnemyState.Attack)
+		{
+			LookAt(Target.GlobalPosition, Vector3.Up);
+		}
+		
 		if (CurrentState != EnemyState.Chase) return;
 
 		var destination = NavigationAgent.GetNextPathPosition();
@@ -130,7 +137,7 @@ public partial class EnemyController : CharacterBody3D
 		
 		LookAt(lookDir, Vector3.Up);
 
-		if (GlobalPosition.DistanceTo(Target.GlobalPosition) < 2f) return;
+		if (GlobalPosition.DistanceTo(Target.GlobalPosition) < ChaseRange) return;
             
 		MoveAndSlide();
 	}

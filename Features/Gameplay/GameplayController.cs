@@ -54,14 +54,10 @@ public partial class GameplayController : Node
         
         var dungeonMasterScene = GD.Load<PackedScene>("res://Features/DungeonMaster/dungeon_master.tscn");
         
-        var enemy = GD.Load<PackedScene>("res://Features/Enemy/enemy.tscn");
-        
         var instance = dungeonMasterScene.Instantiate<DungeonMasterController>();
         
         GetParent().AddChild(instance);
 
-        instance.EnemyPrefab = enemy;
-        
         instance.CameraFreeLook.Initialize(GameManager.CurrentPlayerData == data);
         
         if (GameManager.CurrentPlayerData == data)

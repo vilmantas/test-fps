@@ -9,17 +9,19 @@ public partial class DungeonMasterController : Node3D
 
     [Export] public PackedScene DebugScene;
     
-    [Export] public PackedScene EnemyPrefab;
+    [Export] public PackedScene[] Enemies;
     
     private RayCast3D RayCast;
 
     private Node3D DebugInstance;
     
+    private int SelectedEnemyIndex = 0;
+    
     public override void _Ready()
     {
         DebugInstance = DebugScene.Instantiate<Node3D>();
         
-        AddChild(DebugInstance); ;
+        AddChild(DebugInstance);
 
         CallDeferred("ReparentCamera");
     }
@@ -28,6 +30,32 @@ public partial class DungeonMasterController : Node3D
     {
         CameraFreeLook.GlobalRotation = Vector3.Zero;
         CameraFreeLook.Reparent(GetParent());
+    }
+
+    public override void _Process(double delta)
+    {
+        if (Input.IsActionJustPressed("player_select_1"))
+        {
+            SelectedEnemyIndex = 0;
+            
+            Debug.WriteLine("Selected Enemy 1");
+        }
+        
+        if (Input.IsActionJustPressed("player_select_2"))
+        {
+            SelectedEnemyIndex = 1;
+            
+            Debug.WriteLine("Selected Enemy 2");
+        }
+                
+        if (Input.IsActionJustPressed("player_attack"))
+        {
+            var enemy = Enemies[SelectedEnemyIndex].Instantiate<EnemyController>();
+
+            enemy.GlobalTransform = DebugInstance.GlobalTransform;
+
+            GameManager.CurrentGameplay.SpawnEnemy(enemy);
+        }
     }
 
 
@@ -55,14 +83,5 @@ public partial class DungeonMasterController : Node3D
         x.X = -DebugInstance.Basis.Z.Cross(normal);
 
         DebugInstance.GlobalRotation = normal;
-        
-        if (Input.IsActionJustPressed("player_attack"))
-        {
-            var enemy = EnemyPrefab.Instantiate<EnemyController>();
-
-            enemy.GlobalTransform = DebugInstance.GlobalTransform;
-
-            GameManager.CurrentGameplay.SpawnEnemy(enemy);
-        }
     }
 }

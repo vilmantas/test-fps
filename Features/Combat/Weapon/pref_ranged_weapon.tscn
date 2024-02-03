@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://csmcvwgutbp70"]
+
+[ext_resource type="Script" path="res://Features/Combat/Weapon/WeaponController.cs" id="1_nqvvy"]
+[ext_resource type="PackedScene" uid="uid://4w3d40eeetny" path="res://Features/Combat/Weapon/configuration_weapon.tscn" id="3_34ccb"]
+[ext_resource type="Script" path="res://Features/Combat/Weapon/RangedWeaponConfiguration.cs" id="3_igl05"]
+[ext_resource type="PackedScene" uid="uid://br83mwaobi3km" path="res://Assets/Weapons/weapon_bow_1.tscn" id="3_xg78k"]
+[ext_resource type="PackedScene" uid="uid://dyut813lf3si6" path="res://Assets/Projectiles/projectile_arrow_test.tscn" id="5_chpwr"]
+
+[node name="ranged_weapon" type="Node3D" node_paths=PackedStringArray("WeaponConfiguration", "RangedWeaponConfiguration")]
+script = ExtResource("1_nqvvy")
+WeaponConfiguration = NodePath("configuration_base")
+RangedWeaponConfiguration = NodePath("configuration_ranged")
+
+[node name="configuration_base" parent="." instance=ExtResource("3_34ccb")]
+Name = "Slicer"
+Model = ExtResource("3_xg78k")
+DamageMin = 1
+DamageMax = 3
+
+[node name="configuration_ranged" parent="." instance=ExtResource("3_34ccb")]
+script = ExtResource("3_igl05")
+ProjectileModel = ExtResource("5_chpwr")
+ProjectileSpeed = 10.0

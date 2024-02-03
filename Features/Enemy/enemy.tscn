@@ -1,14 +1,15 @@
-[gd_scene load_steps=16 format=3 uid="uid://c0in4756syrja"]
+[gd_scene load_steps=17 format=3 uid="uid://c0in4756syrja"]
 
 [ext_resource type="Script" path="res://Features/Enemy/EnemyController.cs" id="1_iu5hl"]
 [ext_resource type="Texture2D" uid="uid://kf8pkeqiw2ps" path="res://addons/kenney_prototype_textures/dark/texture_06.png" id="2_lc6m3"]
-[ext_resource type="Script" path="res://Features/Attack/AttackController.cs" id="3_4ip0e"]
-[ext_resource type="Script" path="res://Features/Weapon/WeaponController.cs" id="3_31s75"]
-[ext_resource type="PackedScene" uid="uid://cmellox5kpwhf" path="res://Features/Hitbox/configuration_hitbox.tscn" id="4_1d4r6"]
-[ext_resource type="PackedScene" uid="uid://b5aoffmuot6d6" path="res://Features/Hitbox/hitbox_damage.tscn" id="5_t0prx"]
-[ext_resource type="PackedScene" uid="uid://c5glvd7xhw6al" path="res://Features/Weapon/configuration_weapon.tscn" id="6_thhk2"]
-[ext_resource type="PackedScene" uid="uid://bvowppwwxnyax" path="res://Assets/Weapons/weapon_sword_4.tscn" id="7_5slyg"]
-[ext_resource type="Script" path="res://Features/Health/HealthController.cs" id="9_3ssm1"]
+[ext_resource type="Script" path="res://Features/Combat/Weapon/WeaponController.cs" id="3_a1gdp"]
+[ext_resource type="Script" path="res://Features/Combat/Attack/AttackController.cs" id="4_70b4h"]
+[ext_resource type="PackedScene" uid="uid://4w3d40eeetny" path="res://Features/Combat/Weapon/configuration_weapon.tscn" id="4_b7wiv"]
+[ext_resource type="Script" path="res://Features/Combat/Health/HealthController.cs" id="5_4a0ya"]
+[ext_resource type="PackedScene" uid="uid://bvowppwwxnyax" path="res://Assets/Weapons/weapon_sword_4.tscn" id="5_swm4t"]
+[ext_resource type="Script" path="res://Features/Combat/Weapon/MeleeWeaponConfiguration.cs" id="6_ndhxd"]
+[ext_resource type="PackedScene" uid="uid://ba6vfifut1fl8" path="res://Features/Combat/Hitbox/configuration_hitbox.tscn" id="7_m00nf"]
+[ext_resource type="PackedScene" uid="uid://dwmtpmcjiyjd8" path="res://Assets/Weapons/hitbox_sword.tscn" id="8_ev3qb"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_76jag"]
 radius = 0.606354
@@ -56,23 +57,28 @@ replication_config = SubResource("SceneReplicationConfig_hgagt")
 [node name="debug_label" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34957, 0)
 
-[node name="weapon_slicer" type="Node3D" parent="." node_paths=PackedStringArray("WeaponConfiguration", "HitboxConfiguration")]
-script = ExtResource("3_31s75")
-WeaponConfiguration = NodePath("configuration_weapon")
-HitboxConfiguration = NodePath("configuration_hitbox")
+[node name="weapon_slicer" type="Node3D" parent="." node_paths=PackedStringArray("WeaponConfiguration", "MeleeWeaponConfiguration")]
+script = ExtResource("3_a1gdp")
+WeaponConfiguration = NodePath("configuration_base")
+MeleeWeaponConfiguration = NodePath("configuration_melee")
 
-[node name="configuration_hitbox" parent="weapon_slicer" instance=ExtResource("4_1d4r6")]
-HitboxModel = ExtResource("5_t0prx")
-Duration = 0.7
+[node name="configuration_base" parent="weapon_slicer" instance=ExtResource("4_b7wiv")]
+Model = ExtResource("5_swm4t")
+DamageMin = 1
+DamageMax = 3
+Cooldown = 1.0
 
-[node name="configuration_weapon" parent="weapon_slicer" node_paths=PackedStringArray("HitboxConfiguration") instance=ExtResource("6_thhk2")]
-Name = "Slicer"
-WeaponModel = ExtResource("7_5slyg")
-AttackCooldown = 1.0
+[node name="configuration_melee" parent="weapon_slicer" node_paths=PackedStringArray("HitboxConfiguration") instance=ExtResource("4_b7wiv")]
+script = ExtResource("6_ndhxd")
 HitboxConfiguration = NodePath("../configuration_hitbox")
 
+[node name="configuration_hitbox" parent="weapon_slicer" instance=ExtResource("7_m00nf")]
+HitboxModel = ExtResource("8_ev3qb")
+Delay = 0.2
+Duration = 0.5
+
 [node name="attack_module" type="Node3D" parent="." node_paths=PackedStringArray("HitboxSpawn")]
-script = ExtResource("3_4ip0e")
+script = ExtResource("4_70b4h")
 HitboxSpawn = NodePath("spawn_attack_hitbox")
 
 [node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
@@ -82,6 +88,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -1.69787)
 avoidance_enabled = true
 
 [node name="health_module" type="Node3D" parent="."]
-script = ExtResource("9_3ssm1")
-MaxHealth = 5
-CurrentHealth = 5
+script = ExtResource("5_4a0ya")

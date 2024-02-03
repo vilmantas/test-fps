@@ -11,9 +11,9 @@ public partial class EnemyTestScene : Node3D
     
     public override void _Ready()
     {
-        Player = GetNode<Node3D>("target_player");
+        Player = GetNode<Node3D>("entity_containers/players/target_player");
 
-        ActualPlayer = GetNode<PlayerController>("player");
+        ActualPlayer = GetNode<PlayerController>("entity_containers/players/player");
         
         GameManager.Instance.OnLevelLoaded(this);
     }
@@ -32,9 +32,7 @@ public partial class EnemyTestScene : Node3D
             
             var spawn = casted[index];
 
-            var player = GetNode<Node3D>("target_player");
-            
-            player.GlobalTransform = spawn.GlobalTransform;
+            Player.GlobalTransform = spawn.GlobalTransform;
         }
 
         if (Input.IsActionJustPressed("player_attack"))
