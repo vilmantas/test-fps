@@ -66,7 +66,9 @@ public partial class DamageTickController : Node3D
 
 	private Vector3 NewPos()
 	{
-		var heightAdjustment = Mathf.Sqrt(TimePassed* 0.7f);
+		var scale = TimePassed / MaxDuration;
+		
+		var heightAdjustment = Mathf.Sqrt(scale * 0.7f);
         
 		var newPos = StartingPos;
 		
