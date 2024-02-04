@@ -1,0 +1,59 @@
+[gd_scene load_steps=12 format=3 uid="uid://ddrtdesvvg1pn"]
+
+[ext_resource type="Script" path="res://Features/UI/DamageDisplay/Test/TestDamageTickController.cs" id="1_1y14h"]
+[ext_resource type="PackedScene" uid="uid://ocpk6lfvb4k2" path="res://Features/UI/DamageDisplay/damage_tick.tscn" id="2_up4ot"]
+[ext_resource type="Texture2D" uid="uid://bx6indttlkkh1" path="res://addons/kenney_prototype_textures/dark/texture_10.png" id="3_h0ysv"]
+[ext_resource type="Texture2D" uid="uid://bufs8jq5g8dtk" path="res://addons/kenney_prototype_textures/light/texture_11.png" id="4_ccqmd"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_8opns"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_sgmg6"]
+sky_material = SubResource("ProceduralSkyMaterial_8opns")
+
+[sub_resource type="Environment" id="Environment_gaffl"]
+background_mode = 2
+sky = SubResource("Sky_sgmg6")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_q41mg"]
+size = Vector2(50, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ynd0b"]
+albedo_texture = ExtResource("3_h0ysv")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_g701v"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0uj24"]
+albedo_texture = ExtResource("4_ccqmd")
+uv1_triplanar = true
+
+[node name="TestDamageTick" type="Node3D" node_paths=PackedStringArray("SpawnLocation")]
+script = ExtResource("1_1y14h")
+SpawnLocation = NodePath("tick_spawn_point")
+DamageTickPrefab = ExtResource("2_up4ot")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+light_color = Color(0.992157, 1, 0.74902, 1)
+shadow_enabled = true
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_gaffl")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.89897, 0.43801, 0, -0.43801, 0.89897, 0, 2.76266, 2.6001)
+
+[node name="tick_spawn_point" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.27538, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_q41mg")
+surface_material_override/0 = SubResource("StandardMaterial3D_ynd0b")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.02435, 0)
+mesh = SubResource("CapsuleMesh_g701v")
+surface_material_override/0 = SubResource("StandardMaterial3D_0uj24")

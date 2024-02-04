@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,9 +21,20 @@ public partial class GameplayController : Node
     private Dictionary<string, int> PlayerKills = new();
     
     private SpawnPointController[] Spawns;
+
+    public Action<EnemyController> OnEnemySpawned;
+    
+    public Action<PlayerController> OnPlayerSpawned;
     
     public override void _Ready()
     {
+        if (Multiplayer.IsServer())
+        {
+            OnEnemySpawned += HandleEnemySpawned;
+        
+            OnPlayerSpawned += HandlePlayerSpawned;    
+        }
+        
         var player = GD.Load<PackedScene>("res://Features/Player/player.tscn");
 
         Containers = GetParent().GetNode<EntityContainerController>("entity_containers");
@@ -45,7 +57,29 @@ public partial class GameplayController : Node
         
         AddDungeonMaster();
     }
-    
+
+    private void HandlePlayerSpawned(PlayerController obj)
+    {
+        obj.HealthModule.OnHealthChanged +=
+            (from, to) => DisplayBubbleText(obj.DebugLabel.GlobalPosition, (from - to).ToString());
+    }
+
+    private void HandleEnemySpawned(EnemyController obj)
+    {
+        obj.HealthModule.OnHealthChanged +=
+            (from, to) => DisplayBubbleText(obj.DebugLabel.GlobalPosition, (from - to).ToString());
+    }
+
+    private void DisplayBubbleText(Vector3 location, string text)
+    {
+        var tick = GD.Load<PackedScene>("res://Features/UI/DamageDisplay/damage_tick.tscn")
+            .Instantiate<DamageTickController>();
+        
+        Containers.UIElementsContainer.AddChild(tick, true);
+        
+        tick.Initialize(text, location);
+    }
+
     private void AddDungeonMaster()
     {
         var data = GameManager.Core.Boss;
@@ -80,6 +114,8 @@ public partial class GameplayController : Node
         InitializePlayer(instance, data, Spawns[i % Spawns.Length]);
         
         Players.Add(instance);
+        
+        OnPlayerSpawned?.Invoke(instance);
     }
 
     private void AddSpectator(PlayerDataController data)
@@ -147,6 +183,8 @@ public partial class GameplayController : Node
         enemy.Name = "Nate";
         
         ContainerEnemies.AddChild(enemy, true);
+        
+        OnEnemySpawned?.Invoke(enemy);
     }
     
     public void OnEnemyDeath(EnemyController enemy, Node3D killer)
@@ -174,4 +212,6 @@ public partial class GameplayController : Node
     public void OnPlayerDeath(PlayerController player)
     {
     }
+    
+    
 }

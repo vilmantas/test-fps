@@ -12,4 +12,8 @@ public partial class EntityContainerController : Node
 	[Export] public Node3D ProjectilesContainer;
 
 	[Export] public MultiplayerSpawner ProjectileSpawner;
+	
+	[Export] public Node3D UIElementsContainer;
+	
+	[Export] public MultiplayerSpawner UIElementsSpawner;
 }

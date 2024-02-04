@@ -21,13 +21,13 @@ public partial class EnemyController : CharacterBody3D
 	
 	public NavigationAgent3D NavigationAgent;
 	
-	private Label3D DebugLabel;
+	public Label3D DebugLabel;
 
 	public EnemyState CurrentState;
 
 	private AttackController AttackModule;
 	
-	private HealthController HealthModule;
+	public HealthController HealthModule;
 
 	public override void _Ready()
 	{
