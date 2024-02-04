@@ -29,6 +29,8 @@ public partial class EnemyController : CharacterBody3D
 	
 	public HealthController HealthModule;
 
+	public DamageController DamageModule;
+
 	public override void _Ready()
 	{
 		HealthModule = GetNode<HealthController>("health_module");
@@ -42,6 +44,8 @@ public partial class EnemyController : CharacterBody3D
 		Weapon ??= GetNode<WeaponController>("weapon_slicer");
 		
 		NavigationAgent = GetNode<NavigationAgent3D>("navigation_agent");
+		
+		DamageModule = GetNode<DamageController>("damage_module");
 	}
 
 	public override void _Process(double delta)
@@ -150,8 +154,10 @@ public partial class EnemyController : CharacterBody3D
 	private void DamageTarget(Node3D target)
 	{
 		if (target is EnemyController) return;
+
+		var damage = DamageModule.CalculateWeaponDamage(Weapon);
 		
-		CombatManager.Instance.Damage(this, target);
+		CombatManager.Instance.Damage(this, target, damage);
 	}
 
 	public void HandleDeath(Node3D killer)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://8vpmccjm10ci"]
+[gd_scene load_steps=17 format=3 uid="uid://8vpmccjm10ci"]
 
 [ext_resource type="Script" path="res://Features/Enemy/EnemyController.cs" id="1_asrac"]
 [ext_resource type="Texture2D" uid="uid://kf8pkeqiw2ps" path="res://addons/kenney_prototype_textures/dark/texture_06.png" id="2_i1nia"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://dyut813lf3si6" path="res://Assets/Projectiles/projectile_arrow_test.tscn" id="9_54oh2"]
 [ext_resource type="Script" path="res://Features/Combat/Attack/AttackController.cs" id="9_e8d2q"]
 [ext_resource type="Script" path="res://Features/Combat/Health/HealthController.cs" id="10_1fdbc"]
+[ext_resource type="Script" path="res://Features/Combat/Damage/DamageController.cs" id="10_vihs2"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_76jag"]
 radius = 0.606354
@@ -58,18 +59,8 @@ replication_config = SubResource("SceneReplicationConfig_hgagt")
 [node name="debug_label" type="Label3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.34957, 0)
 
-[node name="attack_module" type="Node3D" parent="." node_paths=PackedStringArray("HitboxSpawn")]
-script = ExtResource("9_e8d2q")
-HitboxSpawn = NodePath("spawn_attack_hitbox")
-
-[node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -1.69787)
-
 [node name="navigation_agent" type="NavigationAgent3D" parent="."]
 avoidance_enabled = true
-
-[node name="health_module" type="Node3D" parent="."]
-script = ExtResource("10_1fdbc")
 
 [node name="bow_practice" type="Node3D" parent="." node_paths=PackedStringArray("WeaponConfiguration", "RangedWeaponConfiguration")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.577075, 1.25936, 0)
@@ -87,3 +78,16 @@ Cooldown = 2.0
 [node name="configuration_ranged" type="Node" parent="bow_practice"]
 script = ExtResource("8_chayo")
 ProjectileModel = ExtResource("9_54oh2")
+
+[node name="spawn_attack_hitbox" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -1.69787)
+
+[node name="damage_module" type="Node" parent="."]
+script = ExtResource("10_vihs2")
+
+[node name="health_module" type="Node" parent="."]
+script = ExtResource("10_1fdbc")
+
+[node name="attack_module" type="Node" parent="." node_paths=PackedStringArray("HitboxSpawn")]
+script = ExtResource("9_e8d2q")
+HitboxSpawn = NodePath("../spawn_attack_hitbox")

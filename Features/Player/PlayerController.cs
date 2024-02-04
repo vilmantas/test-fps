@@ -40,6 +40,8 @@ public partial class PlayerController : CharacterBody3D
 
 	private ThirdPersonController MovementController;
 	private WeaponController Weapon;
+	
+	private DamageController DamageModule;
 
 	public override void _Ready()
 	{
@@ -50,9 +52,8 @@ public partial class PlayerController : CharacterBody3D
 		HealthModule = GetNode<HealthController>("health_module");
 
 		AttackModule = GetNode<AttackController>("attack_module");
-		AttackHitboxSpawn = GetNode<Node3D>("attack_module/spawn_attack_hitbox");
+		DamageModule = GetNode<DamageController>("damage_module");
 
-		AttackModule.HitboxSpawn = AttackHitboxSpawn;
 		AttackModule.OnHit += HandleHit;
 		
 		Character.SetModel(PlayerModel);
@@ -173,7 +174,9 @@ public partial class PlayerController : CharacterBody3D
 	
 	void HandleHit(Node3D obj)
 	{
-		CombatManager.Instance.Damage(this, obj);
+		var damage = DamageModule.CalculateWeaponDamage(Weapon);
+		
+		CombatManager.Instance.Damage(this, obj, damage);
 	}
 
 	[Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]

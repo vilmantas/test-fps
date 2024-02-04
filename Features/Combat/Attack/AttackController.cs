@@ -2,14 +2,14 @@ using Godot;
 using System;
 using testfps.Scripts;
 
-public partial class AttackController : Node3D
+public partial class AttackController : Node
 {
 	[Export] public Node3D HitboxSpawn;
 	
 	public Action<Node3D> OnHit;
 	
 	public bool AttackAvailable = true;
-	
+
 	public bool Attack(WeaponController weapon)
 	{
 		if (!AttackAvailable) return false;
@@ -36,7 +36,7 @@ public partial class AttackController : Node3D
 	{
 		var projectile = weapon.RangedWeaponConfiguration.ProjectileModel.Instantiate<ProjectileController>();
 		
-		projectile.Initialize(this, -GlobalTransform.Basis.Z, weapon.RangedWeaponConfiguration.ProjectileSpeed, HandleHit);
+		projectile.Initialize(this, -GetParent<Node3D>().GlobalTransform.Basis.Z, weapon.RangedWeaponConfiguration.ProjectileSpeed, HandleHit);
 		
 		GameManager.CurrentGameplay.Containers.ProjectilesContainer.AddChild(projectile, true);
 
@@ -61,7 +61,7 @@ public partial class AttackController : Node3D
 
 		instance.Source = GetParent<Node3D>();
 
-		AddChild(instance);
+		HitboxSpawn.AddChild(instance);
 		
 		instance.GlobalPosition = HitboxSpawn.GlobalPosition;
 

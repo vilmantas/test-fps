@@ -12,13 +12,13 @@ public partial class CombatManager : Node
         Instance = this;
     }
     
-    public void Damage(Node3D source, Node3D target)
+    public void Damage(Node3D source, Node3D target, int damage)
     {
-        RpcId(1, nameof(DamageRPC), source.Name, target.Name);
+        RpcId(1, nameof(DamageRPC), source.Name, target.Name, damage);
     }
     
     [Rpc(MultiplayerApi.RpcMode.AnyPeer, CallLocal = true)]
-    private void DamageRPC(string sourceName, string targetName)
+    private void DamageRPC(string sourceName, string targetName, int damage)
     {
         if (!Multiplayer.IsServer()) return;
         
@@ -28,10 +28,10 @@ public partial class CombatManager : Node
         
         Debug.WriteLine($"#2 {sourceNode.Name} attacked {targetNode.Name}");
         
-        DamageTrue(sourceNode, targetNode);
+        DamageTrue(sourceNode, targetNode, damage);
     }
 
-    private void DamageTrue(Node3D source, Node3D target)
+    private void DamageTrue(Node3D source, Node3D target, int damage)
     {
         if (source == null || target == null) return;
         
@@ -39,7 +39,7 @@ public partial class CombatManager : Node
         
         if (health == null) return;
         
-        health.Damage(3);
+        health.Damage(damage);
 
         if (health.IsExpended)
         {

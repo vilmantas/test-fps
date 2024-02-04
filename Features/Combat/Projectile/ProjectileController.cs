@@ -6,7 +6,7 @@ public partial class ProjectileController : Node3D
 {
 	[Export] public DamageHitboxController HitboxController;
 
-	public Node3D Source;
+	public Node Source;
 
 	public Vector3 Direction;
 
@@ -21,7 +21,7 @@ public partial class ProjectileController : Node3D
 		attackCooldownTimer.Timeout += QueueFree;
 	}
 
-	public void Initialize(Node3D source, Vector3 direction, float speed, Action<Node3D> hitCallback)
+	public void Initialize(Node source, Vector3 direction, float speed, Action<Node3D> hitCallback)
 	{
 		Source = source;
 		

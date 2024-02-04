@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2dvfml0wryba"]
+[gd_scene load_steps=10 format=3 uid="uid://d2dvfml0wryba"]
 
 [ext_resource type="Script" path="res://Features/Player/PlayerController.cs" id="1_3nu1d"]
 [ext_resource type="PackedScene" uid="uid://4ac7sumeibg1" path="res://Features/Character/character.tscn" id="1_ixuhh"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://p0kvyasajslm" path="res://Features/Combat/Hitbox/hitbox_damage.tscn" id="2_tg6kw"]
 [ext_resource type="Script" path="res://Features/Combat/Health/HealthController.cs" id="5_0j4ew"]
 [ext_resource type="Script" path="res://Features/Combat/Attack/AttackController.cs" id="6_lq84r"]
+[ext_resource type="Script" path="res://Features/Combat/Damage/DamageController.cs" id="7_w2ith"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_c3us5"]
 radius = 0.251076
@@ -40,6 +41,9 @@ JumpHeight = 3.0
 JumpTimeToPeak = 0.7
 JumpTimeToDescend = 0.5
 
+[node name="debug" type="Label3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08283, 1.91341, -0.0246153)
+
 [node name="character" parent="." instance=ExtResource("1_ixuhh")]
 
 [node name="core_hitbox" type="CollisionShape3D" parent="."]
@@ -51,18 +55,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.01, 0)
 target_position = Vector3(0, -5, 0)
 collision_mask = 3
 
+[node name="spawn_attack_hitbox" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -0.783805)
+
+[node name="health_module" type="Node" parent="."]
+script = ExtResource("5_0j4ew")
+MaxHealth = 500
+CurrentHealth = 400
+
+[node name="damage_module" type="Node" parent="."]
+script = ExtResource("7_w2ith")
+
+[node name="attack_module" type="Node" parent="." node_paths=PackedStringArray("HitboxSpawn")]
+script = ExtResource("6_lq84r")
+HitboxSpawn = NodePath("../spawn_attack_hitbox")
+
 [node name="synchronizer" type="MultiplayerSynchronizer" parent="."]
 replication_config = SubResource("SceneReplicationConfig_hmdv7")
-
-[node name="debug" type="Label3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.08283, 1.91341, -0.0246153)
-
-[node name="health_module" type="Node3D" parent="."]
-script = ExtResource("5_0j4ew")
-
-[node name="attack_module" type="Node3D" parent="." node_paths=PackedStringArray("HitboxSpawn")]
-script = ExtResource("6_lq84r")
-HitboxSpawn = NodePath("spawn_attack_hitbox")
-
-[node name="spawn_attack_hitbox" type="Node3D" parent="attack_module"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.07513, -0.783805)
