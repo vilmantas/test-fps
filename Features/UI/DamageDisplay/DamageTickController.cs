@@ -46,10 +46,10 @@ public partial class DamageTickController : Node3D
 
 		GlobalPosition = newPos;
 
-		x();
+		ScaleText();
 	}
 
-	private void x()
+	private void ScaleText()
 	{
 		var scale = TimePassed / MaxDuration;
 
@@ -60,8 +60,6 @@ public partial class DamageTickController : Node3D
 		z = Mathf.Max(0, z);
 		
 		DamageLabel.Scale = Vector3.One * (1 + z);
-		
-		Debug.WriteLine($"{scale:F2}:{z:F2} : {DamageLabel.Scale}");
 	}
 
 	private Vector3 NewPos()
