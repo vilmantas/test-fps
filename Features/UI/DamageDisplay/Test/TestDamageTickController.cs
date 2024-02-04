@@ -16,9 +16,9 @@ public partial class TestDamageTickController : Node
 			
 			var r = new RandomNumberGenerator();
 			
-			damageTick.Initialize(r.RandiRange(1, 20).ToString(), SpawnLocation.GlobalPosition);
-			
 			GetTree().CurrentScene.AddChild(damageTick);
+			
+            damageTick.Initialize(r.RandiRange(1, 20).ToString(), SpawnLocation.GlobalPosition);
 		}
 	}
 }
